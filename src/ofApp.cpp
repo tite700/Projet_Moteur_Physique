@@ -12,6 +12,7 @@ void ofApp::setup(){
 	particule.setVelocite(Vector(1, 1, 0));
 	particule.setAcceleration(Vector(5, 5, 0));
 	
+	cout << "You can start the simulation by pressing the spacebar or clicking on the button." << endl;
 
 }
 
@@ -37,7 +38,6 @@ void ofApp::update(){
 		startButton = false;
 		particule.setPos(Vector(pos_init->x, pos_init->y, 0));
 	}
-
 
 }
 
