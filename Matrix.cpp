@@ -1,35 +1,61 @@
 #include "Matrix.h"
+#include <iostream>
 
-Matrix::Matrix(int nRow_, int nCol_) : nRow(nRow_), nCol(nCol_), tab(new float[nRow * nCol])
+#include "Vector.h"
+
+Matrix::Matrix()
 {
 }
 
-int Matrix::getNCol()
-{
-	return nCol;
-}
 
-int Matrix::getnRow()
+float Matrix::getElement(int r, int c) const
 {
-	return nRow;
-}
-
-float Matrix::getElement(int r, int c)
-{
-	return tab[r * nCol + c];
+	return tab[r * 4 + c];
 }
 
 void Matrix::setElement(int r, int c, float val)
 {
-	tab[r * nCol + c] = val;
+	tab[r * 4 + c] = val;
 }
 
-Matrix Matrix::zeros(int r, int c)
+void Matrix::print()
 {
-	Matrix res(r, c);
-	for (int i = 0; i < r * c; i++)
+	for (int r = 0; r < 4; r++)
+	{
+		for (int c = 0; c < 4; c++)
+		{
+			std::cout << this->getElement(r, c) << ", ";
+		}
+		std::cout << std::endl;
+	}
+}
+
+Matrix Matrix::zeros()
+{
+	Matrix res;
+	for (int i = 0; i < 16; i++)
 	{
 		res.tab[i] = 0;
+	}
+	return res;
+}
+
+Matrix Matrix::ones()
+{
+	Matrix res;
+	for (int i = 0; i < 16; i++)
+	{
+		res.tab[i] = 1;
+	}
+	return res;
+}
+
+Matrix Matrix::identity()
+{
+	Matrix res = zeros();
+	for (int i = 0; i < 4; i++)
+	{
+		res.setElement(i, i, 1);
 	}
 	return res;
 }

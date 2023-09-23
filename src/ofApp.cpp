@@ -9,9 +9,10 @@ void ofApp::setup(){
 	gui.add(pos_init.setup("Initial position", { 30, 170 }, { 30, 170 }, { ofGetWidth()-20, ofGetHeight()-20}));
 	gui.add(startButton.setup("Click or Spacebar",false));
 
-	particule.setVelocite(Vector(1, 1, 0));
-	particule.setAcceleration(Vector(5, 5, 0));
+	particule.setVelocite(Vector(100, 0, 0));
+	particule.setAcceleration(Vector(0, 9, 0));
 	
+	cout << "You can start the simulation by pressing the spacebar or clicking on the button." << endl;
 
 }
 
@@ -37,7 +38,6 @@ void ofApp::update(){
 		startButton = false;
 		particule.setPos(Vector(pos_init->x, pos_init->y, 0));
 	}
-
 
 }
 

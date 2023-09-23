@@ -37,7 +37,7 @@ class ofApp : public ofBaseApp{
 
 		ofxPanel gui;
 
-		Particule particule = Particule(Vector::zeros(), 0);	
+		Particule particule = Particule(Vector::zeros(), 0);
 
 		
 };

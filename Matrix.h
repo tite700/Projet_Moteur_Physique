@@ -1,22 +1,25 @@
 #pragma once
 #include <array>
 
+class Vector;
+
 class Matrix
 {
 private:
-	int nCol;
-	int nRow;
-	float* tab;
+	float tab[16];
 
-	Matrix(int nRow_, int nCol_);
+	Matrix();
 
 public:
-	int getNCol();
-	int getnRow();
 
-	float getElement(int r, int c);
+	float getElement(int r, int c) const;
 	void setElement(int r, int c, float val);
+	void print();
 
-	static Matrix zeros(int r, int c);
+	static Matrix zeros();
+	static Matrix ones();
+	static Matrix identity();
+
 
 };
+
