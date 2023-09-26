@@ -1,54 +1,31 @@
 #pragma once
-#include "Vector.h"
-#include <time.h>
-#include "ofMain.h"
+#include "Vecteur3D.h"
 
-class Particule
-{
-private:
-	Vector pos;
-	float inverseMasse;
-	Vector velocite;
-	Vector acceleration;
-
-	ofSpherePrimitive body;
-
-	clock_t lastFrame;
-	
-	bool hasStarted = false;
-
-
+class Particule {
 public:
+    Particule(float trainee, float couleur, float surface, float masseInverse = 1.0f, Vecteur3D vect_position = Vecteur3D(), Vecteur3D vect_velocite = Vecteur3D());
 
-	Particule(Vector pos, float masse);
+    // Accesseurs pour l'attribut InverseMasse
+    float getTrainee() const;
+    float getCouleur() const;
+    float getInverseMasse() const;
+    float getSurface() const;
+    void setInverseMasse(float masseInverse);
 
+    // Méthode pour mettre à jour la particule à chaque frame
+    void integrer(float temps);
 
-	void start();
-	void update();
-	void draw();
+    // Accesseurs pour la position et la vélocité
+    const Vecteur3D& getPosition() const;
+    const Vecteur3D& getVelocite() const;
 
-	// Implémenter un intégrateur (intégration d'Euler) afin de mettre à jour la position et la vélocité de chaque particule à chaque frame.
-	// Celui-ci peut être implémenté en tant que méthode void integrer(float temps) de la classe Particule.
+private:
+    float trainee; //trainée de la particule
+    float couleur; //couleur de la particule
+    float surface; //surface de la particule
+    float inverseMasse; // L'inverse de la masse pour faciliter les calculs
+    Vecteur3D position; // Position actuelle de la particule
+    Vecteur3D velocite; // Vélocité actuelle de la particule
 
-	void integrer(float temps);
-
-
-	//Getters & Setters
-	Vector getPos();
-	void setPos(Vector nPos);
-
-	float getMasse();
-	void setMasse(float nMasse);
-
-	void setVelocite(Vector velocite);
-
-	void setAcceleration(Vector accel);
-
-	void setRadius(float radius);
-
-	void Particule::setHasStarted(bool hasStarted);
-	bool Particule::getHasStarted();
-
-
+    // Autres attributs nécessaires, par exemple, les forces appliquées
 };
-

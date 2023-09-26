@@ -104,7 +104,6 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Particule.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
@@ -118,11 +117,9 @@
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp" />
-    <ClCompile Include="Time.cpp" />
-    <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="Vecteur3D.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrix.h" />
     <ClInclude Include="Particule.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h" />
@@ -137,8 +134,7 @@
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h" />
-    <ClInclude Include="Time.h" />
-    <ClInclude Include="Vector.h" />
+    <ClInclude Include="Vecteur3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

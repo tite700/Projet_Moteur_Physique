@@ -1,90 +1,64 @@
 #include "Particule.h"
 
-Particule::Particule(Vector pos, float masse) : pos(pos), inverseMasse(1 / masse), hasStarted(false)
+Particule::Particule(float Trainee, float Couleur, float Surface, float masseInverse, Vecteur3D vect_position, Vecteur3D vect_velocite)
 {
-	velocite = Vector::zeros();
-	acceleration = Vector::zeros();
-	lastFrame = clock();
-	body.setRadius(10);
-	hasStarted = false;
+    trainee = Trainee;
+    couleur = Couleur;
+    inverseMasse = masseInverse;
+    position = vect_position;
+    velocite = vect_velocite;
+    surface = Surface;
 }
 
-void Particule::start()
+float Particule::getTrainee() const
 {
-	if (!hasStarted) {
-		hasStarted = true;
-	}
+    return this->trainee;
+}
+float Particule::getCouleur() const
+{
+    return this->couleur;
+}
+float Particule::getInverseMasse() const
+{
+    return this->inverseMasse;
 }
 
-void Particule::update()
+float Particule::getSurface() const
 {
-	clock_t deltaTime = clock() - lastFrame;
-	lastFrame = clock();
-
-	if (hasStarted) {
-
-		pos += deltaTime * velocite * 0.001;
-
-		velocite += deltaTime * acceleration * 0.001;
-	}
-	
-
-	body.setPosition(pos.x, pos.y, pos.z);
-
+    return this->surface;
 }
 
-Vector Particule::getPos()
+void Particule::setInverseMasse(float masseInverse)
 {
-	return pos;
+    inverseMasse = masseInverse;
 }
 
-void Particule::draw()
-{
-	body.draw();
+void Particule::integrer(float temps) {
+    if (inverseMasse != 0.0f) {
+        // Mettre à jour la position et la vélocité en utilisant l'intégration d'Euler
+        position = position + (velocite * temps);
+
+        // Mettre à jour la vélocité en fonction des forces appliquées
+
+        //Gravité
+        Vecteur3D forceGravite(0.0f, 981.0f, 0.0f);
+        //Frotements
+        float coeffFrottement = -0.01f * this->surface;
+        Vecteur3D forceFrottement(velocite.getX() * coeffFrottement, velocite.getY() * coeffFrottement, 0.0f);
+
+        velocite = velocite + ((forceFrottement * inverseMasse + forceGravite) * temps);
+    }
+    // Sinon, la particule reste immobile (inverseMasse == 0).
 }
 
-void Particule::integrer(float temps)
+
+
+const Vecteur3D& Particule::getPosition() const
 {
-	pos += velocite * temps;
-	velocite += acceleration * temps;
+    return position;
 }
 
-void Particule::setPos(Vector nPos)
+const Vecteur3D& Particule::getVelocite() const
 {
-	pos = nPos;
-}
-
-float Particule::getMasse()
-{
-	return 1 / inverseMasse;
-}
-
-void Particule::setMasse(float nMasse)
-{
-	inverseMasse = 1 / nMasse;
-}
-
-void Particule::setVelocite(Vector velocite)
-{
-	this->velocite = velocite;
-}
-
-void Particule::setAcceleration(Vector accel)
-{
-	acceleration = accel;
-}
-
-void Particule::setRadius(float radius)
-{
-	body.setRadius(radius);
-}
-
-void Particule::setHasStarted(bool hasStarted)
-{
-	this->hasStarted = hasStarted;
-}
-
-bool Particule::getHasStarted()
-{
-	return hasStarted;
+    return velocite;
 }
