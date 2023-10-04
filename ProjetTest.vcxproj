@@ -104,7 +104,11 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ForceRessort.cpp" />
+    <ClCompile Include="GenerateurForce.cpp" />
+    <ClCompile Include="GraviteParticule.cpp" />
     <ClCompile Include="Particule.cpp" />
+    <ClCompile Include="RegistreForce.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp" />
@@ -120,7 +124,11 @@
     <ClCompile Include="Vecteur3D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ForceRessort.h" />
+    <ClInclude Include="GenerateurForce.h" />
+    <ClInclude Include="GraviteParticule.h" />
     <ClInclude Include="Particule.h" />
+    <ClInclude Include="RegistreForce.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxButton.h" />

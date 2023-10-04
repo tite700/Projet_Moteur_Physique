@@ -43,6 +43,10 @@
     <ClCompile Include="Particule.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="GenerateurForce.cpp" />
+    <ClCompile Include="RegistreForce.cpp" />
+    <ClCompile Include="GraviteParticule.cpp" />
+    <ClCompile Include="ForceRessort.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -104,6 +108,10 @@
     <ClInclude Include="Particule.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="GenerateurForce.h" />
+    <ClInclude Include="RegistreForce.h" />
+    <ClInclude Include="GraviteParticule.h" />
+    <ClInclude Include="ForceRessort.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
