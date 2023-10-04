@@ -11,6 +11,14 @@ Vecteur3D::Vecteur3D(float a, float b, float c, float d)
     std::cout << "Constructor executed" << x << y << std::endl;
 }
 
+Vecteur3D::Vecteur3D(Vecteur3D* vect)
+{
+	x = vect->getX();
+	y = vect->getY();
+	z = vect->getZ();
+	w = vect->w;
+}
+
 // Getters
 glm::vec2 Vecteur3D::vec2()
 {
@@ -36,6 +44,30 @@ Vecteur3D Vecteur3D::operator-(const Vecteur3D& vect) const
 Vecteur3D Vecteur3D::operator*(float scalaire) const
 {
     return Vecteur3D(x * scalaire, y * scalaire, z * scalaire);
+}
+
+Vecteur3D Vecteur3D::operator+=(const Vecteur3D& vect)
+{
+    x += vect.x;
+	y += vect.y;
+	z += vect.z;
+	return *this;
+}
+
+Vecteur3D Vecteur3D::operator-=(const Vecteur3D& vect)
+{
+    x -= vect.x;
+	y -= vect.y;
+	z -= vect.z;
+	return *this;
+}
+
+Vecteur3D Vecteur3D::operator*=(float scalaire)
+{
+    x *= scalaire;
+	y *= scalaire;
+	z *= scalaire;
+	return *this;
 }
 
 Vecteur3D Vecteur3D::normalisation() const
@@ -65,4 +97,15 @@ Vecteur3D Vecteur3D::prodvect(const Vecteur3D& vect) const
 float Vecteur3D::norme() const
 {
     return sqrt(x * x + y * y + z * z);
+}
+
+std::ostream& operator<<(std::ostream& os, const Vecteur3D& vect)
+{
+    os << "(" << vect.getX() << ", " << vect.getY() << ", " << vect.getZ() << ")";
+	return os;
+}
+
+Vecteur3D operator*(float scalaire, const Vecteur3D& vect)
+{
+    return Vecteur3D(vect.getX() * scalaire, vect.getY() * scalaire, vect.getZ() * scalaire);
 }

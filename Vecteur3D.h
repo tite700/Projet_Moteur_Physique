@@ -11,8 +11,9 @@ private:
     float w;
 
 public:
-    // Constructeur
+    // Constructeurs
     Vecteur3D(float a = 0, float b = 0, float c = 0, float d = 0);
+    Vecteur3D(Vecteur3D* vect);
 
     // Getters
     glm::vec2 vec2();
@@ -25,6 +26,9 @@ public:
     Vecteur3D operator+(const Vecteur3D& vect) const;
     Vecteur3D operator-(const Vecteur3D& vect) const;
     Vecteur3D operator*(float Vecteur3D) const;
+    Vecteur3D operator+= (const Vecteur3D& vect);
+    Vecteur3D operator-= (const Vecteur3D& vect);
+    Vecteur3D operator*= (float scalaire);
     Vecteur3D normalisation() const;
 
     // Méthodes
@@ -32,4 +36,10 @@ public:
     Vecteur3D prodvect(const Vecteur3D& vect) const;
     float norme() const;
 };
+
+//Opérateurs externes
+
+std::ostream& operator<<(std::ostream& os, const Vecteur3D& vect);
+
+Vecteur3D operator*(float scalaire, const Vecteur3D& vect);
 
