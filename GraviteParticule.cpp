@@ -9,6 +9,6 @@ void GraviteParticule::updateForce(Particule* particule, float duration)
 {
 	if (particule->getInverseMasse() != 0)
 	{
-		particule->addForce(gravity * particule->getInverseMasse());
+		particule->addForce(gravity * particule->getMass());
 	}
 }

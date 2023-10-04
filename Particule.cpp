@@ -75,6 +75,11 @@ const Vecteur3D& Particule::getVelocite() const
     return velocite;
 }
 
+const float Particule::getVitesse() const
+{
+    return velocite.norme();
+}
+
 Vecteur3D Particule::getForce() const
 {
     return forceRes;
