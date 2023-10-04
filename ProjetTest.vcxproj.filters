@@ -47,6 +47,7 @@
     <ClCompile Include="RegistreForce.cpp" />
     <ClCompile Include="GraviteParticule.cpp" />
     <ClCompile Include="ForceRessort.cpp" />
+    <ClCompile Include="ForceFrictionCinetique.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -112,6 +113,7 @@
     <ClInclude Include="RegistreForce.h" />
     <ClInclude Include="GraviteParticule.h" />
     <ClInclude Include="ForceRessort.h" />
+    <ClInclude Include="ForceFrictionCinetique.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

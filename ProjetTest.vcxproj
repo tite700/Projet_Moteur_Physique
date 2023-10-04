@@ -104,6 +104,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ForceFrictionCinetique.cpp" />
     <ClCompile Include="ForceRessort.cpp" />
     <ClCompile Include="GenerateurForce.cpp" />
     <ClCompile Include="GraviteParticule.cpp" />
@@ -124,6 +125,7 @@
     <ClCompile Include="Vecteur3D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ForceFrictionCinetique.h" />
     <ClInclude Include="ForceRessort.h" />
     <ClInclude Include="GenerateurForce.h" />
     <ClInclude Include="GraviteParticule.h" />

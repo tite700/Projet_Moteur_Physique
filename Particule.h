@@ -20,6 +20,7 @@ public:
     // Accesseurs pour la position et la vélocité
     const Vecteur3D& getPosition() const;
     const Vecteur3D& getVelocite() const;
+    const float getVitesse() const;
 
     //Forces
     Vecteur3D getForce() const;
