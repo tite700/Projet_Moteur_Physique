@@ -8,7 +8,6 @@ Vecteur3D::Vecteur3D(float a, float b, float c, float d)
     y = b;
     z = c;
     w = d;
-    std::cout << "Constructor executed" << x << y << std::endl;
 }
 
 Vecteur3D::Vecteur3D(Vecteur3D* vect)

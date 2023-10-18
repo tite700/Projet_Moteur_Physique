@@ -27,6 +27,10 @@ public:
     void addForce(const Vecteur3D& force);
     void clearForce();
 
+    //Collisions
+    static bool collision(Particule* p1, Particule* p2);
+
+    static void resolveCollision(Particule* p1, Particule* p2);
 
 private:
     float trainee; //trainée de la particule

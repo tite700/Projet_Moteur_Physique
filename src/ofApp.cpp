@@ -16,10 +16,17 @@ void ofApp::setup() {
 	gui.add(balleButton.setup("Balle", false));
 	gui.add(bdfButton.setup("Boule de feu", false));
 	//gui.add(laserButton.setup("laser", false));
+
+	// Créez une cible et ajoutez-la à votre conteneur de particules
+	Particule cible(1, 500, 50, 0, Vecteur3D(400, 600), Vecteur3D(0, 0));
+	particules.push_back(cible);
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
+	if (particules.size() >= 2 && Particule::collision(&particules[0], &particules[1])) {
+		std::cout<<"collision"<<std::endl;
+	}
 	//Gestion des boutons du menu
 	if (bdfButton) {
 		surface = 100;

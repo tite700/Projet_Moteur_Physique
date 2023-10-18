@@ -95,4 +95,10 @@ void Particule::clearForce()
     	forceRes = Vecteur3D();
 }
 
+bool Particule::collision(Particule* p1, Particule* p2)
+{
+    return (p1->getPosition() - p2->getPosition()).norme() <= (p1->getSurface() + p2->getSurface());
+}
+
+
 
