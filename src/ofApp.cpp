@@ -25,7 +25,7 @@ void ofApp::setup() {
 //--------------------------------------------------------------
 void ofApp::update() {
 
-	//check collision for each particule in between them in particules
+	// On vérifie les collisions pour chaque paire de particules dans la scène (stockées dans le vecteur particules)
 	for (int i = 0; i < particules.size(); i++) {
 		for (int j = i + 1; j < particules.size(); j++) {
 			if (Particule::collision(&particules[i], &particules[j])) {
