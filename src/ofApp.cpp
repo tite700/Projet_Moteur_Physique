@@ -24,9 +24,16 @@ void ofApp::setup() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-	if (particules.size() >= 2 && Particule::collision(&particules[0], &particules[1])) {
-		std::cout<<"collision"<<std::endl;
+
+	//check collision for each particule in between them in particules
+	for (int i = 0; i < particules.size(); i++) {
+		for (int j = i + 1; j < particules.size(); j++) {
+			if (Particule::collision(&particules[i], &particules[j])) {
+				std::cout << "collision" << std::endl;
+			}
+		}
 	}
+
 	//Gestion des boutons du menu
 	if (bdfButton) {
 		surface = 100;
