@@ -18,7 +18,7 @@ void ofApp::setup() {
 	//gui.add(laserButton.setup("laser", false));
 
 	// Créez une cible et ajoutez-la à votre conteneur de particules
-	Particule cible(1, 500, 50, 0, Vecteur3D(400, 600), Vecteur3D(0, 0));
+	Particule cible(1, 500, 50, 0.5f, Vecteur3D(400, 100), Vecteur3D(0, 0));
 	particules.push_back(cible);
 }
 
@@ -30,6 +30,7 @@ void ofApp::update() {
 		for (int j = i + 1; j < particules.size(); j++) {
 			if (Particule::collision(&particules[i], &particules[j])) {
 				std::cout << "collision" << std::endl;
+				Particule::resolveCollision(&particules[i], &particules[j]);
 			}
 		}
 	}
