@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "../Vecteur3D.h"
 #include "../Particule.h"
+#include "../RegistreForce.h"
 #include "ofxGui.h"
 
 class ofApp : public ofBaseApp {
@@ -40,6 +41,10 @@ public:
 	ofxToggle balleButton;
 	ofxToggle bdfButton;
 	ofxToggle laserButton;
+
+	//Forces
+
+	RegistreForce registreForce;
 
 private:
 	// Déclarez ici les variables nécessaires pour gérer la simulation

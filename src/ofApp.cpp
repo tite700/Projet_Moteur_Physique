@@ -1,6 +1,8 @@
 #include "ofApp.h"
 #include "../Vecteur3D.h"
 #include "../Particule.h"
+#include "../GraviteParticule.h"
+#include "../ForceFrictionCinetique.h"
 
 //--------------------------------------------------------------
 void ofApp::setup() {
@@ -18,12 +20,23 @@ void ofApp::setup() {
 	//gui.add(laserButton.setup("laser", false));
 
 	// Créez une cible et ajoutez-la à votre conteneur de particules
-	Particule cible(1, 500, 50, 0.5f, Vecteur3D(400, 100), Vecteur3D(0, 0));
+	Particule cible(1, 500, 50, 0.01f, Vecteur3D(400, 100), Vecteur3D(0, 0));
 	particules.push_back(cible);
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
+	for (auto& particule : particules) {
+		particule.clearForce();
+	}
+
+	for (auto& particule : particules) {
+		registreForce.add(&particule, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
+		registreForce.add(&particule, new ForceFrictionCinetique(0.0f, 0.0f));
+	}
+
+	registreForce.updateForces(ofGetLastFrameTime());
+
 	std::cout << particules.size() << std::endl;
 	//check collision for each particule in between them in particules
 	for (int i = 0; i < particules.size(); i++) {

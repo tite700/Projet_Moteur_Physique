@@ -53,12 +53,12 @@ void Particule::integrer(float temps) {
         // Mettre à jour la vélocité en fonction des forces appliquées
 
         //Gravité
-        Vecteur3D forceGravite(0.0f, 981.0f, 0.0f);
+//        Vecteur3D forceGravite(0.0f, 981.0f, 0.0f);
         //Frotements
-        float coeffFrottement = -0.01f * this->surface;
-        Vecteur3D forceFrottement(velocite.getX() * coeffFrottement, velocite.getY() * coeffFrottement, 0.0f);
-
-        velocite = velocite + ((forceFrottement * inverseMasse + forceGravite * inverseMasse) * temps);
+//        float coeffFrottement = -0.01f * this->surface;
+//        Vecteur3D forceFrottement(velocite.getX() * coeffFrottement, velocite.getY() * coeffFrottement, 0.0f);
+        velocite += forceRes * inverseMasse * temps;
+//        velocite = velocite + ((forceFrottement * inverseMasse + forceGravite * inverseMasse) * temps);
     }
     // Sinon, la particule reste immobile (inverseMasse == 0).
 }
