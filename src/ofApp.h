@@ -26,7 +26,7 @@ public:
 	void gotMessage(ofMessage msg);
 
 public:
-	ofBoxPrimitive box;
+
 	ofSpherePrimitive sphere;
 	ofRectangle customSquare;
 	float timeKeyPressed = 0.0f;
@@ -41,6 +41,8 @@ public:
 	ofxToggle balleButton;
 	ofxToggle bdfButton;
 	ofxToggle laserButton;
+
+	ofRectangle ground;
 
 	//Forces
 

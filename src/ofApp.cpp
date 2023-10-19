@@ -22,17 +22,20 @@ void ofApp::setup() {
 	// Cr�ez une cible et ajoutez-la � votre conteneur de particules
 	Particule cible(1, 500, 50, 0.01f, Vecteur3D(400, 100), Vecteur3D(0, 0));
 	particules.push_back(cible);
+
+	ground.set(0, 850, 2000, 140);
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
+	//On supprime les forces des particules
 	for (auto& particule : particules) {
 		particule.clearForce();
 	}
 
 	for (auto& particule : particules) {
 		registreForce.add(&particule, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
-		registreForce.add(&particule, new ForceFrictionCinetique(0.0f, 0.0f));
+		registreForce.add(&particule, new ForceFrictionCinetique(0.000001f * particule.getSurface(), 0.0f));
 	}
 
 	registreForce.updateForces(ofGetLastFrameTime());
@@ -77,13 +80,27 @@ void ofApp::update() {
 
 	// Mettez � jour d'autres �l�ments de la simulation si n�cessaire
 	sphere.setPosition(sphere.getGlobalPosition() + Vecteur3D(1, 0).vec3());
+	for (auto& particule : particules)
+	{
+		if (particule.getPosition().getY() + particule.getSurface() > 850)
+		{
+			std::cout << particule.getVelocite().getY() << std::endl;
+			particule.setPosition(Vecteur3D(particule.getPosition().getX(), 850 - particule.getSurface()));
+			particule.setVelocite(Vecteur3D(particule.getVelocite().getX(), -particule.getVelocite().getY()*0.5f));
+			if (std::fabsl(particule.getVelocite().getY()) < 150.0f)
+			{
+				particule.setVelocite(Vecteur3D(particule.getVelocite().getX(), 0));
+			}
+		}
+
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
 	//desin du menu
 	gui.draw();
-
+	ofDrawRectangle(ground);
 	// Dessine les particules
 	for (const auto& particule : particules) {
 		// Dessinez chaque particule � sa position actuelle
