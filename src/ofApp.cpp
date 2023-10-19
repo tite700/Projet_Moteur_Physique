@@ -19,7 +19,7 @@ void ofApp::setup() {
 	gui.add(bdfButton.setup("Boule de feu", false));
 	//gui.add(laserButton.setup("laser", false));
 
-	// Créez une cible et ajoutez-la à votre conteneur de particules
+	// Crï¿½ez une cible et ajoutez-la ï¿½ votre conteneur de particules
 	Particule cible(1, 500, 50, 0.01f, Vecteur3D(400, 100), Vecteur3D(0, 0));
 	particules.push_back(cible);
 }
@@ -38,7 +38,7 @@ void ofApp::update() {
 	registreForce.updateForces(ofGetLastFrameTime());
 
 	std::cout << particules.size() << std::endl;
-	//check collision for each particule in between them in particules
+	// On vï¿½rifie les collisions pour chaque paire de particules dans la scï¿½ne (stockï¿½es dans le vecteur particules)
 	for (int i = 0; i < particules.size(); i++) {
 		for (int j = i + 1; j < particules.size(); j++) {
 			if (Particule::collision(&particules[i], &particules[j])) {
@@ -62,12 +62,12 @@ void ofApp::update() {
 		couleur = 0;
 	}
 
-	// Mettez à jour la simulation à chaque frame
+	// Mettez ï¿½ jour la simulation ï¿½ chaque frame
 	for (auto& particule : particules) {
-		particule.integrer(ofGetLastFrameTime()); // Utilisez la durée de la frame pour l'intégration		
+		particule.integrer(ofGetLastFrameTime()); // Utilisez la durï¿½e de la frame pour l'intï¿½gration		
 	}
 
-	// Vérifiez si la souris est entrée dans la zone du carré
+	// Vï¿½rifiez si la souris est entrï¿½e dans la zone du carrï¿½
 	if (customSquare.inside(mouseX, mouseY)) {
 		mouseInSquare = true;
 	}
@@ -75,7 +75,7 @@ void ofApp::update() {
 		mouseInSquare = false;
 	}
 
-	// Mettez à jour d'autres éléments de la simulation si nécessaire
+	// Mettez ï¿½ jour d'autres ï¿½lï¿½ments de la simulation si nï¿½cessaire
 	sphere.setPosition(sphere.getGlobalPosition() + Vecteur3D(1, 0).vec3());
 }
 
@@ -86,8 +86,8 @@ void ofApp::draw() {
 
 	// Dessine les particules
 	for (const auto& particule : particules) {
-		// Dessinez chaque particule à sa position actuelle
-		// Positionnez la boîte à la position de la particule
+		// Dessinez chaque particule ï¿½ sa position actuelle
+		// Positionnez la boï¿½te ï¿½ la position de la particule
 		ofSetColor(255, 255 - particule.getCouleur(), 255 - particule.getCouleur());
 		sphere.set(particule.getSurface(), 32);
 		sphere.setPosition(Vecteur3D(particule.getPosition().getX(), particule.getPosition().getY()).vec3());
@@ -95,7 +95,7 @@ void ofApp::draw() {
 		ofSetColor(255, 255, 255);
 	}
 
-	// Dessine d'autres éléments de la simulation 
+	// Dessine d'autres ï¿½lï¿½ments de la simulation 
 	ofSetColor(255, 255, 255);
 	ofNoFill();
 	ofDrawRectangle(325, 625, 140, 140); // Tete du lance particule
@@ -103,27 +103,27 @@ void ofApp::draw() {
 	ofDrawRectangle(390, 740, 10, 700); // Pied du lance particule
 
 
-	// Déclare les coordonnées du point de départ des particules qui vont être lancées
+	// Dï¿½clare les coordonnï¿½es du point de dï¿½part des particules qui vont ï¿½tre lancï¿½es
 	float x1 = 400;
 	float y1 = 700;
 
-	// Coordonnées de la position actuelle de la souris
+	// Coordonnï¿½es de la position actuelle de la souris
 	float x2 = mouseX;
 	float y2 = mouseY;
 
-	// Vérifiez si la souris est dans la zone du carré
+	// Vï¿½rifiez si la souris est dans la zone du carrï¿½
 	if (mouseInSquare) {
 		ofSetColor(255, 255, 255);
 		ofSetLineWidth(10);
 		if (slingshotActive == false) {
-			ofDrawBitmapString("CLIQUEZ POUR ARMER UNE PARTICULE ET TIRER !", 225, 600); // Affiche un message texte à l'écran
+			ofDrawBitmapString("CLIQUEZ POUR ARMER UNE PARTICULE ET TIRER !", 225, 600); // Affiche un message texte ï¿½ l'ï¿½cran
 		}
 	}
 	else {
 		ofSetLineWidth(3);
 	}
 
-	// Vérifiez si le bouton de la souris gauche est enfoncé et que le lance pierre est armé d'une particule
+	// Vï¿½rifiez si le bouton de la souris gauche est enfoncï¿½ et que le lance pierre est armï¿½ d'une particule
 	if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT) && slingshotActive == true) {
 		ofSetColor(255, 0, 0);
 		ofSetLineWidth(10);
@@ -132,9 +132,9 @@ void ofApp::draw() {
 		ofSetColor(255, 255 - couleur, 255 - couleur);
 		sphere.set(surface, 32);
 		sphere.setPosition(Vecteur3D(mouseX, mouseY).vec3());
-		sphere.draw(); // Dessine la particule (box) témoin pour l'utilisateur au niveau de la position de la souris
+		sphere.draw(); // Dessine la particule (box) tï¿½moin pour l'utilisateur au niveau de la position de la souris
 		ofSetColor(255, 255, 255);
-		ofDrawBitmapString("RELACHER POUR LANCER LA PARTICULE", 250, 600); // Affiche un message texte à l'écran
+		ofDrawBitmapString("RELACHER POUR LANCER LA PARTICULE", 250, 600); // Affiche un message texte ï¿½ l'ï¿½cran
 
 	}
 	if (slingshotActive == false) {
@@ -177,24 +177,24 @@ void ofApp::mousePressed(int x, int y, int button) {
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button) {
 	if (button == OF_MOUSE_BUTTON_LEFT && slingshotActive == true) {
-		// Calculez la distance entre le point de départ et le point de relâchement
+		// Calculez la distance entre le point de dï¿½part et le point de relï¿½chement
 		float distance = ofDist(x, y, 400, 700);
 
-		// Calculez l'intensité de la vélocité en fonction de la distance
-		float velocityMagnitude = distance * 0.006; // Ajustez le facteur à votre convenance
+		// Calculez l'intensitï¿½ de la vï¿½locitï¿½ en fonction de la distance
+		float velocityMagnitude = distance * 0.006; // Ajustez le facteur ï¿½ votre convenance
 
-		// Calculez la direction de la vélocité (unit vector)
+		// Calculez la direction de la vï¿½locitï¿½ (unit vector)
 		Vecteur3D direction(400 - x, 700 - y);
 		direction.normalisation();
 
-		// Créez une nouvelle particule avec la vélocité calculée
+		// Crï¿½ez une nouvelle particule avec la vï¿½locitï¿½ calculï¿½e
 		Vecteur3D position(x, y);
 		Vecteur3D velocity = direction * velocityMagnitude;
 
 		Particule nouvelleParticule(trainee, couleur, surface, 1 / masse, position, velocity);
 		particules.push_back(nouvelleParticule);
 
-		// Ajoutez la nouvelle particule à votre conteneur de particules
+		// Ajoutez la nouvelle particule ï¿½ votre conteneur de particules
 		slingshotActive = false;
 	}
 }
