@@ -3,28 +3,10 @@
 #include "../Particule.h"
 #include "../GraviteParticule.h"
 #include "../ForceFrictionCinetique.h"
-
-//--------------------------------------------------------------
-void ofApp::setup() {
-	// setup des elements du jeu
-	ofSetBackgroundColor(100);
-	sphere.setPosition(Vecteur3D(70, 700).vec3());
-	customSquare.set(350, 620, 140, 140);
-
-	//setup du menu 
-	gui.setup();
-	gui.add(surface.setup("Surface", 50, 10, 150));
-	gui.add(masse.setup("Masse", 2, 0.5, 5));
-	gui.add(balleButton.setup("Balle", false));
-	gui.add(bdfButton.setup("Boule de feu", false));
-	//gui.add(laserButton.setup("laser", false));
-
-	// Cr�ez une cible et ajoutez-la � votre conteneur de particules
-	Particule cible(1, 500, 50, 0.01f, Vecteur3D(400, 100), Vecteur3D(0, 0));
-	particules.push_back(cible);
-
-	ground.set(0, 850, 2000, 140);
-}
+#include "../ForceRessort.h"
+#include "../GenerateurForce.h"
+#include "../RegistreForce.h"
+#include "../ofMain.h"
 
 //--------------------------------------------------------------
 void ofApp::update() {

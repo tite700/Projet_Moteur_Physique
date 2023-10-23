@@ -31,6 +31,7 @@ public:
     Vecteur3D operator*= (float scalaire);
     Vecteur3D normalisation() const;
 
+
     // Méthodes
     float prodscal(const Vecteur3D& vect) const;
     Vecteur3D prodvect(const Vecteur3D& vect) const;
