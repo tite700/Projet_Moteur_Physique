@@ -60,7 +60,7 @@ public:
 private:
 	// Déclarez ici les variables nécessaires pour gérer la simulation
 	std::vector<Particule*> particules; // Un conteneur pour stocker les particules
-	Blob blob = Blob(10, 9, Vecteur3D(400, 400), 7.0, couleur, trainee);
+	Blob blob = Blob(10, 9, Vecteur3D(400, 400), 10.0, couleur, trainee);
 
 	Particule* balle = new Particule(0.01, 1, 10, 0.5, Vecteur3D(700, 300, 0), Vecteur3D(0, 0, 0));
 	Particule* accroche = new Particule(0.01, 1, 10, 1, Vecteur3D(700, 200, 0), Vecteur3D(0, 0, 0));

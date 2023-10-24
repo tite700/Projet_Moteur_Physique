@@ -28,13 +28,13 @@ Blob::Blob(float size, int nParticules, Vecteur3D position, float masse, float c
 
 std::vector<ForceRessort*> Blob::generateForces()
 {
-	float k = 10;
+	float k = 30;
 	std::vector<ForceRessort*> forces;
 	for (int i = 0; i < particules.size(); i++) {
-		ForceRessort* force = new ForceRessort(k, distance, distance * 4, particules[i], particules[(i + 1) % particules.size()]);
-		ForceRessort* force2 = new ForceRessort(k, distance, distance * 4, particules[(i + 1) % particules.size()], particules[i]);
-		ForceRessort* force3 = new ForceRessort(k, centerDistance, centerDistance * 4, particules[i], center);
-		ForceRessort* force4 = new ForceRessort(k, centerDistance, centerDistance * 4, center, particules[i]);
+		ForceRessort* force = new ForceRessort(k, distance, distance * 1.1, particules[i], particules[(i + 1) % particules.size()]);
+		ForceRessort* force2 = new ForceRessort(k, distance, distance * 1.1, particules[(i + 1) % particules.size()], particules[i]);
+		ForceRessort* force3 = new ForceRessort(k, centerDistance, centerDistance * 1.1, particules[i], center);
+		ForceRessort* force4 = new ForceRessort(k, centerDistance, centerDistance * 1.1, center, particules[i]);
 		forces.push_back(force);
 		forces.push_back(force2);
 		forces.push_back(force3);

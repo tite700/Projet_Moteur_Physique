@@ -55,9 +55,8 @@ void ofApp::setup() {
 
 	ground.set(0, 850, 2000, 140);
 
-	particules.push_back(balle);
-	particules.push_back(accroche);
-
+	//particules.push_back(balle);
+	//particules.push_back(accroche);
 }
 
 
@@ -66,13 +65,13 @@ void ofApp::update() {
 
 
 	for (auto& particule : particules) {
-		//registreForce.add(particule, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
-		//registreForce.add(particule, new ForceFrictionCinetique(0.1f * particule->getSurface(), 0.0f));
+		registreForce.add(particule, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
+		registreForce.add(particule, new ForceFrictionCinetique(0.0f * particule->getSurface(), 0.01f));
 	}
 	registreForce.add(balle, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
 	//registreForce.add(balle, new ForceCable(200, 0.6, balle, accroche));
-	registreForce.add(balle, new ForceRessort(1, 100, 1000, Vecteur3D(700, 200, 0)));
-	/*
+	registreForce.add(balle, new ForceRessort(10, 50, 1000, Vecteur3D(700, 200, 0)));
+	
 	std:vector<ForceRessort*> forces = blob.generateForces();
 	for (int count  = 0; count < blob.getParticules().size(); count++)
 	{
@@ -82,7 +81,7 @@ void ofApp::update() {
 		registreForce.add(blob.getCenter(), forces.at(count * 4 + 3));
 	}
 
-	*/
+	
 	registreForce.updateForces(ofGetLastFrameTime());
 
 	// on v�rifie les collisions pour chaque paire de particules dans la sc�ne (stock�es dans le vecteur particules)
@@ -214,20 +213,33 @@ void ofApp::draw() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
-
+	float x = 2000000;
+	if (key == OF_KEY_RIGHT) {
+		blob.getCenter()->addForce(Vecteur3D(x, 0));
+		for (auto& particule : blob.getParticules())
+		{
+			particule->addForce(Vecteur3D(x, 0));
+		}
+	}
+	if (key == OF_KEY_LEFT) {
+		blob.getCenter()->addForce(Vecteur3D(-x, 0));
+		for (auto& particule : blob.getParticules())
+		{
+			particule->addForce(Vecteur3D(-x, 0));
+		}
+	}
+	if (key == OF_KEY_UP) {
+		blob.getCenter()->addForce(Vecteur3D(0, -x));
+		for (auto& particule : blob.getParticules())
+		{
+			particule->addForce(Vecteur3D(0, -x));
+		}
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
-	if (key == OF_KEY_RIGHT) {
-		blob.getCenter()->addForce(Vecteur3D(2000, 0));
-	}
-	if (key == OF_KEY_LEFT) {
-		blob.getCenter()->addForce(Vecteur3D(-2000, 0));
-	}
-	if (key == OF_KEY_UP) {
-		blob.getCenter()->addForce(Vecteur3D(0, -2000));
-	}
+
 
 }
 

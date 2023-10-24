@@ -39,6 +39,10 @@ void ForceRessort::updateForce(Particule* particule, float duration)
     }
     
     float deformation = distance - l0;
+    if (abs(deformation) < 5)
+    {
+		return;
+	}
     Vecteur3D force(0, 0, 0);
 
     if (deformation > limiteElasticite) {
@@ -47,9 +51,11 @@ void ForceRessort::updateForce(Particule* particule, float duration)
             particule->addForce(direction * -magnitude);
             float dirVitesse = particule->getVelocite().prodscal(direction);
             //particule1->setVelocite(particule->getVelocite() - direction * dirVitesse);
+            deformation = limiteElasticite;
     }
-
-        force = direction * (-k * deformation);
+        force = direction * (-k * deformation) - 0.95 * particule->getVelocite().prodscal(direction) * direction;
+        force = force * 0.5;
+        
 
 
 
