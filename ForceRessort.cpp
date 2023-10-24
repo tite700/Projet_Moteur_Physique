@@ -22,34 +22,38 @@ ForceRessort::ForceRessort(float k, float l0, float limiteElasticite, Particule*
 
 void ForceRessort::updateForce(Particule* particule, float duration)
 {
-    Vecteur3D force;
+    Vecteur3D direction;
+    float distance;
 
     if (particule1 != nullptr && particule2 != nullptr) {
         // Cas d'un ressort reliant deux particules
-        force = particule1->getPosition() - particule2->getPosition(); // Utilisez les deux particules pour la direction
+        direction = particule1->getPosition() - particule2->getPosition(); // Utilisez les deux particules pour la direction
+        distance = direction.norme();
+        direction = direction.normalisation();
     }
     else {
         // Cas d'un ressort reliant une particule à une masse fixe
-        force = particule->getPosition() - origine; // Utilisez l'origine comme point de fixation
+        direction = particule->getPosition() - origine; // Utilisez l'origine comme point de fixation
+        distance = direction.norme();
+        direction = direction.normalisation();
     }
-
-    float magnitude = force.norme();
-    float deformation = magnitude - l0;
+    
+    float deformation = distance - l0;
+    Vecteur3D force(0, 0, 0);
 
     if (deformation > limiteElasticite) {
-        magnitude = limiteElasticite;
+            direction = direction.normalisation();
+            float magnitude = particule->getForce().prodscal(direction);
+            particule->addForce(direction * -magnitude);
+            float dirVitesse = particule->getVelocite().prodscal(direction);
+            //particule1->setVelocite(particule->getVelocite() - direction * dirVitesse);
     }
 
-    magnitude *= k;
+        force = direction * (-k * deformation);
 
-    force.normalisation();
-    force *= -magnitude;
 
-    if (particule1 != nullptr) {
-        particule1->addForce(force); 
-    }
-    if (particule2 != nullptr) {
-        Vecteur3D nullvect = Vecteur3D();
-        particule2->addForce(nullvect-force);
-    }
+
+    particule->addForce(force); 
+
+
 }

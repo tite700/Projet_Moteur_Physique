@@ -49,18 +49,9 @@ void Particule::integrer(float temps) {
     if (inverseMasse != 0.0f) {
         // Mettre à jour la position et la vélocité en utilisant l'intégration d'Euler
         position = position + (velocite * temps);
-
-        // Mettre à jour la vélocité en fonction des forces appliquées
-
-        //Gravité
-//        Vecteur3D forceGravite(0.0f, 981.0f, 0.0f);
-        //Frotements
-//        float coeffFrottement = -0.01f * this->surface;
-//        Vecteur3D forceFrottement(velocite.getX() * coeffFrottement, velocite.getY() * coeffFrottement, 0.0f);
         velocite += forceRes * inverseMasse * temps;
-//        velocite = velocite + ((forceFrottement * inverseMasse + forceGravite * inverseMasse) * temps);
+
     }
-    // Sinon, la particule reste immobile (inverseMasse == 0).
 }
 
 
@@ -114,8 +105,6 @@ void Particule::resolveCollision(Particule* p1, Particule* p2)
 {
     //Séparation des particules
     float d = (p1->getSurface() + p2->getSurface()) - (p1->getPosition() - p2->getPosition()).norme();
-    std::cout << "d : " << d << std::endl;
-    std::cout << "p1 -p2 : " << p1->getSurface() << std::endl;
     Vecteur3D n = (p1->getPosition() - p2->getPosition()).normalisation();
     float pos1 = p2->getMass() / (p1->getMass() + p2->getMass()) * d;
     float pos2 = p1->getMass() / (p1->getMass() + p2->getMass()) * d;

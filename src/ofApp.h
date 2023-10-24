@@ -5,6 +5,8 @@
 #include "../Particule.h"
 #include "../RegistreForce.h"
 #include "../ForceRessort.h"
+#include "../Blob.h"
+#include "../ForceImpultion.h"
 
 #include "ofxGui.h"
 
@@ -12,55 +14,7 @@ class ofApp : public ofBaseApp {
 
 public:
 	//--------------------------------------------------------------
-	void setup() {
-		// setup des elements du jeu
-		ofSetBackgroundColor(100);
-		sphere.setPosition(Vecteur3D(70, 700).vec3());
-		customSquare.set(350, 620, 140, 140);
-
-		//Creer un amas de particules qui forme un blop de particules
-		float espace = 10;
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-
-				float x = 200 + i * espace;
-				float y = 400 + j * espace;
-
-				Particule nouvelleParticule(trainee, couleur, 10, 1.0 / 2.0, Vecteur3D(x, y, 0), Vecteur3D());
-				particules.push_back(nouvelleParticule);
-			}
-		}
-
-		for (int i = 0; i < particules.size(); i++) {
-			for (int j = i + 1; j < particules.size(); j++) {
-				float k = 0.1; // Constante de raideur
-				float l0 = espace; // Longueur de repos entre particules
-				float limiteElasticite = 10.0; // Limite d'élasticité
-
-				// Ajouter la force de ressort entre les particules i et j
-				ForceRessort* forceRessort = new ForceRessort(k, l0, limiteElasticite, &particules[i], &particules[j]);
-				registreForce.add(&particules[i], forceRessort);
-				registreForce.add(&particules[j], forceRessort);
-
-			}
-		}
-
-		//setup du menu 
-		gui.setup();
-		gui.add(surface.setup("Surface", 50, 10, 150));
-		gui.add(masse.setup("Masse", 2, 0.5, 5));
-		gui.add(balleButton.setup("Balle", false));
-		gui.add(bdfButton.setup("Boule de feu", false));
-		//gui.add(laserButton.setup("laser", false));
-
-		// Cr�ez une cible et ajoutez-la � votre conteneur de particules
-		Particule cible(1, 500, 50, 0.01f, Vecteur3D(400, 100), Vecteur3D(0, 0));
-		//particules.push_back(cible);
-
-		ground.set(0, 850, 2000, 140);
-
-
-	}
+	void setup();
 	void update();
 	void draw();
 
@@ -98,9 +52,17 @@ public:
 	//Forces
 
 	RegistreForce registreForce;
+	float espace = 12; // Espace entre les particules
+	float k = 0.0001; // Constante de raideur
+	float l0 = 12; // Longueur de repos entre particules
+	float limiteElasticite = 10.0;; // Limite d'élasticité
 
 private:
 	// Déclarez ici les variables nécessaires pour gérer la simulation
-	std::vector<Particule> particules; // Un conteneur pour stocker les particules
+	std::vector<Particule*> particules; // Un conteneur pour stocker les particules
+	Blob blob = Blob(10, 9, Vecteur3D(400, 400), 7.0, couleur, trainee);
+
+	Particule* balle = new Particule(0.01, 1, 10, 0.5, Vecteur3D(700, 300, 0), Vecteur3D(0, 0, 0));
+	Particule* accroche = new Particule(0.01, 1, 10, 1, Vecteur3D(700, 200, 0), Vecteur3D(0, 0, 0));
 };
 

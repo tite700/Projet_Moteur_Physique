@@ -104,7 +104,11 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Blob.cpp" />
+    <ClCompile Include="ForceCable.cpp" />
     <ClCompile Include="ForceFrictionCinetique.cpp" />
+    <ClCompile Include="ForceFrictionStatic.cpp" />
+    <ClCompile Include="ForceImpultion.cpp" />
     <ClCompile Include="ForceRessort.cpp" />
     <ClCompile Include="GenerateurForce.cpp" />
     <ClCompile Include="GraviteParticule.cpp" />
@@ -122,10 +126,15 @@
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp" />
+    <ClCompile Include="UnitTest.cpp" />
     <ClCompile Include="Vecteur3D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Blob.h" />
+    <ClInclude Include="ForceCable.h" />
     <ClInclude Include="ForceFrictionCinetique.h" />
+    <ClInclude Include="ForceFrictionStatic.h" />
+    <ClInclude Include="ForceImpultion.h" />
     <ClInclude Include="ForceRessort.h" />
     <ClInclude Include="GenerateurForce.h" />
     <ClInclude Include="GraviteParticule.h" />
@@ -144,6 +153,7 @@
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h" />
+    <ClInclude Include="UnitTest.h" />
     <ClInclude Include="Vecteur3D.h" />
   </ItemGroup>
   <ItemGroup>

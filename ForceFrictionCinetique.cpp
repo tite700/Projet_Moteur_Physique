@@ -16,13 +16,11 @@ void ForceFrictionCinetique::updateForce(Particule* particule, float duration)
 	Vecteur3D force;
 	force = particule->getVelocite();
 
-	force.normalisation();
+	force = force.normalisation();
 	force *= -1;
 
-	force *= k1;
-	force *= particule->getVitesse();
 
-	force += force.norme() * k2 * particule->getVitesse() * particule->getVitesse();
+	force *= (k1 * particule->getVitesse()) + (k2 * particule->getVitesse() * particule->getVitesse());
 
 	particule->addForce(force);
 }

@@ -6,29 +6,91 @@
 #include "../ForceRessort.h"
 #include "../GenerateurForce.h"
 #include "../RegistreForce.h"
+#include "../ForceCable.h"
 #include "../ofMain.h"
+
+void ofApp::setup() {
+	// setup des elements du jeu
+	ofSetBackgroundColor(100);
+	sphere.setPosition(Vecteur3D(70, 700).vec3());
+	customSquare.set(350, 620, 140, 140);
+
+	//Creer un amas de particules qui forme un blop de particules
+/*
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+
+				float x = 400 + i * espace;
+				float y = 400 + j * espace;
+
+				Particule nouvelleParticule(trainee, couleur, 10, 1.0 / 2.0, Vecteur3D(x, y, 0), Vecteur3D());
+				particules.push_back(nouvelleParticule);
+
+			}
+		}
+
+		for (int i = 0; i < particules.size(); i++) {
+			for (int j = 0; j < particules.size(); j++) {
+				if (i != j) {
+					distances.push_back((particules[i].getPosition() - particules[j].getPosition()).norme());
+				}
+			}
+		}
+
+*/
+
+	for (auto& particule : blob.getParticules()) {
+		particules.push_back(particule);
+	}
+	particules.push_back(blob.getCenter());
+
+
+	//setup du menu 
+	gui.setup();
+	gui.add(surface.setup("Surface", 50, 10, 150));
+	gui.add(masse.setup("Masse", 2, 0.5, 5));
+	gui.add(balleButton.setup("Balle", false));
+	gui.add(bdfButton.setup("Boule de feu", false));
+	//gui.add(laserButton.setup("laser", false));
+
+	ground.set(0, 850, 2000, 140);
+
+	particules.push_back(balle);
+	particules.push_back(accroche);
+
+}
+
 
 //--------------------------------------------------------------
 void ofApp::update() {
-	//On supprime les forces des particules
-	for (auto& particule : particules) {
-		particule.clearForce();
-	}
+
 
 	for (auto& particule : particules) {
-		registreForce.add(&particule, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
-		registreForce.add(&particule, new ForceFrictionCinetique(0.000001f * particule.getSurface(), 0.0f));
+		//registreForce.add(particule, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
+		//registreForce.add(particule, new ForceFrictionCinetique(0.1f * particule->getSurface(), 0.0f));
+	}
+	registreForce.add(balle, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
+	//registreForce.add(balle, new ForceCable(200, 0.6, balle, accroche));
+	registreForce.add(balle, new ForceRessort(1, 100, 1000, Vecteur3D(700, 200, 0)));
+	/*
+	std:vector<ForceRessort*> forces = blob.generateForces();
+	for (int count  = 0; count < blob.getParticules().size(); count++)
+	{
+		registreForce.add(blob.getParticules()[count], forces.at(count * 4));
+		registreForce.add(blob.getParticules()[(count + 1) % blob.getParticules().size()], forces.at(count * 4 +1));
+		registreForce.add(blob.getParticules()[count], forces.at(count * 4 + 2));
+		registreForce.add(blob.getCenter(), forces.at(count * 4 + 3));
 	}
 
+	*/
 	registreForce.updateForces(ofGetLastFrameTime());
 
-	std::cout << particules.size() << std::endl;
-	// On v�rifie les collisions pour chaque paire de particules dans la sc�ne (stock�es dans le vecteur particules)
+	// on v�rifie les collisions pour chaque paire de particules dans la sc�ne (stock�es dans le vecteur particules)
+	
 	for (int i = 0; i < particules.size(); i++) {
 		for (int j = i + 1; j < particules.size(); j++) {
-			if (Particule::collision(&particules[i], &particules[j])) {
-				std::cout << "collision" << std::endl;
-				Particule::resolveCollision(&particules[i], &particules[j]);
+			if (Particule::collision(particules[i], particules[j])) {
+				Particule::resolveCollision(particules[i], particules[j]);
 			}
 		}
 	}
@@ -49,7 +111,7 @@ void ofApp::update() {
 
 	// Mettez � jour la simulation � chaque frame
 	for (auto& particule : particules) {
-		particule.integrer(ofGetLastFrameTime()); // Utilisez la dur�e de la frame pour l'int�gration		
+		particule->integrer(ofGetLastFrameTime()); // Utilisez la dur�e de la frame pour l'int�gration		
 	}
 
 	// V�rifiez si la souris est entr�e dans la zone du carr�
@@ -64,18 +126,23 @@ void ofApp::update() {
 	sphere.setPosition(sphere.getGlobalPosition() + Vecteur3D(1, 0).vec3());
 	for (auto& particule : particules)
 	{
-		if (particule.getPosition().getY() + particule.getSurface() > 850)
+		if (particule->getPosition().getY() + particule->getSurface() > 850)
 		{
-			std::cout << particule.getVelocite().getY() << std::endl;
-			particule.setPosition(Vecteur3D(particule.getPosition().getX(), 850 - particule.getSurface()));
-			particule.setVelocite(Vecteur3D(particule.getVelocite().getX(), -particule.getVelocite().getY()*0.5f));
-			if (std::fabsl(particule.getVelocite().getY()) < 150.0f)
+			particule->setPosition(Vecteur3D(particule->getPosition().getX(), 850 - particule->getSurface()));
+			particule->setVelocite(Vecteur3D(particule->getVelocite().getX(), -particule->getVelocite().getY()*0.5f));
+			if (std::fabsl(particule->getVelocite().getY()) < 150.0f)
 			{
-				particule.setVelocite(Vecteur3D(particule.getVelocite().getX(), 0));
+				particule->setVelocite(Vecteur3D(particule->getVelocite().getX(), 0));
 			}
 		}
 
 	}
+	//On supprime les forces des particules
+	for (auto& particule : particules) {
+		particule->clearForce();
+	}
+
+
 }
 
 //--------------------------------------------------------------
@@ -87,9 +154,9 @@ void ofApp::draw() {
 	for (const auto& particule : particules) {
 		// Dessinez chaque particule � sa position actuelle
 		// Positionnez la bo�te � la position de la particule
-		ofSetColor(255, 255 - particule.getCouleur(), 255 - particule.getCouleur());
-		sphere.set(particule.getSurface(), 32);
-		sphere.setPosition(Vecteur3D(particule.getPosition().getX(), particule.getPosition().getY()).vec3());
+		ofSetColor(255, 255 - particule->getCouleur(), 255 - particule->getCouleur());
+		sphere.set(particule->getSurface(), 32);
+		sphere.setPosition(Vecteur3D(particule->getPosition().getX(), particule->getPosition().getY()).vec3());
 		sphere.draw();
 		ofSetColor(255, 255, 255);
 	}
@@ -152,6 +219,15 @@ void ofApp::keyPressed(int key) {
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
+	if (key == OF_KEY_RIGHT) {
+		blob.getCenter()->addForce(Vecteur3D(2000, 0));
+	}
+	if (key == OF_KEY_LEFT) {
+		blob.getCenter()->addForce(Vecteur3D(-2000, 0));
+	}
+	if (key == OF_KEY_UP) {
+		blob.getCenter()->addForce(Vecteur3D(0, -2000));
+	}
 
 }
 
@@ -190,7 +266,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
 		Vecteur3D position(x, y);
 		Vecteur3D velocity = direction * velocityMagnitude;
 
-		Particule nouvelleParticule(trainee, couleur, surface, 1 / masse, position, velocity);
+		Particule* nouvelleParticule = new Particule(trainee, couleur, surface, 1 / masse, position, velocity);
 		particules.push_back(nouvelleParticule);
 
 		// Ajoutez la nouvelle particule � votre conteneur de particules
