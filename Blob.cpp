@@ -28,7 +28,7 @@ Blob::Blob(float size, int nParticules, Vecteur3D position, float masse, float c
 
 std::vector<ForceRessort*> Blob::generateForces()
 {
-	float k = 30;
+	float k = 20;
 	float amortissement = 0.9;
 	std::vector<ForceRessort*> forces;
 	for (int i = 0; i < particules.size(); i++) {

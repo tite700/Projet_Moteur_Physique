@@ -7,6 +7,7 @@
 #include "../ForceRessort.h"
 #include "../Blob.h"
 #include "../ForceImpultion.h"
+#include "../ForceElastique.h"
 
 #include "ofxGui.h"
 
@@ -67,5 +68,13 @@ private:
 
 	Particule* balle2 = new Particule(0.01, 1, 10, 0.5, Vecteur3D(800, 400, 0), Vecteur3D(0, 0, 0));
 	Particule* accroche2 = new Particule(0.01, 1, 10, 1, Vecteur3D(800, 200, 0), Vecteur3D(0, 0, 0));
+
+	Particule* balle3 = new Particule(0.01, 1, 10, 0.5, Vecteur3D(910, 100, 0), Vecteur3D(0, 0, 0));
+	Particule* balle4 = new Particule(0.01, 1, 10, 0.5, Vecteur3D(900, 400, 0), Vecteur3D(0, 0, 0));
+
+	Particule* balle5 = new Particule(0.01, 1, 10, 0.5, Vecteur3D(1000, 400, 0), Vecteur3D(0, 0, 0));
+	Particule* accroche5 = new Particule(0.01, 1, 10, 1, Vecteur3D(1000, 200, 0), Vecteur3D(0, 0, 0));
+
+	Particule* bigParticule = new Particule(0.01, 1, 50, 0.0001, Vecteur3D(200, 800, 0), Vecteur3D(0, 0, 0));
 };
 
