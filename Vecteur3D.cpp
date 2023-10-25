@@ -69,6 +69,12 @@ Vecteur3D Vecteur3D::operator*=(float scalaire)
 	return *this;
 }
 
+bool Vecteur3D::operator==(const Vecteur3D& vect) const
+{
+    return (x == vect.x && y == vect.y && z == vect.z);
+}
+
+
 Vecteur3D Vecteur3D::normalisation() const
 {
     float n = norme();
@@ -77,6 +83,7 @@ Vecteur3D Vecteur3D::normalisation() const
     }
     return Vecteur3D();
 }
+
 
 // Méthodes
 float Vecteur3D::prodscal(const Vecteur3D& vect) const
@@ -108,3 +115,9 @@ Vecteur3D operator*(float scalaire, const Vecteur3D& vect)
 {
     return Vecteur3D(vect.getX() * scalaire, vect.getY() * scalaire, vect.getZ() * scalaire);
 }
+
+//bool operator==(const Vecteur3D& vect1, const Vecteur3D& vect2)
+//{
+//    return (vect1.getX() == vect2.getX() && vect1.getY() == vect2.getY() && vect1.getZ() == vect2.getZ());
+//}
+//

@@ -29,6 +29,7 @@ public:
     Vecteur3D operator+= (const Vecteur3D& vect);
     Vecteur3D operator-= (const Vecteur3D& vect);
     Vecteur3D operator*= (float scalaire);
+    bool operator==(const Vecteur3D& vect) const;
     Vecteur3D normalisation() const;
 
 
@@ -43,4 +44,7 @@ public:
 std::ostream& operator<<(std::ostream& os, const Vecteur3D& vect);
 
 Vecteur3D operator*(float scalaire, const Vecteur3D& vect);
+
+//bool operator==(const Vecteur3D& vect1, const Vecteur3D& vect2);
+
 

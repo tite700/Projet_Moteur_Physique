@@ -8,6 +8,7 @@
 #include "../Blob.h"
 #include "../ForceImpultion.h"
 #include "../ForceElastique.h"
+#include "../UnitTest.h"
 
 #include "ofxGui.h"
 
@@ -59,6 +60,9 @@ public:
 	float limiteElasticite = 10.0;; // Limite d'élasticité
 
 private:
+
+	void runUnitTests();
+
 	// Déclarez ici les variables nécessaires pour gérer la simulation
 	std::vector<Particule*> particules; // Un conteneur pour stocker les particules
 	Blob blob = Blob(10, 9, Vecteur3D(400, 400), 10.0, couleur, trainee);

@@ -8,6 +8,7 @@
 #include "../RegistreForce.h"
 #include "../ForceCable.h"
 #include "../ofMain.h"
+#include "../UnitTest.cpp"
 
 void ofApp::setup() {
 	// setup des elements du jeu
@@ -41,6 +42,8 @@ void ofApp::setup() {
 	particules.push_back(balle5);
 	particules.push_back(accroche5);
 	particules.push_back(bigParticule);
+
+	runUnitTests();
 }
 
 
@@ -248,6 +251,12 @@ void ofApp::keyPressed(int key) {
 		}
 	}
 }
+
+void ofApp::runUnitTests() {
+	testConstructors();
+	testOperations();
+	testMethods();
+}	
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
