@@ -49,9 +49,8 @@ void Particule::integrer(float temps) {
     float dt = min(temps, 0.027f);
     if (inverseMasse != 0.0f) {
         // Mettre à jour la position et la vélocité en utilisant l'intégration d'Euler
-        std::cout << temps << std::endl;
-
         position = position + (velocite * dt);
+        //Limitation des forces subies par la particule
         if (forceRes.norme() > 20000)
         {
             forceRes = forceRes.normalisation() * 20000;
@@ -142,8 +141,8 @@ void Particule::resolveCollision(Particule* p1, Particule* p2)
     float v2t = p2->getVelocite().prodscal(tangent);
 
     //Calcul des nouvelles vitesses
-    float v2nPrime = (v2n * (p1->getMass() - p2->getMass()) + 2 * p2->getMass() * v1n) / (p1->getMass() + p2->getMass());
-    float v1nPrime = (v1n * (p2->getMass() - p1->getMass()) + 2 * p1->getMass() * v2n) / (p1->getMass() + p2->getMass());
+    float v1nPrime = (v1n * (p1->getMass() - p2->getMass()) + 2 * p2->getMass() * v2n) / (p1->getMass() + p2->getMass());
+    float v2nPrime = (v2n * (p2->getMass() - p1->getMass()) + 2 * p1->getMass() * v1n) / (p1->getMass() + p2->getMass());
 
     //Mise à jour des vitesses
     p1->setVelocite(normal * v1nPrime + tangent * v1t);

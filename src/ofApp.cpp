@@ -38,27 +38,39 @@ void ofApp::setup() {
 	particules.push_back(accroche2);
 	particules.push_back(balle3);
 	particules.push_back(balle4);
+	particules.push_back(balle5);
+	particules.push_back(accroche5);
+	particules.push_back(bigParticule);
 }
 
 
 //--------------------------------------------------------------
 void ofApp::update() {
 
+	//Ressort
 	registreForce.add(balle1, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
 	registreForce.add(balle1, new ForceRessort(2, 100, 1000, balle1, accroche1, 0.2));
 
+	//Cable
 	registreForce.add(balle2, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
 	registreForce.add(balle2, new ForceCable(300, 0.0f, balle2, accroche2));
-
-	registreForce.add(balle3, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
-	balle3->addVelocite(Vecteur3D(0, -20.0f, 0));
-
-	registreForce.add(balle4, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
-	balle4->addVelocite(Vecteur3D(0, 20.0f, 0));
-
-
-
+	std::cout << "Vitesse : " << balle2->getVitesse() << std::endl;
+	std::cout << "Force : " << balle2->getForce() << std::endl;
 	
+	//Collision
+	registreForce.add(balle3, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
+	registreForce.add(balle4, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
+
+	//Elastique
+	registreForce.add(balle5, new ForceElastique(400, 2, balle5, accroche5, 0.2));
+	registreForce.add(balle5, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
+
+
+	//Big particule
+	registreForce.add(bigParticule, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
+
+	//Blob
+
 	std:vector<ForceRessort*> forces = blob.generateForces();
 	for (int count  = 0; count < blob.getParticules().size(); count++)
 	{
@@ -119,7 +131,7 @@ void ofApp::update() {
 		if (particule->getPosition().getY() + particule->getSurface() > 850)
 		{
 			particule->setPosition(Vecteur3D(particule->getPosition().getX(), 850 - particule->getSurface()));
-			particule->setVelocite(Vecteur3D(particule->getVelocite().getX(), -particule->getVelocite().getY()*0.5f));
+			particule->setVelocite(Vecteur3D(particule->getVelocite().getX(), -particule->getVelocite().getY()*0.7));
 			if (std::fabsl(particule->getVelocite().getY()) < 150.0f)
 			{
 				particule->setVelocite(Vecteur3D(particule->getVelocite().getX(), 0));
@@ -226,6 +238,13 @@ void ofApp::keyPressed(int key) {
 		for (auto& particule : blob.getParticules())
 		{
 			particule->setVelocite(Vecteur3D(0, -x));
+		}
+	}
+	if (key == OF_KEY_DOWN) {
+		blob.getCenter()->setVelocite(Vecteur3D(0, x));
+		for (auto& particule : blob.getParticules())
+		{
+			particule->setVelocite(Vecteur3D(0, x));
 		}
 	}
 }
