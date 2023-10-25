@@ -11,6 +11,10 @@ ForceCable::ForceCable(float distanceMax,float  e, Particule* particule1, Partic
 void ForceCable::updateForce(Particule* particule, float duration)
 {
 	float distance = (particule1->getPosition() - particule2->getPosition()).norme();
+	if (abs(distance - distanceMax) < 10)
+	{
+		return;
+	}
 	if (distance > distanceMax)
 	{
 		Vecteur3D direction = particule2->getPosition() - particule1->getPosition();
