@@ -67,5 +67,9 @@ private:
 
 	Particule* balle2 = new Particule(0.01, 1, 10, 0.5, Vecteur3D(800, 400, 0), Vecteur3D(0, 0, 0));
 	Particule* accroche2 = new Particule(0.01, 1, 10, 1, Vecteur3D(800, 200, 0), Vecteur3D(0, 0, 0));
+
+	Particule* balle3 = new Particule(0.01, 1, 10, 0.5, Vecteur3D(850, 600, 0), Vecteur3D(0, 0, 0));
+	
+	Particule* balle4 = new Particule(0.01, 1, 10, 0.5, Vecteur3D(850, 300, 0), Vecteur3D(0, 0, 0));
 };
 

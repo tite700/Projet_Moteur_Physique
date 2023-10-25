@@ -36,6 +36,8 @@ void ofApp::setup() {
 	particules.push_back(accroche1);
 	particules.push_back(balle2);
 	particules.push_back(accroche2);
+	particules.push_back(balle3);
+	particules.push_back(balle4);
 }
 
 
@@ -47,6 +49,15 @@ void ofApp::update() {
 
 	registreForce.add(balle2, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
 	registreForce.add(balle2, new ForceCable(300, 0.0f, balle2, accroche2));
+
+	registreForce.add(balle3, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
+	balle3->addVelocite(Vecteur3D(0, -20.0f, 0));
+
+	registreForce.add(balle4, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
+	balle4->addVelocite(Vecteur3D(0, 20.0f, 0));
+
+
+
 	
 	std:vector<ForceRessort*> forces = blob.generateForces();
 	for (int count  = 0; count < blob.getParticules().size(); count++)
@@ -62,7 +73,7 @@ void ofApp::update() {
 	
 	registreForce.updateForces(ofGetLastFrameTime());
 
-	// on v�rifie les collisions pour chaque paire de particules dans la sc�ne (stock�es dans le vecteur particules)
+	// on v�rifie les collisions pour chaque paire de particules dans la sc�ne (stockees dans le vecteur particules)
 	
 	for (int i = 0; i < particules.size(); i++) {
 		for (int j = i + 1; j < particules.size(); j++) {
