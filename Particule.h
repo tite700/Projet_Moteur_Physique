@@ -24,6 +24,7 @@ public:
 
     void setPosition(const Vecteur3D& vect_position);
     void setVelocite(const Vecteur3D& vect_velocite);
+    void addVelocite(const Vecteur3D& vect_velocite);
 
     //Forces
     Vecteur3D getForce() const;

@@ -15,29 +15,6 @@ void ofApp::setup() {
 	sphere.setPosition(Vecteur3D(70, 700).vec3());
 	customSquare.set(350, 620, 140, 140);
 
-	//Creer un amas de particules qui forme un blop de particules
-/*
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-
-				float x = 400 + i * espace;
-				float y = 400 + j * espace;
-
-				Particule nouvelleParticule(trainee, couleur, 10, 1.0 / 2.0, Vecteur3D(x, y, 0), Vecteur3D());
-				particules.push_back(nouvelleParticule);
-
-			}
-		}
-
-		for (int i = 0; i < particules.size(); i++) {
-			for (int j = 0; j < particules.size(); j++) {
-				if (i != j) {
-					distances.push_back((particules[i].getPosition() - particules[j].getPosition()).norme());
-				}
-			}
-		}
-
-*/
 
 	for (auto& particule : blob.getParticules()) {
 		particules.push_back(particule);
@@ -46,31 +23,30 @@ void ofApp::setup() {
 
 
 	//setup du menu 
-	gui.setup();
-	gui.add(surface.setup("Surface", 50, 10, 150));
-	gui.add(masse.setup("Masse", 2, 0.5, 5));
-	gui.add(balleButton.setup("Balle", false));
-	gui.add(bdfButton.setup("Boule de feu", false));
+	//gui.setup();
+	//gui.add(surface.setup("Surface", 50, 10, 150));
+	//gui.add(masse.setup("Masse", 2, 0.5, 5));
+	//gui.add(balleButton.setup("Balle", false));
+	//gui.add(bdfButton.setup("Boule de feu", false));
 	//gui.add(laserButton.setup("laser", false));
 
 	ground.set(0, 850, 2000, 140);
 
-	//particules.push_back(balle);
-	//particules.push_back(accroche);
+	particules.push_back(balle1);
+	particules.push_back(accroche1);
+	particules.push_back(balle2);
+	particules.push_back(accroche2);
 }
 
 
 //--------------------------------------------------------------
 void ofApp::update() {
 
+	registreForce.add(balle1, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
+	registreForce.add(balle1, new ForceRessort(2, 100, 1000, balle1, accroche1, 0.2));
 
-	for (auto& particule : particules) {
-		registreForce.add(particule, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
-		registreForce.add(particule, new ForceFrictionCinetique(0.0f * particule->getSurface(), 0.01f));
-	}
-	registreForce.add(balle, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
-	//registreForce.add(balle, new ForceCable(200, 0.6, balle, accroche));
-	registreForce.add(balle, new ForceRessort(10, 50, 1000, Vecteur3D(700, 200, 0)));
+	registreForce.add(balle2, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
+	registreForce.add(balle2, new ForceCable(300, 0.0f, balle2, accroche2));
 	
 	std:vector<ForceRessort*> forces = blob.generateForces();
 	for (int count  = 0; count < blob.getParticules().size(); count++)
@@ -79,6 +55,8 @@ void ofApp::update() {
 		registreForce.add(blob.getParticules()[(count + 1) % blob.getParticules().size()], forces.at(count * 4 +1));
 		registreForce.add(blob.getParticules()[count], forces.at(count * 4 + 2));
 		registreForce.add(blob.getCenter(), forces.at(count * 4 + 3));
+		registreForce.add(blob.getParticules()[count], new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
+		registreForce.add(blob.getParticules()[count], new ForceFrictionCinetique(0.001f * blob.getParticules()[count]->getSurface(), 0.01f));
 	}
 
 	
@@ -114,15 +92,17 @@ void ofApp::update() {
 	}
 
 	// V�rifiez si la souris est entr�e dans la zone du carr�
-	if (customSquare.inside(mouseX, mouseY)) {
-		mouseInSquare = true;
-	}
-	else {
-		mouseInSquare = false;
-	}
+	//if (customSquare.inside(mouseX, mouseY)) {
+	//	mouseInSquare = true;
+	//}
+	//else {
+	//	mouseInSquare = false;
+	//}
 
 	// Mettez � jour d'autres �l�ments de la simulation si n�cessaire
-	sphere.setPosition(sphere.getGlobalPosition() + Vecteur3D(1, 0).vec3());
+	//sphere.setPosition(sphere.getGlobalPosition() + Vecteur3D(1, 0).vec3());
+
+	//Collision avec le sol
 	for (auto& particule : particules)
 	{
 		if (particule->getPosition().getY() + particule->getSurface() > 850)
@@ -137,6 +117,8 @@ void ofApp::update() {
 
 	}
 	//On supprime les forces des particules
+
+
 	for (auto& particule : particules) {
 		particule->clearForce();
 	}
@@ -147,7 +129,7 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw() {
 	//desin du menu
-	gui.draw();
+	//gui.draw();
 	ofDrawRectangle(ground);
 	// Dessine les particules
 	for (const auto& particule : particules) {
@@ -160,79 +142,79 @@ void ofApp::draw() {
 		ofSetColor(255, 255, 255);
 	}
 
-	// Dessine d'autres �l�ments de la simulation 
-	ofSetColor(255, 255, 255);
-	ofNoFill();
-	ofDrawRectangle(325, 625, 140, 140); // Tete du lance particule
-	ofFill();
-	ofDrawRectangle(390, 740, 10, 700); // Pied du lance particule
+	//// Dessine d'autres �l�ments de la simulation 
+	//ofSetColor(255, 255, 255);
+	//ofNoFill();
+	//ofDrawRectangle(325, 625, 140, 140); // Tete du lance particule
+	//ofFill();
+	//ofDrawRectangle(390, 740, 10, 700); // Pied du lance particule
 
 
-	// D�clare les coordonn�es du point de d�part des particules qui vont �tre lanc�es
-	float x1 = 400;
-	float y1 = 700;
+	//// D�clare les coordonn�es du point de d�part des particules qui vont �tre lanc�es
+	//float x1 = 400;
+	//float y1 = 700;
 
-	// Coordonn�es de la position actuelle de la souris
-	float x2 = mouseX;
-	float y2 = mouseY;
+	//// Coordonn�es de la position actuelle de la souris
+	//float x2 = mouseX;
+	//float y2 = mouseY;
 
-	// V�rifiez si la souris est dans la zone du carr�
-	if (mouseInSquare) {
-		ofSetColor(255, 255, 255);
-		ofSetLineWidth(10);
-		if (slingshotActive == false) {
-			ofDrawBitmapString("CLIQUEZ POUR ARMER UNE PARTICULE ET TIRER !", 225, 600); // Affiche un message texte � l'�cran
-		}
-	}
-	else {
-		ofSetLineWidth(3);
-	}
+	//// V�rifiez si la souris est dans la zone du carr�
+	//if (mouseInSquare) {
+	//	ofSetColor(255, 255, 255);
+	//	ofSetLineWidth(10);
+	//	if (slingshotActive == false) {
+	//		ofDrawBitmapString("CLIQUEZ POUR ARMER UNE PARTICULE ET TIRER !", 225, 600); // Affiche un message texte � l'�cran
+	//	}
+	//}
+	//else {
+	//	ofSetLineWidth(3);
+	//}
 
-	// V�rifiez si le bouton de la souris gauche est enfonc� et que le lance pierre est arm� d'une particule
-	if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT) && slingshotActive == true) {
-		ofSetColor(255, 0, 0);
-		ofSetLineWidth(10);
-		ofDrawLine(x1, y1, x2, y2); // Dessinez la ligne du lance particule
+	//// V�rifiez si le bouton de la souris gauche est enfonc� et que le lance pierre est arm� d'une particule
+	//if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT) && slingshotActive == true) {
+	//	ofSetColor(255, 0, 0);
+	//	ofSetLineWidth(10);
+	//	ofDrawLine(x1, y1, x2, y2); // Dessinez la ligne du lance particule
 
-		ofSetColor(255, 255 - couleur, 255 - couleur);
-		sphere.set(surface, 32);
-		sphere.setPosition(Vecteur3D(mouseX, mouseY).vec3());
-		sphere.draw(); // Dessine la particule (box) t�moin pour l'utilisateur au niveau de la position de la souris
-		ofSetColor(255, 255, 255);
-		ofDrawBitmapString("RELACHER POUR LANCER LA PARTICULE", 250, 600); // Affiche un message texte � l'�cran
+	//	ofSetColor(255, 255 - couleur, 255 - couleur);
+	//	sphere.set(surface, 32);
+	//	sphere.setPosition(Vecteur3D(mouseX, mouseY).vec3());
+	//	sphere.draw(); // Dessine la particule (box) t�moin pour l'utilisateur au niveau de la position de la souris
+	//	ofSetColor(255, 255, 255);
+	//	ofDrawBitmapString("RELACHER POUR LANCER LA PARTICULE", 250, 600); // Affiche un message texte � l'�cran
 
-	}
-	if (slingshotActive == false) {
-		ofSetColor(255, 255 - couleur, 255 - couleur);
-		sphere.set(surface, 32); //La particule statique
-		sphere.setPosition(Vecteur3D(395, 700).vec3());
-		sphere.draw();
-		ofSetColor(255, 255, 255);
-	}
+	//}
+	//if (slingshotActive == false) {
+	//	ofSetColor(255, 255 - couleur, 255 - couleur);
+	//	sphere.set(surface, 32); //La particule statique
+	//	sphere.setPosition(Vecteur3D(395, 700).vec3());
+	//	sphere.draw();
+	//	ofSetColor(255, 255, 255);
+	//}
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
-	float x = 2000000;
+	float x = 300;
 	if (key == OF_KEY_RIGHT) {
-		blob.getCenter()->addForce(Vecteur3D(x, 0));
+		blob.getCenter()->setVelocite(Vecteur3D(x, 0));
 		for (auto& particule : blob.getParticules())
 		{
-			particule->addForce(Vecteur3D(x, 0));
+			particule->setVelocite(Vecteur3D(x, 0));
 		}
 	}
 	if (key == OF_KEY_LEFT) {
-		blob.getCenter()->addForce(Vecteur3D(-x, 0));
+		blob.getCenter()->setVelocite(Vecteur3D(-x, 0));
 		for (auto& particule : blob.getParticules())
 		{
-			particule->addForce(Vecteur3D(-x, 0));
+			particule->setVelocite(Vecteur3D(-x, 0));
 		}
 	}
 	if (key == OF_KEY_UP) {
-		blob.getCenter()->addForce(Vecteur3D(0, -x));
+		blob.getCenter()->setVelocite(Vecteur3D(0, -x));
 		for (auto& particule : blob.getParticules())
 		{
-			particule->addForce(Vecteur3D(0, -x));
+			particule->setVelocite(Vecteur3D(0, -x));
 		}
 	}
 }

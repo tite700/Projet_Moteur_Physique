@@ -96,6 +96,11 @@ void Particule::setVelocite(const Vecteur3D& vect_velocite)
     		velocite = vect_velocite;
 }
 
+void Particule::addVelocite(const Vecteur3D& vect_velocite)
+{
+    velocite = velocite + vect_velocite;
+}
+
 Vecteur3D Particule::getForce() const
 {
     return forceRes;

@@ -20,7 +20,7 @@ void ForceCable::updateForce(Particule* particule, float duration)
 		float dirVitesse = particule1->getVelocite().prodscal(direction);
 		particule1->setVelocite(particule1->getVelocite() - direction * (1 + e) * dirVitesse);
 		particule1->setPosition(particule1->getPosition() - direction * (distanceMax - distance));
-		if (abs(particule1->getVelocite().prodscal(direction)) < 100)
+		if (abs(particule1->getVelocite().prodscal(direction)) < 200)
 		{
 			particule1->setVelocite(particule1->getVelocite() - particule1->getVelocite().prodscal(direction)*direction);
 		}
