@@ -46,16 +46,12 @@ void Particule::setInverseMasse(float masseInverse)
 }
 
 void Particule::integrer(float temps) {
+    float dt = min(temps, 0.027f);
     if (inverseMasse != 0.0f) {
         // Mettre à jour la position et la vélocité en utilisant l'intégration d'Euler
         std::cout << temps << std::endl;
-        if (velocite.norme() > 5000) {
-            velocite = velocite.normalisation() * 5000;
-        }
-        if (velocite.norme() < 10) {
-            velocite = velocite * 0;
-        }
-        position = position + (velocite * 0.027);
+
+        position = position + (velocite * dt);
         if (forceRes.norme() > 20000)
         {
             forceRes = forceRes.normalisation() * 20000;
@@ -64,7 +60,7 @@ void Particule::integrer(float temps) {
         {
 			forceRes = forceRes * 0;
 		}
-        velocite += forceRes * inverseMasse * 0.027;
+        velocite += forceRes * inverseMasse * dt;
 
     }
 }
