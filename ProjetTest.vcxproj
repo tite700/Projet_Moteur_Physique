@@ -113,6 +113,8 @@
     <ClCompile Include="ForceRessort.cpp" />
     <ClCompile Include="GenerateurForce.cpp" />
     <ClCompile Include="GraviteParticule.cpp" />
+    <ClCompile Include="Matrix3.cpp" />
+    <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Particule.cpp" />
     <ClCompile Include="RegistreForce.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -140,6 +142,8 @@
     <ClInclude Include="ForceRessort.h" />
     <ClInclude Include="GenerateurForce.h" />
     <ClInclude Include="GraviteParticule.h" />
+    <ClInclude Include="Matrix3.h" />
+    <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Particule.h" />
     <ClInclude Include="RegistreForce.h" />
     <ClInclude Include="src\ofApp.h" />

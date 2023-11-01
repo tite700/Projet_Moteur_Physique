@@ -9,8 +9,13 @@
 #include "../ForceCable.h"
 #include "../ofMain.h"
 #include "../UnitTest.cpp"
+#include "../Matrix3.h"
 
 void ofApp::setup() {
+
+	Matrix3 matrice1(1, 2, 3, 4, 5, 6, 7, 8, 9);
+	std::cout << matrice1 << std::endl;
+	std::cout << matrice1.transpose() << std::endl;
 	// setup des elements du jeu
 	ofSetBackgroundColor(100);
 	sphere.setPosition(Vecteur3D(70, 700).vec3());
