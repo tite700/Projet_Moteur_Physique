@@ -93,7 +93,7 @@ Matrix4 Matrix4::transpose()
 	return matriceTranspose;
 }
 
-Matrix4 Matrix4::operator*(const Matrix4& matrice2)
+Matrix4 Matrix4::operator*(const Matrix4& matrice2) const
 {
 	Matrix4 matriceResultante;
 	for (int index = 0; index < 4; index++)

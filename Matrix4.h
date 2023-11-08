@@ -16,7 +16,7 @@ public:
 	std::vector<std::vector<float>> getMatrice() const { return matrice; }
 
 	Matrix4 transpose();
-	Matrix4 operator*(const Matrix4& matrice2);
+	Matrix4 operator*(const Matrix4& matrice2) const;
 	Vecteur3D operator*(const Vecteur3D& vecteur);
 
 private:

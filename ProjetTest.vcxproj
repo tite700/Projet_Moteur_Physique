@@ -116,6 +116,7 @@
     <ClCompile Include="Matrix3.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Particule.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="RegistreForce.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="Matrix3.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Particule.h" />
+    <ClInclude Include="Quaternion.h" />
     <ClInclude Include="RegistreForce.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h" />
