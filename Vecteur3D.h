@@ -26,6 +26,7 @@ public:
     void setX(float x) { this->x = x; }
     void setY(float y) { this->y = y; }
     void setZ(float z) { this->z = z; }
+    void setW(float w) { this->w = w; }
 
     // Surcharge d'opérateurs
     Vecteur3D operator+(const Vecteur3D& vect) const;
