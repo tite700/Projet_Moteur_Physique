@@ -101,7 +101,7 @@ Matrix3 Matrix3::transpose()
 	return matriceTransposee;
 }
 
-Matrix3 Matrix3::operator*(const Matrix3& matrice2)
+Matrix3 Matrix3::operator*(const Matrix3& matrice2) const
 {
 	std::vector<float> ligne1;
 	ligne1.push_back(matrice[0][0] * matrice2.getMatrice()[0][0] + matrice[0][1] * matrice2.getMatrice()[1][0] + matrice[0][2] * matrice2.getMatrice()[2][0]);
@@ -122,7 +122,7 @@ Matrix3 Matrix3::operator*(const Matrix3& matrice2)
 	return matriceProduit;
 }
 
-Vecteur3D Matrix3::operator*(const Vecteur3D& vecteur)
+Vecteur3D Matrix3::operator*(const Vecteur3D& vecteur) const
 {
 	Vecteur3D vecteurProduit;
 	vecteurProduit.setX(matrice[0][0] * vecteur.getX() + matrice[0][1] * vecteur.getY() + matrice[0][2] * vecteur.getZ());

@@ -12,7 +12,7 @@ public:
 	float getB() const { return b; }
 	float getC() const { return c; }
 	float getD() const { return d; }
-	Matrix4 getMatrice() const;
+	Matrix3 getMatrice() const;
 
 	//Setters
 	void setA(float a) { this->a = a; }
@@ -21,7 +21,7 @@ public:
 	void setD(float d) { this->d = d; }
 
 	// Opérations
-
+		
 	Quaternion operator*(const Quaternion& quat) const;
 	Quaternion operator*(const float& scalaire) const;
 	Quaternion operator+(const Quaternion& quat) const;
@@ -42,5 +42,5 @@ std::ostream& operator<<(std::ostream& os, const Quaternion& quat);
 
 Quaternion operator*(const float& scalaire, const Quaternion& quat);
 
-Matrix4 operator*(const Matrix4& matrice, const Quaternion& quat);
-Matrix4 operator*(const Quaternion& quat, const Matrix4& matrice);
+Matrix3 operator*(const Matrix3& matrice, const Quaternion& quat);
+Matrix3 operator*(const Quaternion& quat, const Matrix3& matrice);

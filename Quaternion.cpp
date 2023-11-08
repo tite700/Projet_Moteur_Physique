@@ -17,14 +17,14 @@ Quaternion::Quaternion(float a, float b, float c, float d)
 	
 }
 
-Matrix4 Quaternion::getMatrice() const
+Matrix3 Quaternion::getMatrice() const
 {
-	Vecteur3D vecteur1(a, -d, c, b);
-	Vecteur3D vecteur2(d, a, -b, c);
-	Vecteur3D vecteur3(-c, b, a, d);
-	Vecteur3D vecteur4(-b, -c, -d, a);
+	Vecteur3D vecteur1(1 - 2*(c * c + d *d), 2*(a*b + c*d), 2*(a*c - b*d));
+	Vecteur3D vecteur2(2*(a*b - c*d), 1 - 2*(a*a + c*c), 2*(b*c + a*d));
+	Vecteur3D vecteur3(2*(a*c + b*d), 2*(b*c - a*d), 1 - 2*(a*a + b*b));
+	Vecteur3D vecteur4(0, 0, 0);
 
-	return Matrix4(vecteur1, vecteur2, vecteur3, vecteur4);
+	return Matrix3(vecteur1, vecteur2, vecteur3);
 }
 
 Quaternion Quaternion::operator*(const Quaternion& quat) const
@@ -83,12 +83,12 @@ Quaternion operator*(const float& scalaire, const Quaternion& quat)
 	return quat * scalaire;
 }
 
-Matrix4 operator*(const Matrix4& matrice, const Quaternion& quat)
+Matrix3 operator*(const Matrix3& matrice, const Quaternion& quat)
 {
 	return matrice * quat.getMatrice();
 }
 
-Matrix4 operator*(const Quaternion& quat, const Matrix4& matrice)
+Matrix3 operator*(const Quaternion& quat, const Matrix3& matrice)
 {
 	return quat.getMatrice() * matrice;
 }
