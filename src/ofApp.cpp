@@ -159,13 +159,13 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	//desin du menu
+	//dessin du menu
 	//gui.draw();
 	ofDrawRectangle(ground);
 	// Dessine les particules
 	for (const auto& particule : particules) {
-		// Dessinez chaque particule � sa position actuelle
-		// Positionnez la bo�te � la position de la particule
+		// Dessinez chaque particule a sa position actuelle
+		// Positionnez la boite a la position de la particule
 		ofSetColor(255, 255 - particule->getCouleur(), 255 - particule->getCouleur());
 		sphere.set(particule->getSurface(), 32);
 		sphere.setPosition(Vecteur3D(particule->getPosition().getX(), particule->getPosition().getY()).vec3());
@@ -173,7 +173,7 @@ void ofApp::draw() {
 		ofSetColor(255, 255, 255);
 	}
 
-	//// Dessine d'autres �l�ments de la simulation 
+	//// Dessine d'autres elements de la simulation 
 	//ofSetColor(255, 255, 255);
 	//ofNoFill();
 	//ofDrawRectangle(325, 625, 140, 140); // Tete du lance particule
