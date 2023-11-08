@@ -57,6 +57,11 @@ Matrix4::Matrix4(Vecteur3D vecteur1, Vecteur3D vecteur2, Vecteur3D vecteur3, Vec
 	}
 }
 
+Matrix4::Matrix4(std::vector<std::vector<float>> matrice)
+{
+	this->matrice = matrice;	
+}
+
 Matrix4::Matrix4(Matrix4* matrice)
 {
 	for (int index = 0; index < 4; index++)
@@ -114,4 +119,14 @@ Vecteur3D Matrix4::operator*(const Vecteur3D& vecteur)
 	vecteurResultant.setZ(matrice[2][0] * vecteur.getX() + matrice[2][0] * vecteur.getY() + matrice[2][1] * vecteur.getZ() + matrice[2][2] * vecteur.getW() * matrice[2][3]);
 	vecteurResultant.setW(matrice[3][0] * vecteur.getX() + matrice[3][0] * vecteur.getY() + matrice[3][1] * vecteur.getZ() + matrice[3][2] * vecteur.getW() * matrice[3][3]);
 	return vecteurResultant;
+}
+
+Matrix4 Matrix4::identite()
+{
+	Matrix4 matriceIdentite;
+	for (int index = 0; index < 4; index++)
+	{
+		matriceIdentite.matrice[index][index] = 1;
+	}
+	return matriceIdentite;
 }
