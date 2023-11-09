@@ -16,6 +16,7 @@ public:
 	Matrix3 transpose();
 	Matrix3 operator*(const Matrix3& matrice2) const;
 	Vecteur3D operator*(const Vecteur3D& vecteur) const;
+	static Matrix3 identite();
 
 	
 
@@ -24,4 +25,4 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& os, const Matrix3& matrice);
-
+bool operator==(const Matrix3& matrice1, const Matrix3& matrice2);

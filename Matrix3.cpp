@@ -107,18 +107,23 @@ Matrix3 Matrix3::operator*(const Matrix3& matrice2) const
 	ligne1.push_back(matrice[0][0] * matrice2.getMatrice()[0][0] + matrice[0][1] * matrice2.getMatrice()[1][0] + matrice[0][2] * matrice2.getMatrice()[2][0]);
 	ligne1.push_back(matrice[0][0] * matrice2.getMatrice()[0][1] + matrice[0][1] * matrice2.getMatrice()[1][1] + matrice[0][2] * matrice2.getMatrice()[2][1]);
 	ligne1.push_back(matrice[0][0] * matrice2.getMatrice()[0][2] + matrice[0][1] * matrice2.getMatrice()[1][2] + matrice[0][2] * matrice2.getMatrice()[2][2]);
+
 	std::vector<float> ligne2;
 	ligne2.push_back(matrice[1][0] * matrice2.getMatrice()[0][0] + matrice[1][1] * matrice2.getMatrice()[1][0] + matrice[1][2] * matrice2.getMatrice()[2][0]);
 	ligne2.push_back(matrice[1][0] * matrice2.getMatrice()[0][1] + matrice[1][1] * matrice2.getMatrice()[1][1] + matrice[1][2] * matrice2.getMatrice()[2][1]);
 	ligne2.push_back(matrice[1][0] * matrice2.getMatrice()[0][2] + matrice[1][1] * matrice2.getMatrice()[1][2] + matrice[1][2] * matrice2.getMatrice()[2][2]);
+
 	std::vector<float> ligne3;
 	ligne3.push_back(matrice[2][0] * matrice2.getMatrice()[0][0] + matrice[2][1] * matrice2.getMatrice()[1][0] + matrice[2][2] * matrice2.getMatrice()[2][0]);
 	ligne3.push_back(matrice[2][0] * matrice2.getMatrice()[0][1] + matrice[2][1] * matrice2.getMatrice()[1][1] + matrice[2][2] * matrice2.getMatrice()[2][1]);
-	ligne3.push_back(matrice[2][0] * matrice2.getMatrice()[0][2] + matrice[2][1] * matrice2.getMatrice()[1][2] + matrice[2][2] * matrice2.getMatrice()[2][2]);	
+	ligne3.push_back(matrice[2][0] * matrice2.getMatrice()[0][2] + matrice[2][1] * matrice2.getMatrice()[1][2] + matrice[2][2] * matrice2.getMatrice()[2][2]);
+
 	Matrix3 matriceProduit;
-	matriceProduit.matrice.push_back(ligne1);
-	matriceProduit.matrice.push_back(ligne2);
-	matriceProduit.matrice.push_back(ligne3);
+
+	matriceProduit.matrice[0] = ligne1;
+	matriceProduit.matrice[1] = ligne2;
+	matriceProduit.matrice[2] = ligne3;
+
 	return matriceProduit;
 }
 
@@ -131,10 +136,37 @@ Vecteur3D Matrix3::operator*(const Vecteur3D& vecteur) const
 	return vecteurProduit;
 }
 
+Matrix3 Matrix3::identite()
+{
+	std::vector<float> ligne1;
+	ligne1.push_back(1);
+	ligne1.push_back(0);
+	ligne1.push_back(0);
+	std::vector<float> ligne2;
+	ligne2.push_back(0);
+	ligne2.push_back(1);
+	ligne2.push_back(0);
+	std::vector<float> ligne3;
+	ligne3.push_back(0);
+	ligne3.push_back(0);
+	ligne3.push_back(1);
+	std::vector<std::vector<float>> matrice;
+	matrice.push_back(ligne1);
+	matrice.push_back(ligne2);
+	matrice.push_back(ligne3);
+	Matrix3 matriceIdentite(matrice);
+	return matriceIdentite;
+}
+
 std::ostream& operator<<(std::ostream& os, const Matrix3& matrice)
 {
 	os << matrice.getMatrice()[0][0] << " " << matrice.getMatrice()[0][1] << " " << matrice.getMatrice()[0][2] << std::endl;
 	os << matrice.getMatrice()[1][0] << " " << matrice.getMatrice()[1][1] << " " << matrice.getMatrice()[1][2] << std::endl;
 	os << matrice.getMatrice()[2][0] << " " << matrice.getMatrice()[2][1] << " " << matrice.getMatrice()[2][2] << std::endl;
 	return os;
+}
+
+bool operator==(const Matrix3& matrice1, const Matrix3& matrice2)
+{
+	return matrice1.getMatrice() == matrice2.getMatrice();
 }

@@ -13,9 +13,6 @@
 
 void ofApp::setup() {
 
-	Matrix3 matrice1(1, 2, 3, 4, 5, 6, 7, 8, 9);
-	std::cout << matrice1 << std::endl;
-	std::cout << matrice1.transpose() << std::endl;
 	// setup des elements du jeu
 	ofSetBackgroundColor(100);
 	sphere.setPosition(Vecteur3D(70, 700).vec3());
@@ -62,8 +59,6 @@ void ofApp::update() {
 	//Cable
 	registreForce.add(balle2, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
 	registreForce.add(balle2, new ForceCable(300, 0.0f, balle2, accroche2));
-	std::cout << "Vitesse : " << balle2->getVitesse() << std::endl;
-	std::cout << "Force : " << balle2->getForce() << std::endl;
 	
 	//Collision
 	registreForce.add(balle3, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
@@ -261,6 +256,7 @@ void ofApp::runUnitTests() {
 	testConstructors();
 	testOperations();
 	testMethods();
+	testMatrix3();
 }	
 
 //--------------------------------------------------------------
