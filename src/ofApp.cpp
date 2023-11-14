@@ -257,6 +257,8 @@ void ofApp::runUnitTests() {
 	testOperations();
 	testMethods();
 	testMatrix3();
+	testMatrix4();
+	//testQuaternion();
 }	
 
 //--------------------------------------------------------------
