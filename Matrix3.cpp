@@ -158,6 +158,26 @@ Matrix3 Matrix3::identite()
 	return matriceIdentite;
 }
 
+float Matrix3::determinant() const
+{
+	return matrice[0][0] * matrice[1][1] * matrice[2][2] + matrice[0][1] * matrice[1][2] * matrice[2][0] + matrice[0][2] * matrice[1][0] * matrice[2][1] - matrice[0][2] * matrice[1][1] * matrice[2][0] - matrice[0][1] * matrice[1][0] * matrice[2][2] - matrice[0][0] * matrice[1][2] * matrice[2][1];
+}
+
+float Matrix3::trace() const
+{
+	return matrice[0][0] + matrice[1][1] + matrice[2][2];
+}
+
+Quaternion Matrix3::toQuaternion() const
+{
+	float w = sqrt(1 + matrice[0][0] + matrice[1][1] + matrice[2][2]) / 2;
+	float x = (matrice[2][1] - matrice[1][2]) / (4 * w);
+	float y = (matrice[0][2] - matrice[2][0]) / (4 * w);
+	float z = (matrice[1][0] - matrice[0][1]) / (4 * w);
+	Quaternion quaternion(x, y, z, w);
+	return quaternion;
+}
+
 std::ostream& operator<<(std::ostream& os, const Matrix3& matrice)
 {
 	os << matrice.getMatrice()[0][0] << " " << matrice.getMatrice()[0][1] << " " << matrice.getMatrice()[0][2] << std::endl;

@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "Vecteur3D.h"
+#include "Quaternion.h"
+
 class Matrix3
 {
 public:
@@ -17,6 +19,9 @@ public:
 	Matrix3 operator*(const Matrix3& matrice2) const;
 	Vecteur3D operator*(const Vecteur3D& vecteur) const;
 	static Matrix3 identite();
+	float determinant() const;
+	float trace() const;
+	Quaternion toQuaternion() const;
 
 	
 

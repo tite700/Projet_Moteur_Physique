@@ -7,6 +7,7 @@ class Quaternion
 public:
     Quaternion();
     Quaternion(float a, float b, float c, float d);
+    Quaternion(Matrix3 matrice);
 
     // Getters
     float getA() const { return a; }

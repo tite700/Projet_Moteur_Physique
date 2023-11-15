@@ -17,6 +17,11 @@ Quaternion::Quaternion(float a, float b, float c, float d)
 	
 }
 
+Quaternion::Quaternion(Matrix3 matrice)
+{
+	*this = matrice.toQuaternion();
+}
+
 Matrix3 Quaternion::getMatrice() const
 {
 	Vecteur3D vecteur1(1 - 2*(c * c + d *d), 2*(a*b + c*d), 2*(a*c - b*d));
