@@ -38,6 +38,7 @@ Matrix4::Matrix4(std::vector<std::vector<float>> matrice)
 
 Matrix4::Matrix4(Matrix4* matrice)
 {
+    this->matrice.resize(4, std::vector<float>(4, 0.0f));
     for (int index = 0; index < 4; index++)
     {
         for (int index2 = 0; index2 < 4; index2++)
@@ -107,4 +108,32 @@ Matrix4 Matrix4::identite()
         matriceIdentite.matrice[index][index] = 1;
     }
     return matriceIdentite;
+}
+
+std::ostream& operator<<(std::ostream& os, const Matrix4& matrice)
+{
+    for (int index = 0; index < 4; index++)
+	{
+		for (int index2 = 0; index2 < 4; index2++)
+		{
+			os << matrice.getMatrice()[index][index2] << " ";
+		}
+		os << std::endl;
+	}
+	return os;
+}
+
+bool operator==(const Matrix4& matrice1, const Matrix4& matrice2)
+{
+    for (int index = 0; index < 4; index++)
+	{
+		for (int index2 = 0; index2 < 4; index2++)
+		{
+			if (matrice1.getMatrice()[index][index2] != matrice2.getMatrice()[index][index2])
+			{
+				return false;
+			}
+		}
+	}
+	return true;
 }

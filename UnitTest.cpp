@@ -100,35 +100,35 @@ void testMatrix4() {
     Matrix4 matrice1;
     assert(matrice1.getMatrice() == std::vector<std::vector<float>>({ {0.0f, 0.0f,0.0f, 0.0f}, {0.0f, 0.0f,0.0f, 0.0f}, {0.0f, 0.0f,0.0f, 0.0f}, {0.0f, 0.0f,0.0f, 0.0f} }));
 
-    //Matrix4 matrice2(1.0f, 2.0f, 3.0f, 4.0f,5.0f, 6.0f, 7.0f, 8.0f,9.0f, 10.0f, 11.0f, 12.0f,13.0f, 14.0f, 15.0f, 16.0f);
-    //assert(matrice2.getMatrice() == std::vector<std::vector<float>>({{1.0f, 2.0f, 3.0f, 4.0f}, { 5.0f, 6.0f, 7.0f, 8.0f }, { 9.0f, 10.0f, 11.0f, 12.0f }, { 13.0f, 14.0f, 15.0f, 16.0f }}));
+    Matrix4 matrice2(1.0f, 2.0f, 3.0f, 4.0f,5.0f, 6.0f, 7.0f, 8.0f,9.0f, 10.0f, 11.0f, 12.0f,13.0f, 14.0f, 15.0f, 16.0f);
+    assert(matrice2.getMatrice() == std::vector<std::vector<float>>({{1.0f, 2.0f, 3.0f, 4.0f}, { 5.0f, 6.0f, 7.0f, 8.0f }, { 9.0f, 10.0f, 11.0f, 12.0f }, { 13.0f, 14.0f, 15.0f, 16.0f }}));
 
-    //Vecteur3D vecteur1(1.0f, 2.0f, 3.0f);
-    //Vecteur3D vecteur2(4.0f, 5.0f, 6.0f);
-    //Vecteur3D vecteur3(7.0f, 8.0f, 9.0f);
-    //Vecteur3D vecteur4(10.0f, 11.0f, 12.0f);
-    //Matrix4 matrice3(vecteur1, vecteur2, vecteur3, vecteur4);
-    //assert(matrice3.getMatrice() == std::vector<std::vector<float>>({{1.0f, 2.0f, 3.0f, 0.0f}, { 4.0f, 5.0f, 6.0f, 0.0f }, { 7.0f, 8.0f, 9.0f, 0.0f }, { 10.0f, 11.0f, 12.0f, 1.0f }}));
+    Vecteur3D vecteur1(1.0f, 2.0f, 3.0f);
+    Vecteur3D vecteur2(4.0f, 5.0f, 6.0f);
+    Vecteur3D vecteur3(7.0f, 8.0f, 9.0f);
+    Vecteur3D vecteur4(10.0f, 11.0f, 12.0f);
+    Matrix4 matrice3(vecteur1, vecteur2, vecteur3, vecteur4);
+    assert(matrice3.getMatrice() == std::vector<std::vector<float>>({{1.0f, 2.0f, 3.0f, 0.0f}, { 4.0f, 5.0f, 6.0f, 0.0f }, { 7.0f, 8.0f, 9.0f, 0.0f }, { 10.0f, 11.0f, 12.0f, 0.0f }}));
 
-    //Matrix4 matrice4(std::vector<std::vector<float>>({{1.0f, 2.0f, 3.0f, 4.0f}, { 5.0f, 6.0f, 7.0f, 8.0f }, { 9.0f, 10.0f, 11.0f, 12.0f }, { 13.0f, 14.0f, 15.0f, 16.0f }}));
-    //assert(matrice4.getMatrice() == std::vector<std::vector<float>>({{1.0f, 2.0f, 3.0f, 4.0f}, { 5.0f, 6.0f, 7.0f, 8.0f }, { 9.0f, 10.0f, 11.0f, 12.0f }, { 13.0f, 14.0f, 15.0f, 16.0f }}));
+    Matrix4 matrice4(std::vector<std::vector<float>>({{1.0f, 2.0f, 3.0f, 4.0f}, { 5.0f, 6.0f, 7.0f, 8.0f }, { 9.0f, 10.0f, 11.0f, 12.0f }, { 13.0f, 14.0f, 15.0f, 16.0f }}));
+    assert(matrice4.getMatrice() == std::vector<std::vector<float>>({{1.0f, 2.0f, 3.0f, 4.0f}, { 5.0f, 6.0f, 7.0f, 8.0f }, { 9.0f, 10.0f, 11.0f, 12.0f }, { 13.0f, 14.0f, 15.0f, 16.0f }}));
 
-    //Matrix4 matrice5(&matrice4);
-    //assert(matrice5.getMatrice() == std::vector<std::vector<float>>({{1.0f, 2.0f, 3.0f, 4.0f}, { 5.0f, 6.0f, 7.0f, 8.0f }, { 9.0f, 10.0f, 11.0f, 12.0f }, { 13.0f, 14.0f, 15.0f, 16.0f }}));
+    Matrix4 matrice5(&matrice4);
+    assert(matrice5.getMatrice() == std::vector<std::vector<float>>({{1.0f, 2.0f, 3.0f, 4.0f}, { 5.0f, 6.0f, 7.0f, 8.0f }, { 9.0f, 10.0f, 11.0f, 12.0f }, { 13.0f, 14.0f, 15.0f, 16.0f }}));
 
-    //// Test de la transposée
-    //Matrix4 transposee = matrice3.transpose();
-    //assert(transposee.getMatrice() == std::vector<std::vector<float>>({ {1.0f, 4.0f, 7.0f, 10.0f}, { 2.0f, 5.0f, 8.0f, 11.0f }, { 3.0f, 6.0f, 9.0f, 12.0f }, { 0.0f, 0.0f, 0.0f, 1.0f } }));
+    // Test de la transposée
+    Matrix4 transposee = matrice3.transpose();
+    assert(transposee.getMatrice() == std::vector<std::vector<float>>({ {1.0f, 4.0f, 7.0f, 10.0f}, { 2.0f, 5.0f, 8.0f, 11.0f }, { 3.0f, 6.0f, 9.0f, 12.0f }, { 0.0f, 0.0f, 0.0f, 0.0f } }));
 
-    //// Test de l'identité
-    //Matrix4 matrice4Id = Matrix4::identite();
-    //assert(matrice4Id.getMatrice() == std::vector<std::vector<float>>({ {1.0f, 0.0f, 0.0f}, { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 1.0f } }));
+    // Test de l'identité
+    Matrix4 matrice4Id = Matrix4::identite();
+    assert(matrice4Id.getMatrice() == std::vector<std::vector<float>>({ {1.0f, 0.0f, 0.0f, 0.0f}, { 0.0f, 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f, 0.0f }, {0.0f, 0.0f, 0.0f, 1.0f} }));
 
-    ////Test de l'opérateur *
-    //Matrix4 matrice8(1.0f, 2.0f, 3.0f, 4.0f,5.0f, 6.0f, 7.0f, 8.0f,9.0f, 10.0f, 11.0f, 12.0f,13.0f, 14.0f, 15.0f, 16.0f);
-    //Matrix4 matrice9(&matrice8);
-    //Matrix4 matrice10 = matrice8 * matrice9;
-    //assert(matrice10.getMatrice() == std::vector<std::vector<float>>({{90.0f, 100.0f, 110.0f, 120.0f}, {202.0f, 228.0f, 254.0f, 280.0f}, {314.0f, 356.0f, 398.0f, 440.0f}, {426.0f, 484.0f, 542.0f, 600.0f}}));
+    //Test de l'opérateur *
+    Matrix4 matrice8(1.0f, 2.0f, 3.0f, 4.0f,5.0f, 6.0f, 7.0f, 8.0f,9.0f, 10.0f, 11.0f, 12.0f,13.0f, 14.0f, 15.0f, 16.0f);
+    Matrix4 matrice9(&matrice8);
+    Matrix4 matrice10 = matrice8 * matrice9;
+    assert(matrice10.getMatrice() == std::vector<std::vector<float>>({{90.0f, 100.0f, 110.0f, 120.0f}, {202.0f, 228.0f, 254.0f, 280.0f}, {314.0f, 356.0f, 398.0f, 440.0f}, {426.0f, 484.0f, 542.0f, 600.0f}}));
 
 }
 
@@ -200,15 +200,4 @@ void testQuaternion() {
 
     // Test de l'affichage
     std::cout << "Quaternion: " << quat2 << std::endl;
-}
-
-int main() {
-    testConstructors();
-    testOperations();
-    testMethods();
-    testMatrix3();
-    testMatrix4();
-    testQuaternion();
-    std::cout << "All tests passed successfully!" << std::endl;
-    return 0;
 }
