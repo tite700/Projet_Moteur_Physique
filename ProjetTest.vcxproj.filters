@@ -57,6 +57,7 @@
     <ClCompile Include="Matrix3.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="CorpsRigide.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -132,6 +133,7 @@
     <ClInclude Include="Matrix3.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="CorpsRigide.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

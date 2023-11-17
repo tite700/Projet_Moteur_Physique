@@ -11,7 +11,7 @@ public:
 	Matrix4(Vecteur3D vecteur1, Vecteur3D vecteur2, Vecteur3D vecteur3, Vecteur3D vecteur4, bool col = false);
 	Matrix4(std::vector<std::vector<float>> matrice);
 	Matrix4(Matrix4* matrice);
-	Matrix4(Matrix3* matrice);
+	//Matrix4(Matrix3* matrice);
 
 	// Getters
 	std::vector<std::vector<float>> getMatrice() const { return matrice; }

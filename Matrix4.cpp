@@ -47,7 +47,7 @@ Matrix4::Matrix4(Matrix4* matrice)
         }
     }
 }
-
+/*
 Matrix4::Matrix4(Matrix3* matrice)
 {
     for (int index = 0; index < 3; index++)
@@ -59,6 +59,7 @@ Matrix4::Matrix4(Matrix3* matrice)
     }
     this->matrice[3][3] = 1;
 }
+*/
 
 Matrix4 Matrix4::transpose()
 {

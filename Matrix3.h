@@ -3,6 +3,8 @@
 #include "Vecteur3D.h"
 #include "Quaternion.h"
 
+class Quaternion;
+
 class Matrix3
 {
 public:

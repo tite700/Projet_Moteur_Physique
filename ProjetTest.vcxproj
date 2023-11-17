@@ -105,6 +105,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Blob.cpp" />
+    <ClCompile Include="CorpsRigide.cpp" />
     <ClCompile Include="ForceCable.cpp" />
     <ClCompile Include="ForceElastique.cpp" />
     <ClCompile Include="ForceFrictionCinetique.cpp" />
@@ -135,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Blob.h" />
+    <ClInclude Include="CorpsRigide.h" />
     <ClInclude Include="ForceCable.h" />
     <ClInclude Include="ForceElastique.h" />
     <ClInclude Include="ForceFrictionCinetique.h" />
