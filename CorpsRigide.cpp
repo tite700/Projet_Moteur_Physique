@@ -141,7 +141,7 @@ this->m_acceleration = acceleration;
 }
 void CorpsRigide::setAccelerationAngulaire(const Vecteur3D& accelerationAngulaire)
 {
-    thus->m_accelerationAngulaire = accelerationAngulaire;
+    this->m_accelerationAngulaire = accelerationAngulaire;
 }
 void CorpsRigide::setVelocityAngulaire(const Vecteur3D& velocityAngulaire)
 {
@@ -150,7 +150,6 @@ void CorpsRigide::setVelocityAngulaire(const Vecteur3D& velocityAngulaire)
 void CorpsRigide::setTorque(const Vecteur3D& torque)
 {
 	this->m_torqueAccum = torque;
-}
 }
 void CorpsRigide::setTorqueAccum(const Vecteur3D& torqueAccum)
 {
