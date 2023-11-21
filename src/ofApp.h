@@ -9,7 +9,9 @@
 #include "../ForceImpultion.h"
 #include "../ForceElastique.h"
 #include "../UnitTest.h"
-
+#include "../CorpsRigide.h"
+#include "../RegistreForceCorps.h"
+#include "../ForceGraviteCorps.h"
 #include "ofxGui.h"
 
 class ofApp : public ofBaseApp {
@@ -51,14 +53,15 @@ public:
 
 	ofRectangle ground;
 
-	//Forces
-
+	//Forces particules
 	RegistreForce registreForce;
 	float espace = 12; // Espace entre les particules
 	float k = 0.0001; // Constante de raideur
 	float l0 = 12; // Longueur de repos entre particules
 	float limiteElasticite = 10.0;; // Limite d'élasticité
 
+	//Forces Corps
+	RegistreForceCorps registreForceCorps;
 private:
 
 	void runUnitTests();
@@ -79,6 +82,13 @@ private:
 	Particule* balle5 = new Particule(0.01, 1, 10, 0.5, Vecteur3D(1000, 400, 0), Vecteur3D(0, 0, 0));
 	Particule* accroche5 = new Particule(0.01, 1, 10, 1, Vecteur3D(1000, 200, 0), Vecteur3D(0, 0, 0));
 
+	Particule* balle6 = new Particule(0.01, 1, 50, 1.0, Vecteur3D(271, 520, 0), Vecteur3D(0, 0, 0));
+
 	Particule* bigParticule = new Particule(0.01, 1, 50, 0.0001, Vecteur3D(200, 800, 0), Vecteur3D(0, 0, 0));
+
+
+	std::vector<CorpsRigide*> corpsrigides; // Un conteneur pour stocker les particules
+	CorpsRigide* box1 = new CorpsRigide(Vecteur3D(271, 520, 0), Vecteur3D(200, -100, 0), Vecteur3D(0, 0, 0), Quaternion(0.0, 0.0, 1.0, 0.0), 0.01, Vecteur3D(0, 0, 0), Vecteur3D(0, 0, 0));
+	CorpsRigide* box2 = new CorpsRigide(Vecteur3D(320, 520, 0), Vecteur3D(0, 0, 0), Vecteur3D(0, 0, 0),Quaternion(0.0,0.0,1.0,0.0), 0.01, Vecteur3D(1.0, 0, 0), Vecteur3D(0, 0, 0));
 };
 

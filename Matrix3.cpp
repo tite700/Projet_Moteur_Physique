@@ -79,6 +79,11 @@ Matrix3::Matrix3(Matrix3* matrice)
 
 }
 
+float Matrix3::getA(Matrix3 matrice)
+{
+	return matrice.getMatrice()[0][0];
+}
+
 Matrix3 Matrix3::transpose()
 {
 	std::vector<float> ligne1;
@@ -125,6 +130,11 @@ Matrix3 Matrix3::operator*(const Matrix3& matrice2) const
 	matriceProduit.matrice[2] = ligne3;
 
 	return matriceProduit;
+}
+
+Matrix3 Matrix3::operator*(const float a) const
+{
+	return Matrix3();
 }
 
 Vecteur3D Matrix3::operator*(const Vecteur3D& vecteur) const

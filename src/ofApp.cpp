@@ -10,31 +10,30 @@
 #include "../ofMain.h"
 #include "../UnitTest.cpp"
 #include "../Matrix3.h"
-
+ofEasyCam easyCam;
 void ofApp::setup() {
 
 	// setup des elements du jeu
 	ofSetBackgroundColor(100);
+	ground.set(0, 850, 2000, 140);
+	easyCam.setDistance(800); // Ajustez la distance initiale de la caméra
+	// Définissez la position initiale de la caméra
+	easyCam.setPosition(462, 230, 1000);
+	// Ajustez la distance initiale de la caméra
+
+
+	//Elements optionnels
 	sphere.setPosition(Vecteur3D(70, 700).vec3());
 	customSquare.set(350, 620, 140, 140);
+	easyCam.reset();
 
-
+	//Blob
 	for (auto& particule : blob.getParticules()) {
 		particules.push_back(particule);
 	}
+
+	//Particules
 	particules.push_back(blob.getCenter());
-
-
-	//setup du menu 
-	//gui.setup();
-	//gui.add(surface.setup("Surface", 50, 10, 150));
-	//gui.add(masse.setup("Masse", 2, 0.5, 5));
-	//gui.add(balleButton.setup("Balle", false));
-	//gui.add(bdfButton.setup("Boule de feu", false));
-	//gui.add(laserButton.setup("laser", false));
-
-	ground.set(0, 850, 2000, 140);
-
 	particules.push_back(balle1);
 	particules.push_back(accroche1);
 	particules.push_back(balle2);
@@ -42,16 +41,33 @@ void ofApp::setup() {
 	particules.push_back(balle3);
 	particules.push_back(balle4);
 	particules.push_back(balle5);
+	particules.push_back(balle6);
 	particules.push_back(accroche5);
 	particules.push_back(bigParticule);
 
-	runUnitTests();
-}
+	//CorpsRigides
+	corpsrigides.push_back(box1);
+	corpsrigides.push_back(box2);
 
+	//Test unitaires
+	runUnitTests();
+	//setup du menu 
+	//gui.setup();
+	//gui.add(surface.setup("Surface", 50, 10, 150));
+	//gui.add(masse.setup("Masse", 2, 0.5, 5));
+	//gui.add(balleButton.setup("Balle", false));
+	//gui.add(bdfButton.setup("Boule de feu", false));
+	//gui.add(laserButton.setup("laser", false));
+}
 
 //--------------------------------------------------------------
 void ofApp::update() {
-
+	ofLogNotice("m_orientation") << "\n" << box1->getOrientation() << "\n";
+	ofLogNotice("Testquaternion") << "\n" << Quaternion(0.0, 0.0, 1.0, 0.0).toMatrix3() << "\n";
+	float a = (1.0 / 12.0)*(1.0/0.01);
+	ofLogNotice("TestI_inverse") << "\n" << Matrix3(1 / (a * (10 + 10)), 0.0, 0.0, 0.0, 1 / (a * (10 + 10)), 0.0, 0.0, 0.0, 1 / (a * (10 + 10))) << "\n";
+	ofLogNotice("TorqueAccum") << "\n" << box1->getTorqueAccum() << "\n";
+	ofLogNotice("VelocityAngulaire") << "\n" << box1->getVelocityAngulaire()<< "\n";
 	//Ressort
 	registreForce.add(balle1, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
 	registreForce.add(balle1, new ForceRessort(2, 100, 1000, balle1, accroche1, 0.2));
@@ -68,12 +84,10 @@ void ofApp::update() {
 	registreForce.add(balle5, new ForceElastique(400, 2, balle5, accroche5, 0.2));
 	registreForce.add(balle5, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
 
-
 	//Big particule
 	registreForce.add(bigParticule, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
 
 	//Blob
-
 	std:vector<ForceRessort*> forces = blob.generateForces();
 	for (int count  = 0; count < blob.getParticules().size(); count++)
 	{
@@ -84,12 +98,10 @@ void ofApp::update() {
 		registreForce.add(blob.getParticules()[count], new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
 		registreForce.add(blob.getParticules()[count], new ForceFrictionCinetique(0.001f * blob.getParticules()[count]->getSurface(), 0.01f));
 	}
-
-	
+	// On update les forces de toutes les particules
 	registreForce.updateForces(ofGetLastFrameTime());
 
-	// on v�rifie les collisions pour chaque paire de particules dans la sc�ne (stockees dans le vecteur particules)
-	
+	// on verifie les collisions pour chaque paire de particules dans la scene (stockees dans le vecteur particules)
 	for (int i = 0; i < particules.size(); i++) {
 		for (int j = i + 1; j < particules.size(); j++) {
 			if (Particule::collision(particules[i], particules[j])) {
@@ -112,10 +124,12 @@ void ofApp::update() {
 		couleur = 0;
 	}
 
-	// Mettez � jour la simulation � chaque frame
+	// Mettez a jour la simulation a chaque frame
 	for (auto& particule : particules) {
 		particule->integrer(ofGetLastFrameTime()); // Utilisez la dur�e de la frame pour l'int�gration		
 	}
+
+	
 
 	// V�rifiez si la souris est entr�e dans la zone du carr�
 	//if (customSquare.inside(mouseX, mouseY)) {
@@ -149,14 +163,24 @@ void ofApp::update() {
 		particule->clearForce();
 	}
 
+	//CoprsRigide
+	registreForceCorps.add(box1, new ForceGraviteCorps());
+	// On update les forces de tous les corpsRigides
+	registreForceCorps.updateForces(ofGetLastFrameTime());
+	// Mettez a jour la simulation a chaque frame
+	for (auto& corpsrigide : corpsrigides) {
+		corpsrigide->Integrate(ofGetLastFrameTime()); // Utilisez la dur�e de la frame pour l'int�gration		
+	}
 
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
+	easyCam.begin();
 	//dessin du menu
 	//gui.draw();
 	ofDrawRectangle(ground);
+	
 	// Dessine les particules
 	for (const auto& particule : particules) {
 		// Dessinez chaque particule a sa position actuelle
@@ -167,6 +191,76 @@ void ofApp::draw() {
 		sphere.draw();
 		ofSetColor(255, 255, 255);
 	}
+
+	// Dessine les coordonnées de la souris en temps réel
+	ofSetColor(255);
+	std::string mouseCoords = "Mouse Coords: (" + ofToString(ofGetMouseX()) + ", " + ofToString(ofGetMouseY()) + ")";
+	ofDrawBitmapString(mouseCoords, 10, 20);
+	
+	for (const auto& corprigide : corpsrigides) {
+		// Position du corps rigide
+		Vecteur3D position = corprigide->getPosition();
+		// Matrice de rotation du corps rigide
+		Matrix3 matriceRotation = corprigide->getOrientation();
+
+		// Encapsuler les opérations de dessin dans une matrice de transformation
+		ofPushMatrix();
+		// Translatez à la position du corps rigide
+		ofTranslate(position.getX(), position.getY(), position.getZ());
+
+		// Alignez l'axe bleu avec le plan de l'écran (Z vers l'extérieur)
+		ofRotate(90, 1, 0, 0);
+
+		// Alignez l'axe rouge avec les X croissants
+		ofRotate(90, 0, 0, 1);
+
+		// Convertissez la matrice 3x3 en une matrice 4x4
+		ofMatrix4x4 ofRotationMatrix;
+		ofRotationMatrix.set(matriceRotation.getMatrice()[0][0], matriceRotation.getMatrice()[0][1], matriceRotation.getMatrice()[0][2], 0,
+			matriceRotation.getMatrice()[1][0], matriceRotation.getMatrice()[1][1], matriceRotation.getMatrice()[1][2], 0,
+			matriceRotation.getMatrice()[2][0], matriceRotation.getMatrice()[2][1], matriceRotation.getMatrice()[2][2], 0,
+			0, 0, 0, 1);
+
+		// Appliquez la matrice de rotation
+		ofMultMatrix(ofRotationMatrix);
+
+		
+		// Dessinez le cube avec des flèches sur chaque axe
+		ofSetColor(255);
+		ofDrawBox(50);
+
+		// Dessinez les flèches des axes
+		ofSetColor(255, 0, 0); // Axe X en rouge
+		ofDrawArrow(ofVec3f(0, 0, 0), ofVec3f(50, 0, 0), 5);
+
+		ofSetColor(0, 255, 0); // Axe Y en vert
+		ofDrawArrow(ofVec3f(0, 0, 0), ofVec3f(0, 50, 0), 5);
+
+		ofSetColor(0, 0, 255); // Axe Z en bleu
+		ofDrawArrow(ofVec3f(0, 0, 0), ofVec3f(0, 0, 50), 5);
+
+		// Dessinez chaque face du cube avec une couleur différente
+		// (le reste du code reste inchangé)
+
+		// Ajouter des lignes de repère sur chaque face
+		ofSetColor(255);
+		ofDrawBox(50);
+
+		// Dessinez les arêtes du cube avec une couleur différente (par exemple, noir)
+		ofSetColor(0);
+		ofNoFill();
+		ofDrawBox(50);
+	
+		// Restaurer la matrice de transformation
+		ofPopMatrix();
+		
+	}
+
+
+
+
+
+
 
 	//// Dessine d'autres elements de la simulation 
 	//ofSetColor(255, 255, 255);
@@ -217,6 +311,7 @@ void ofApp::draw() {
 	//	sphere.draw();
 	//	ofSetColor(255, 255, 255);
 	//}
+	easyCam.end();
 }
 
 //--------------------------------------------------------------
@@ -250,6 +345,19 @@ void ofApp::keyPressed(int key) {
 			particule->setVelocite(Vecteur3D(0, x));
 		}
 	}
+	if (key == 'z') {
+		easyCam.move(ofVec3f(0, 0, 50)); // Déplacement vers l'avant
+	}
+	else if (key == 's') {
+		easyCam.move(ofVec3f(0, 0, -50)); // Déplacement vers l'arrière
+	}
+	else if (key == 'q') {
+		easyCam.move(ofVec3f(-50, 0, 0)); // Déplacement vers la gauche
+	}
+	else if (key == 'd') {
+		easyCam.move(ofVec3f(50, 0, 0)); // Déplacement vers la droite
+	}
+
 }
 
 void ofApp::runUnitTests() {
