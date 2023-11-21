@@ -129,33 +129,44 @@ Matrix3 CorpsRigide::getOrientation() const
 // setters
 void CorpsRigide::setPosition(const Vecteur3D& position)
 {
+    this->m_position = position;
 }
 void CorpsRigide::setVelocite(const Vecteur3D& velocity)
 {
+    this->m_velocity = velocity;
 }
 void CorpsRigide::setAcceleration(const Vecteur3D& acceleration)
 {
+this->m_acceleration = acceleration;
 }
 void CorpsRigide::setAccelerationAngulaire(const Vecteur3D& accelerationAngulaire)
 {
+    thus->m_accelerationAngulaire = accelerationAngulaire;
 }
 void CorpsRigide::setVelocityAngulaire(const Vecteur3D& velocityAngulaire)
 {
+	this->m_velocityAngulaire = velocityAngulaire;
 }
 void CorpsRigide::setTorque(const Vecteur3D& torque)
 {
+	this->m_torqueAccum = torque;
+}
 }
 void CorpsRigide::setTorqueAccum(const Vecteur3D& torqueAccum)
 {
+	this->m_torqueAccum = torqueAccum;
 }
 void CorpsRigide::setForceAccum(const Vecteur3D& forceAccum)
-{
+{   
+    this->m_forceAccum = forceAccum;
 }
 void CorpsRigide::setInverseMass(float inverseMass)
 {
+	this->m_inverseMass = inverseMass;
 }
 void CorpsRigide::setOrientation(const Quaternion& orientation)
 {
+	this->m_orientation = orientation;
 }
 
 
