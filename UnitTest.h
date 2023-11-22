@@ -4,6 +4,8 @@
 #include "Matrix3.h"
 #include "Matrix4.h"
 #include "Quaternion.h"
+#include "CorpsRigide.h"
+#include <cmath>
 
 #include <cassert>
 #include <iostream>
