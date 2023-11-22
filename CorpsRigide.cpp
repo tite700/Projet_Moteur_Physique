@@ -125,6 +125,11 @@ Matrix3 CorpsRigide::getOrientation() const
     return this->m_orientation.toMatrix3();
 }
 
+Quaternion CorpsRigide::getOrientationQuat() const
+{
+    return m_orientation;
+}
+
 
 // setters
 void CorpsRigide::setPosition(const Vecteur3D& position)

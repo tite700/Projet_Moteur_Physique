@@ -37,30 +37,20 @@ public:
 	Vecteur3D getPosition() const;
 	Vecteur3D getVelocite() const;
 	Vecteur3D getAcceleration() const;
-	Vecteur3D getLastFrameAcceleration() const;
 	Vecteur3D getAccelerationAngulaire() const;
 	Vecteur3D getVelocityAngulaire() const;
-	Vecteur3D getTorque() const;
 	Vecteur3D getTorqueAccum() const;
 	Vecteur3D getForceAccum() const;
 	float getInverseMass() const;
 	float getMass() const;
 	Matrix3 getOrientation() const;
-	Vecteur3D getPointInLocalSpace(const Vecteur3D &point) const;
-	Vecteur3D getPointInWorldSpace(const Vecteur3D &point) const;
-	Vecteur3D getDirectionInLocalSpace(const Vecteur3D &direction) const;
-	Vecteur3D getDirectionInWorldSpace(const Vecteur3D &direction) const;
-	Vecteur3D getTransformedPoint(const Vecteur3D &point) const;
-	Vecteur3D getTransformedDirection(const Vecteur3D &direction) const;
-	Vecteur3D getTransformedPointInverse(const Vecteur3D &point) const;
-	Vecteur3D getTransformedDirectionInverse(const Vecteur3D &direction) const;
+	Quaternion getOrientationQuat() const;
 
 
 	//setters
 	void setPosition(const Vecteur3D &position);
 	void setVelocite(const Vecteur3D &velocity);
 	void setAcceleration(const Vecteur3D &acceleration);
-	void setLastFrameAcceleration(const Vecteur3D &lastFrameAcceleration);
 	void setAccelerationAngulaire(const Vecteur3D &accelerationAngulaire);
 	void setVelocityAngulaire(const Vecteur3D &velocityAngulaire);
 	void setTorque(const Vecteur3D &torque);
