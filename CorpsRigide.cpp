@@ -174,6 +174,7 @@ void CorpsRigide::setForceAccum(const Vecteur3D& forceAccum)
 }
 void CorpsRigide::setInverseMass(float inverseMass)
 {
+    this->m_inverseMass = inverseMass;
 }
 void CorpsRigide::setOrientation(const Quaternion& orientation)
 {
