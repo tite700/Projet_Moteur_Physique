@@ -15,7 +15,7 @@ public:
 
 	void addParticule(Particule* particule);
 
-	//Accesseurs
+	// Accesseurs
 	void setEspace(float espace);
 	void setTrainee(float trainee);
 	void setCouleur(float couleur);
