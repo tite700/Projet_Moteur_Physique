@@ -38,10 +38,11 @@ void Quaternion::normalize()
 	float norm = std::sqrt(a * a + b * b + c * c + d * d);
 	if (norm != 0.0f)
 	{
-		a /= norm;
-		b /= norm;
-		c /= norm;
-		d /= norm;
+		float sign = (a < 0) ? -1.0f : 1.0f;
+		a = sign * a / norm;
+		b = sign * b / norm;
+		c = sign * c / norm;
+		d = sign * d / norm;
 	}
 }
 

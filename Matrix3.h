@@ -16,9 +16,12 @@ public:
 
 	// Getters
 	std::vector<std::vector<float>> getMatrice() const { return matrice; }
+	float getA(Matrix3 matrice);
 
+	// Methode
 	Matrix3 transpose();
 	Matrix3 operator*(const Matrix3& matrice2) const;
+	Matrix3 operator*(const float a) const;
 	Vecteur3D operator*(const Vecteur3D& vecteur) const;
 	static Matrix3 identite();
 	float determinant() const;

@@ -193,3 +193,90 @@ void testQuaternion() {
     // Test de l'affichage
     std::cout << "Quaternion: " << quat2 << std::endl;
 }
+
+void TestCorpsRigide()
+{
+	// Test des constructeurs de la classe CorpsRigide
+    CorpsRigide corpsRigide0;
+
+    assert(corpsRigide0.getPosition() == Vecteur3D(0, 0, 0));
+    assert(corpsRigide0.getVelocite() == Vecteur3D(0, 0, 0));
+    assert(corpsRigide0.getAcceleration() == Vecteur3D(0, 0, 0));
+    assert(corpsRigide0.getOrientation() == Quaternion(1, 0, 0, 0).toMatrix3());
+    assert(corpsRigide0.getForceAccum() == Vecteur3D(0.0, 0, 0));
+	assert(corpsRigide0.getTorqueAccum() == Vecteur3D(0, 0, 0));
+    assert(corpsRigide0.getInverseMass() == 1.0);
+    assert(corpsRigide0.getMass() == 1.0);
+	assert(corpsRigide0.getOrientation() == Matrix3(1, 0, 0, 0, -1, 0, 0, 0, -1));
+ 
+
+    CorpsRigide corpsRigide1(Vecteur3D(320, 520, 0), Vecteur3D(0, 0, 0), Vecteur3D(0, 0, 0), Quaternion(0.0, 0.0, 1.0, 0.0), 1.0, Vecteur3D(0.0, 0, 0), Vecteur3D(0, 0, 0));
+
+    assert(corpsRigide1.getPosition() == Vecteur3D(320, 520, 0));
+    assert(corpsRigide1.getVelocite() == Vecteur3D(0, 0, 0));
+    assert(corpsRigide1.getAcceleration() == Vecteur3D(0, 0, 0));
+    assert(corpsRigide1.getOrientation() == Quaternion(0.0, 0.0, 1.0, 0.0).toMatrix3());
+    assert(corpsRigide1.getForceAccum() == Vecteur3D(0.0, 0, 0));
+    assert(corpsRigide1.getTorqueAccum() == Vecteur3D(0, 0, 0));
+    assert(corpsRigide1.getInverseMass() == 1.0);
+    assert(corpsRigide1.getMass() == 1.0);
+    assert(corpsRigide1.getOrientation() == Matrix3(-1, 0, 0, 0, -1.0, 0, 0, 0, 1.0));
+    assert(corpsRigide1.getOrientation().transpose() == Matrix3(-1.0, 0, 0, 0, -1.0, 0, 0, 0, 1.0));
+
+    corpsRigide1.addForce(Vecteur3D(1.0, 0, 0));
+    corpsRigide1.addTorque(Vecteur3D(1.0, 0, 0));
+
+    assert(corpsRigide1.getForceAccum() == Vecteur3D(1.0, 0, 0));
+    assert(corpsRigide1.getTorqueAccum() == Vecteur3D(1.0, 0, 0));
+    
+    corpsRigide1.clearAccumulators();
+    
+    assert(corpsRigide1.getForceAccum() == Vecteur3D(0.0, 0, 0));
+	assert(corpsRigide1.getTorqueAccum() == Vecteur3D(0.0, 0, 0));
+
+	corpsRigide1.setInverseMass(2.0);
+	assert(corpsRigide1.getInverseMass() == 2.0);
+	assert(corpsRigide1.getMass() == 0.5);
+
+	corpsRigide1.setVelocite(Vecteur3D(1.0, 0, 0));
+	assert(corpsRigide1.getVelocite() == Vecteur3D(1.0, 0, 0));
+
+	corpsRigide1.setAcceleration(Vecteur3D(1.0, 0, 0));
+	assert(corpsRigide1.getAcceleration() == Vecteur3D(1.0, 0, 0));
+
+	corpsRigide1.setPosition(Vecteur3D(1.0, 0, 0));
+    assert(corpsRigide1.getPosition() == Vecteur3D(1.0, 0, 0));
+    
+    //Integration
+
+    corpsRigide1.Integrate(1.0);
+    assert(corpsRigide1.getPosition() == Vecteur3D(2.0, 0, 0));
+    assert(corpsRigide1.getVelocite() == Vecteur3D(1.0, 0, 0));
+    assert(corpsRigide1.getAcceleration() == Vecteur3D(0.0, 0, 0));
+
+    assert(corpsRigide1.getOrientation() == Quaternion(0.0, 0.0, 1.0, 0.0).toMatrix3());
+    assert(corpsRigide1.getOrientation() == Matrix3(-1, 0, 0, 0, -1.0, 0, 0, 0, 1.0));
+
+    corpsRigide1.addTorque(Vecteur3D(0.0, 0, 1.0));
+    corpsRigide1.Integrate(1.0);
+
+    assert(corpsRigide1.getPosition() == Vecteur3D(3.0, 0, 0));
+    assert(corpsRigide1.getVelocite() == Vecteur3D(1.0, 0, 0));
+    assert(corpsRigide1.getAcceleration() == Vecteur3D(0.0, 0, 0));
+    assert(corpsRigide1.getOrientation() == Quaternion(0.0, 0.0, 1.0, 0.0).toMatrix3());
+
+    corpsRigide1.Integrate(1.0);
+    float A = corpsRigide1.getOrientationQuat().getA();
+    float B = corpsRigide1.getOrientationQuat().getB();
+    float C = corpsRigide1.getOrientationQuat().getC();
+    float D = corpsRigide1.getOrientationQuat().getD();
+
+    assert(std::abs(A + 0.57) < 0.01);
+    assert(std::abs(B - 0.57) < 0.01);
+    assert(std::abs(C - 0) < 0.01);
+    assert(std::abs(D - 0.57) < 0.01);
+
+
+
+
+}

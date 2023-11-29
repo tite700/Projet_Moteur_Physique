@@ -11,30 +11,41 @@
 #include "../UnitTest.cpp"
 #include "../Matrix3.h"
 
+ofEasyCam cam;  // Declare an ofEasyCam object
 void ofApp::setup() {
-
 	// setup des elements du jeu
-	ofSetBackgroundColor(100);
-	sphere.setPosition(Vecteur3D(70, 700).vec3());
-	customSquare.set(350, 620, 140, 140);
+	ground.set(0, 850, 2000, 140);
+	ground.set(0, ofGetHeight() - 140, ofGetWidth(), 0);
 
+	// Set up the camera
+	cam.setPosition(0, 0, 1000);
+	cam.setDistance(1000);  // Set the initial distance from the camera to the center
+	cam.disableMouseInput();  // Disable the default mouse interaction for camera control
 
+	
+
+	/////////////////////////////////////////// CorpsRigides //////////////////////////////////////
+	//Elements optionnels
+	cam.enableOrtho();
+	cam.setNearClip(-100000);
+	cam.setFarClip(100000);
+	cam.setVFlip(true);
+
+	// CorpsRigide
+	corpsrigides.push_back(box1);
+	corpsrigides.push_back(box2);
+	corpsrigides.push_back(box3);
+	corpsrigides.push_back(box4);
+	float Intensite = 10.0;
+	Vecteur3D PointImpact = Vecteur3D(10, 0, 0);
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	// 
+	//Blob
 	for (auto& particule : blob.getParticules()) {
 		particules.push_back(particule);
 	}
+	//Particules
 	particules.push_back(blob.getCenter());
-
-
-	//setup du menu 
-	//gui.setup();
-	//gui.add(surface.setup("Surface", 50, 10, 150));
-	//gui.add(masse.setup("Masse", 2, 0.5, 5));
-	//gui.add(balleButton.setup("Balle", false));
-	//gui.add(bdfButton.setup("Boule de feu", false));
-	//gui.add(laserButton.setup("laser", false));
-
-	ground.set(0, 850, 2000, 140);
-
 	particules.push_back(balle1);
 	particules.push_back(accroche1);
 	particules.push_back(balle2);
@@ -42,20 +53,53 @@ void ofApp::setup() {
 	particules.push_back(balle3);
 	particules.push_back(balle4);
 	particules.push_back(balle5);
+	particules.push_back(balle6);
 	particules.push_back(accroche5);
 	particules.push_back(bigParticule);
 
+	//Test unitaires
 	runUnitTests();
 }
 
-
 //--------------------------------------------------------------
+int temps = 0;
 void ofApp::update() {
+	/////////////////////////////////// CORPS RIGIDE ///////////////////////////////////////////////////////////////////////////
+	//CorpsRigide
+	if (debut == false) {
+		if (temps < 4) {
+			registreForceCorps.add(box1, new ForceImpulsionCorps(PointImpact, Intensite));
+			ofLogNotice("pointImpact.()") << "\n" << PointImpact << "\n";
+		}
+		registreForceCorps.add(box1, new ForceGraviteCorps());
+		temps += 1;
+	}
+	// On update les forces de tous les corpsRigides
+	registreForceCorps.updateForces(ofGetLastFrameTime());
+	// Mettez a jour la simulation a chaque frame
 
+	for (auto& corpsrigide : corpsrigides) {
+		corpsrigide->Integrate(ofGetLastFrameTime()); // Utilisez la duree de la frame pour l'integration		
+	}
+
+	for (auto& corpsrigide : corpsrigides) {
+		corpsrigide->clearAccumulators();
+	}
+
+	registreForceCorps.clear();
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/*
+	ofLogNotice("m_orientation") << "\n" << box1->getOrientation() << "\n";
+	ofLogNotice("Testquaternion") << "\n" << Quaternion(0.0, 0.0, 1.0, 0.0).toMatrix3() << "\n";
+	float a = (1.0 / 12.0)*(1.0/0.01);
+	ofLogNotice("TestI_inverse") << "\n" << Matrix3(1 / (a * (10 + 10)), 0.0, 0.0, 0.0, 1 / (a * (10 + 10)), 0.0, 0.0, 0.0, 1 / (a * (10 + 10))) << "\n";
+	ofLogNotice("TorqueAccum") << "\n" << box1->getTorqueAccum() << "\n";
+	ofLogNotice("VelocityAngulaire") << "\n" << box1->getVelocityAngulaire()<< "\n";
 	//Ressort
 	registreForce.add(balle1, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
 	registreForce.add(balle1, new ForceRessort(2, 100, 1000, balle1, accroche1, 0.2));
-
+	*/
 	//Cable
 	registreForce.add(balle2, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
 	registreForce.add(balle2, new ForceCable(300, 0.0f, balle2, accroche2));
@@ -68,12 +112,10 @@ void ofApp::update() {
 	registreForce.add(balle5, new ForceElastique(400, 2, balle5, accroche5, 0.2));
 	registreForce.add(balle5, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
 
-
 	//Big particule
 	registreForce.add(bigParticule, new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
 
 	//Blob
-
 	std:vector<ForceRessort*> forces = blob.generateForces();
 	for (int count  = 0; count < blob.getParticules().size(); count++)
 	{
@@ -84,12 +126,10 @@ void ofApp::update() {
 		registreForce.add(blob.getParticules()[count], new GraviteParticule(Vecteur3D(0, 9.81f, 0)));
 		registreForce.add(blob.getParticules()[count], new ForceFrictionCinetique(0.001f * blob.getParticules()[count]->getSurface(), 0.01f));
 	}
-
-	
+	// On update les forces de toutes les particules
 	registreForce.updateForces(ofGetLastFrameTime());
 
-	// on v�rifie les collisions pour chaque paire de particules dans la sc�ne (stockees dans le vecteur particules)
-	
+	// on verifie les collisions pour chaque paire de particules dans la scene (stockees dans le vecteur particules)
 	for (int i = 0; i < particules.size(); i++) {
 		for (int j = i + 1; j < particules.size(); j++) {
 			if (Particule::collision(particules[i], particules[j])) {
@@ -112,21 +152,20 @@ void ofApp::update() {
 		couleur = 0;
 	}
 
-	// Mettez � jour la simulation � chaque frame
+	// Mettez a jour la simulation a chaque frame
 	for (auto& particule : particules) {
 		particule->integrer(ofGetLastFrameTime()); // Utilisez la dur�e de la frame pour l'int�gration		
 	}
 
-	// V�rifiez si la souris est entr�e dans la zone du carr�
-	//if (customSquare.inside(mouseX, mouseY)) {
-	//	mouseInSquare = true;
-	//}
-	//else {
-	//	mouseInSquare = false;
-	//}
-
-	// Mettez � jour d'autres �l�ments de la simulation si n�cessaire
-	//sphere.setPosition(sphere.getGlobalPosition() + Vecteur3D(1, 0).vec3());
+	
+	// Verifiez si la souris est entree dans la zone du carre
+	customSquare.set(-150, -150, 300, 300);
+	if (customSquare.inside(mouseX-960, mouseY-560)) {
+		mouseInSquare = true;
+	}
+	else {
+		mouseInSquare = false;
+	}
 
 	//Collision avec le sol
 	for (auto& particule : particules)
@@ -149,52 +188,67 @@ void ofApp::update() {
 		particule->clearForce();
 	}
 
+	// Ajoutez ceci pour permettre à la caméra de tourner en fonction des mouvements de la souris
+	float rotationSpeed = 0.1;
+	float mouseXNormalized = ofMap(ofGetMouseX(), 0, ofGetWidth(), -1, 1);
+	float mouseYNormalized = ofMap(ofGetMouseY(), 0, ofGetHeight(), -1, 1);
+
+	float rotationAmountX = rotationSpeed * mouseXNormalized;
+	float rotationAmountY = rotationSpeed * mouseYNormalized;
+
+	// Nouveau code pour la rotation de la caméra
+	static float prevMouseX = ofGetMouseX();
+	static float prevMouseY = ofGetMouseY();
+
+	float diffX = ofGetMouseX() - prevMouseX;
+	float diffY = ofGetMouseY() - prevMouseY;
+
+
+
+	prevMouseX = ofGetMouseX();
+	prevMouseY = ofGetMouseY();
+	
 
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	//dessin du menu
-	//gui.draw();
-	ofDrawRectangle(ground);
-	// Dessine les particules
-	for (const auto& particule : particules) {
-		// Dessinez chaque particule a sa position actuelle
-		// Positionnez la boite a la position de la particule
-		ofSetColor(255, 255 - particule->getCouleur(), 255 - particule->getCouleur());
-		sphere.set(particule->getSurface(), 32);
-		sphere.setPosition(Vecteur3D(particule->getPosition().getX(), particule->getPosition().getY()).vec3());
-		sphere.draw();
-		ofSetColor(255, 255, 255);
-	}
+	cam.begin();
+	// Dessinez le carré vert en bas
+	ofSetColor(0, 255, 0);
+	// Dessinez le fond bleu
+	ofBackground(135, 206, 235);
 
-	//// Dessine d'autres elements de la simulation 
-	//ofSetColor(255, 255, 255);
-	//ofNoFill();
-	//ofDrawRectangle(325, 625, 140, 140); // Tete du lance particule
-	//ofFill();
-	//ofDrawRectangle(390, 740, 10, 700); // Pied du lance particule
+	// Dessinez le carré vert en bas
+	ofSetColor(0, 255, 0);
+	ofFill();  // Activez le remplissage
+	ofDrawRectangle(-1000, 450, 2000, 140);
+	// Exemple pour dessiner des nuages
+	ofSetColor(255);  // Réglez la couleur sur blanc
+	ofDrawEllipse(600, -400, 90, 40);  // Exemple d'ellipse pour un nuage
+	ofDrawEllipse(400, -400, 90, 40);
+	ofDrawEllipse(200, -400, 90, 40);
+	ofDrawEllipse(-100, -400, 90, 40);
+	ofDrawEllipse(-300, -400, 90, 40);
+	ofDrawEllipse(700, -400, 90, 40);
+	ofDrawEllipse(400, -400, 90, 40);
+	ofDrawEllipse(200, -400, 90, 40);
+	ofDrawEllipse(-150, -400, 90, 40);
+	ofDrawEllipse(-350, -400, 90, 40);
+	ofDrawEllipse(650, -400, 90, 40);
+	ofDrawEllipse(-400, -400, 90, 40);
+	ofDrawEllipse(600, -400, 90, 40);
+	ofDrawEllipse(-850, -400, 90, 40);
+	ofDrawEllipse(-900, -400, 90, 40);
+	ofDrawEllipse(200, -400, 90, 40);
+	// Exemple pour dessiner le soleil
+	ofSetColor(255, 255, 0);  // Réglez la couleur sur jaune
+	ofDrawCircle(800, -400, 100);  // Exemple de cercle pour le soleil
+	ofNoFill();  // Desactivez le remplissage
 
 
-	//// D�clare les coordonn�es du point de d�part des particules qui vont �tre lanc�es
-	//float x1 = 400;
-	//float y1 = 700;
 
-	//// Coordonn�es de la position actuelle de la souris
-	//float x2 = mouseX;
-	//float y2 = mouseY;
 
-	//// V�rifiez si la souris est dans la zone du carr�
-	//if (mouseInSquare) {
-	//	ofSetColor(255, 255, 255);
-	//	ofSetLineWidth(10);
-	//	if (slingshotActive == false) {
-	//		ofDrawBitmapString("CLIQUEZ POUR ARMER UNE PARTICULE ET TIRER !", 225, 600); // Affiche un message texte � l'�cran
-	//	}
-	//}
-	//else {
-	//	ofSetLineWidth(3);
-	//}
 
 	//// V�rifiez si le bouton de la souris gauche est enfonc� et que le lance pierre est arm� d'une particule
 	//if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT) && slingshotActive == true) {
@@ -217,6 +271,90 @@ void ofApp::draw() {
 	//	sphere.draw();
 	//	ofSetColor(255, 255, 255);
 	//}
+	///////////////////////////////////////////// CORPS RIGIDES //////////////////////////////////////////////////////////////////
+	for (const auto& corprigide : corpsrigides)
+	{
+		// Position du corps rigide
+		Vecteur3D position = corprigide->getPosition();
+		// Matrice de rotation du corps rigide
+		Matrix3 matriceRotation = corprigide->getOrientation();
+
+		// Encapsuler les opérations de dessin dans une matrice de transformation
+		ofPushMatrix();
+		// Translatez à la position du corps rigide
+		ofTranslate(position.getX(), position.getY(), position.getZ());
+		// Alignez l'axe bleu avec le plan de l'écran (Z vers l'extérieur)
+		ofRotate(90, 1, 0, 0);
+		// Alignez l'axe rouge avec les X croissants
+		ofRotate(90, 0, 0, 1);
+
+		// Convertissez la matrice 3x3 en une matrice 4x4
+		ofMatrix4x4 ofRotationMatrix;
+		ofRotationMatrix.set(matriceRotation.getMatrice()[0][0], matriceRotation.getMatrice()[0][1], matriceRotation.getMatrice()[0][2], 0,
+			matriceRotation.getMatrice()[1][0], matriceRotation.getMatrice()[1][1], matriceRotation.getMatrice()[1][2], 0,
+			matriceRotation.getMatrice()[2][0], matriceRotation.getMatrice()[2][1], matriceRotation.getMatrice()[2][2], 0,
+			0, 0, 0, 1);
+
+		// Appliquez la matrice de rotation
+		ofMultMatrix(ofRotationMatrix);
+
+		int size = 300;
+		size = size - (corprigide->getPosition().getZ()) / 3;
+		if (size < 50) {
+			size = 50;
+		}
+		// Face avant du cube (grise)
+		ofSetColor(200); // Couleur grise
+		ofPushMatrix();
+		ofTranslate(0, 0, size / 2); // Déplacez-vous à la moitié de la taille du cube sur l'axe Z
+		ofDrawBox(size, size, 5); // Dessinez la face avant (5 est l'épaisseur)
+		ofPopMatrix();
+		// Dessinez le cube avec des flèches sur chaque axe
+		ofSetColor(255);
+		ofDrawBox(size);
+
+		// Dessinez les flèches des axes
+		ofSetColor(255, 0, 0); // Axe X en rouge
+		ofDrawArrow(ofVec3f(0, 0, 0), ofVec3f(50, 0, 0), 5);
+
+		ofSetColor(0, 255, 0); // Axe Y en vert
+		ofDrawArrow(ofVec3f(0, 0, 0), ofVec3f(0, 50, 0), 5);
+
+		ofSetColor(0, 0, 255); // Axe Z en bleu
+		ofDrawArrow(ofVec3f(0, 0, 0), ofVec3f(0, 0, 50), 5);
+
+		// Dessinez chaque face du cube avec une couleur différente
+		// (le reste du code reste inchangé)
+
+		// Ajouter des lignes de repère sur chaque face
+		ofSetColor(255);
+		ofDrawBox(size);
+
+		// Dessinez les arêtes du cube avec une couleur différente (par exemple, noir)
+		ofSetColor(0);
+		ofNoFill();
+		ofDrawBox(size);
+
+		// Restaurer la matrice de transformation
+		ofPopMatrix();
+	}
+	// Verifiez si la souris est dans la zone du carre
+	if (mouseInSquare) 
+	{
+		ofDrawBitmapString("CLIQUEZ POUR TIRER !", 0, -200); // Affiche un message texte a l'ecran
+	}
+	/*
+	// Dessine les coordonnées de la souris en temps réel
+	ofSetColor(255);
+	std::string mouseCoords = "Mouse Coords: (" + ofToString(ofGetMouseX()-960) + ", " + ofToString(ofGetMouseY()-560) + ")";
+	ofDrawBitmapString(mouseCoords, -500, -370);
+	*/
+	// Dessinez le carré personnalisé
+	ofSetColor(255, 0, 0);  // Couleur rouge, par exemple
+	ofDrawRectangle(customSquare);
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	cam.end();
+
 }
 
 //--------------------------------------------------------------
@@ -250,6 +388,16 @@ void ofApp::keyPressed(int key) {
 			particule->setVelocite(Vecteur3D(0, x));
 		}
 	}
+	if (key == 'r') {
+		debut = true;
+		box1->setPosition(Vecteur3D(0, 0, 0));
+		box1->setVelocite(Vecteur3D(0, 0, 0));
+		box1->setAcceleration(Vecteur3D(0, 0, 0));
+		box1->setForceAccum(Vecteur3D(0, 0, 0));
+		box1->setOrientation(Quaternion(0.0, 0.0, 1.0, 0.0));
+		box1->setAccelerationAngulaire(Vecteur3D(0, 0, 0));
+		box1->setVelocityAngulaire(Vecteur3D(0, 0, 0));
+	}
 }
 
 void ofApp::runUnitTests() {
@@ -274,25 +422,54 @@ void ofApp::mouseMoved(int x, int y) {
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button) {
+	if (button == OF_MOUSE_BUTTON_RIGHT) {
+		// Rotate the camera based on mouse movement
+		float rotationSpeed = 0.5;
+		float mouseXNormalized = ofMap(x, 0, ofGetWidth(), -1, 1);
+		float mouseYNormalized = ofMap(y, 0, ofGetHeight(), -1, 1);
 
-}
+		float rotationAmountX = rotationSpeed * mouseXNormalized;
+		float rotationAmountY = rotationSpeed * mouseYNormalized;
 
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button) {
-	// Arme le tire
-	if (button == OF_MOUSE_BUTTON_LEFT && mouseInSquare == true) {
-		slingshotActive = true;
+		cam.rotateDeg(rotationAmountY, 1, 0, 0);  // Rotate around X-axis
+		cam.rotateDeg(rotationAmountX, 0, 1, 0);  // Rotate around Y-axis
 	}
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button) {
-	if (button == OF_MOUSE_BUTTON_LEFT && slingshotActive == true) {
-		// Calculez la distance entre le point de d�part et le point de rel�chement
-		float distance = ofDist(x, y, 400, 700);
+void ofApp::mousePressed(int x, int y, int button) {
+	// Coordonnees de la position actuelle de la souris
+	float sourisX = mouseX - 960;
+	float sourisY = mouseY - 560;
+	debut = false;
+	temps = 0;
 
-		// Calculez l'intensit� de la v�locit� en fonction de la distance
-		float velocityMagnitude = distance * 0.006; // Ajustez le facteur � votre convenance
+	if (mouseInSquare) {
+		// Point d'Impact et intensite
+		Intensite = 3000;
+		PointImpact = Vecteur3D(x - 960, y - 560,0.0);
+		// Creer un nouveau corps
+		box1->setPosition(Vecteur3D(0, 0, 0));
+		box1->setVelocite(Vecteur3D(0, 0, 0));
+		box1->setAcceleration(Vecteur3D(0, 0, 0));
+		box1->setForceAccum(Vecteur3D(0, 0, 0));
+		box1->setOrientation(Quaternion(0.0, 0.0, 1.0, 0.0));
+		box1->setAccelerationAngulaire(Vecteur3D(0, 0, 0));
+		box1->setVelocityAngulaire(Vecteur3D(0, 0, 0));
+		//box1 = new CorpsRigide(Vecteur3D(0, 0, 0), Vecteur3D(0, 0, 0), Vecteur3D(0, 0, 0), Quaternion(0.0, 0.0, 1.0, 0.0), 0.001, Vecteur3D(0, 0, 0), Vecteur3D(0, 0, 0));
+	}
+	
+}
+
+
+//--------------------------------------------------------------
+void ofApp::mouseReleased(int x, int y, int button) {
+	/*
+	if (button == OF_MOUSE_BUTTON_LEFT && slingshotActive == true) {
+		// Calculez la distance entre le point de depart et le point de relachement
+		float intensite = ofDist(x, y, 400, 700);
+
+	
 
 		// Calculez la direction de la v�locit� (unit vector)
 		Vecteur3D direction(400 - x, 700 - y);
@@ -308,6 +485,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
 		// Ajoutez la nouvelle particule � votre conteneur de particules
 		slingshotActive = false;
 	}
+	*/
 }
 
 //--------------------------------------------------------------
