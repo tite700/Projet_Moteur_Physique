@@ -72,15 +72,15 @@ void testMatrix3() {
     assert(matrice6.getMatrice() == std::vector<std::vector<float>>({{1.0f, 2.0f, 3.0f}, { 4.0f, 5.0f, 6.0f }, { 7.0f, 8.0f, 9.0f }}));
 
 
-    // Test de la transposée
+    // Test de la transposï¿½e
     Matrix3 transposee = matrice3.transpose();
     assert(transposee.getMatrice() == std::vector<std::vector<float>>({{1.0f, 4.0f, 7.0f}, { 2.0f, 5.0f, 8.0f }, { 3.0f, 6.0f, 9.0f }}));
 
-    // Test de l'identité
+    // Test de l'identitï¿½
     Matrix3 matrice3Id = Matrix3::identite();
     assert(matrice3Id.getMatrice() == std::vector<std::vector<float>>({{1.0f, 0.0f, 0.0f}, { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }}));
 
-    //Test de l'opérateur *
+    //Test de l'opï¿½rateur *
     Matrix3 matrice8(1.0f, 2.0f, 3.0f, 4.0f, 5.0f,6.0f, 7.0f, 8.0f, 9.0f);
     Matrix3 matrice9(&matrice8);
     Matrix3 matrice10 = matrice8 * matrice9;
@@ -108,15 +108,15 @@ void testMatrix4() {
     Matrix4 matrice5(&matrice4);
     assert(matrice5.getMatrice() == std::vector<std::vector<float>>({{1.0f, 2.0f, 3.0f, 4.0f}, { 5.0f, 6.0f, 7.0f, 8.0f }, { 9.0f, 10.0f, 11.0f, 12.0f }, { 13.0f, 14.0f, 15.0f, 16.0f }}));
 
-    // Test de la transposée
+    // Test de la transposï¿½e
     Matrix4 transposee = matrice3.transpose();
     assert(transposee.getMatrice() == std::vector<std::vector<float>>({ {1.0f, 4.0f, 7.0f, 10.0f}, { 2.0f, 5.0f, 8.0f, 11.0f }, { 3.0f, 6.0f, 9.0f, 12.0f }, { 0.0f, 0.0f, 0.0f, 0.0f } }));
 
-    // Test de l'identité
+    // Test de l'identitï¿½
     Matrix4 matrice4Id = Matrix4::identite();
     assert(matrice4Id.getMatrice() == std::vector<std::vector<float>>({ {1.0f, 0.0f, 0.0f, 0.0f}, { 0.0f, 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f, 0.0f }, {0.0f, 0.0f, 0.0f, 1.0f} }));
 
-    //Test de l'opérateur *
+    //Test de l'opï¿½rateur *
     Matrix4 matrice8(1.0f, 2.0f, 3.0f, 4.0f,5.0f, 6.0f, 7.0f, 8.0f,9.0f, 10.0f, 11.0f, 12.0f,13.0f, 14.0f, 15.0f, 16.0f);
     Matrix4 matrice9(&matrice8);
     Matrix4 matrice10 = matrice8 * matrice9;
@@ -139,7 +139,7 @@ void testQuaternion() {
     assert(quat2.getC() == 3.0f);
     assert(quat2.getD() == 4.0f);
 
-    // Test des opérations sur les quaternions
+    // Test des opï¿½rations sur les quaternions
     Quaternion quat3(2.0f, 3.0f, 4.0f, 5.0f);
 
     // Test de l'addition
@@ -170,7 +170,7 @@ void testQuaternion() {
     assert(product.getC() == 12.0f);
     assert(product.getD() == 12.0f);
 
-    // Test des opérations composées
+    // Test des opï¿½rations composï¿½es
     quat2 += quat3;
     assert(quat2.getA() == 3.0f);
     assert(quat2.getB() == 5.0f);
@@ -183,7 +183,7 @@ void testQuaternion() {
     assert(quat2.getC() == 3.0f);
     assert(quat2.getD() == 4.0f);
 
-    // Test de la multiplication par un scalaire à gauche
+    // Test de la multiplication par un scalaire ï¿½ gauche
     Quaternion scaledLeft = 2.0f * quat2;
     assert(scaledLeft.getA() == 2.0f);
     assert(scaledLeft.getB() == 4.0f);

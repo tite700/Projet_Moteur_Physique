@@ -55,3 +55,4 @@ std::ostream& operator<<(std::ostream& os, const Quaternion& quat);
 Quaternion operator*(const float& scalaire, const Quaternion& quat);
 Matrix3 operator*(const Matrix3& matrice, const Quaternion& quat);
 Matrix3 operator*(const Quaternion& quat, const Matrix3& matrice);
+bool operator==(const Quaternion& quat1, const Quaternion& quat2);

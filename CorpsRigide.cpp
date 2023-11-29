@@ -1,6 +1,6 @@
 #include "CorpsRigide.h"
 
-// Définissez la constante de gravité ou d'autres forces globales ici
+// Dï¿½finissez la constante de gravitï¿½ ou d'autres forces globales ici
 const Vecteur3D GRAVITY(0.0f, -9.8f, 0.0f);
 
 // Constructeurs
@@ -32,7 +32,7 @@ CorpsRigide::CorpsRigide(Vecteur3D Position,Vecteur3D Velocity,Vecteur3D Acceler
 }
 CorpsRigide::~CorpsRigide()
 {
-    // Libérez les ressources si nécessaire
+    // Libï¿½rez les ressources si nï¿½cessaire
 }
 
 // Methodes
@@ -55,16 +55,16 @@ void CorpsRigide::Integrate(float duration)
 {
     
 
-    // Mise à jour de la position
+    // Mise ï¿½ jour de la position
     m_position += m_velocity * duration;
 
-    // Mise à jour de l'orientation en utilisant les quaternions
+    // Mise ï¿½ jour de l'orientation en utilisant les quaternions
     Quaternion angulaVelocityQuat(0, m_velocityAngulaire.getX(), m_velocityAngulaire.getY(), m_velocityAngulaire.getZ());
     Quaternion orientationDelta = (angulaVelocityQuat * m_orientation) * (duration * 0.5f);
     m_orientation = m_orientation + orientationDelta;
     m_orientation.normalize();
 
-    // Mise à jour de la vélocité et de l'accélération linéaires
+    // Mise ï¿½ jour de la vï¿½locitï¿½ et de l'accï¿½lï¿½ration linï¿½aires
     m_acceleration = m_forceAccum * m_inverseMass;
     m_velocity += m_acceleration * duration;
     
@@ -73,7 +73,7 @@ void CorpsRigide::Integrate(float duration)
     Matrix3 I = Matrix3(1 / (a * (10.0 + 10.0)), 0.0, 0.0, 0.0, 1 / (a * (10 + 10)), 0.0, 0.0, 0.0, 1 / (a * (10 + 10)));
     Matrix3 I_inverse = Matrix3(1 / (a * (100 + 100)), 0.0, 0.0, 0.0, 1 / (a * (100 + 100)), 0.0, 0.0, 0.0, 1 / (a * (100 + 100)));
 
-    // Mise à jour de la velocite et de l'accélération angulaire
+    // Mise ï¿½ jour de la velocite et de l'accï¿½lï¿½ration angulaire
     Matrix3 I_inverse_prime = m_orientation.toMatrix3() * I_inverse * m_orientation.toMatrix3().transpose();
     m_accelerationAngulaire = I_inverse_prime * m_torqueAccum*1000;
     m_velocityAngulaire += m_accelerationAngulaire * duration;

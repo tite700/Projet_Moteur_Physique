@@ -406,7 +406,8 @@ void ofApp::runUnitTests() {
 	testMethods();
 	testMatrix3();
 	testMatrix4();
-	//testQuaternion();
+	TestCorpsRigide();
+	testQuaternion();
 }	
 
 //--------------------------------------------------------------

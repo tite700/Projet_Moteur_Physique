@@ -167,3 +167,8 @@ Matrix3 operator*(const Quaternion& quat, const Matrix3& matrice)
 {
 	return quat.getMatrice() * matrice;
 }
+
+bool operator==(const Quaternion& quat1, const Quaternion& quat2)
+{
+	return quat1.getA() == quat2.getA() && quat1.getB() == quat2.getB() && quat1.getC() == quat2.getC() && quat1.getD() == quat2.getD();
+}
