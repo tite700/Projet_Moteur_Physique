@@ -303,37 +303,70 @@ void ofApp::draw() {
 		if (size < 50) {
 			size = 50;
 		}
-		// Face avant du cube (grise)
-		ofSetColor(200); // Couleur grise
+
+		// Activer le test de profondeur (depth test)
+		ofEnableDepthTest();
+
+		// Face avant (gray)
+		ofSetColor(150, 150, 150);
+		ofFill();
 		ofPushMatrix();
-		ofTranslate(0, 0, size / 2); // Déplacez-vous à la moitié de la taille du cube sur l'axe Z
-		ofDrawBox(size, size, 5); // Dessinez la face avant (5 est l'épaisseur)
+		ofTranslate(0, 0, size / 2);
+		ofDrawBox(size, size, 2);
 		ofPopMatrix();
-		// Dessinez le cube avec des flèches sur chaque axe
-		ofSetColor(255);
-		ofDrawBox(size);
 
-		// Dessinez les flèches des axes
-		ofSetColor(255, 0, 0); // Axe X en rouge
-		ofDrawArrow(ofVec3f(0, 0, 0), ofVec3f(50, 0, 0), 5);
+		// Face arrière (red)
+		ofSetColor(150, 150, 150);
+		ofPushMatrix();
+		ofTranslate(0, 0, -size / 2);
+		ofDrawBox(size, size, 2);
+		ofPopMatrix();
 
-		ofSetColor(0, 255, 0); // Axe Y en vert
-		ofDrawArrow(ofVec3f(0, 0, 0), ofVec3f(0, 50, 0), 5);
+		// Face du dessus (green)
+		ofSetColor(150, 150, 150);
+		ofPushMatrix();
+		ofRotate(90, 1, 0, 0);
+		ofTranslate(0, 0, -size / 2);
+		ofDrawBox(size, size, 2);
+		ofPopMatrix();
 
-		ofSetColor(0, 0, 255); // Axe Z en bleu
-		ofDrawArrow(ofVec3f(0, 0, 0), ofVec3f(0, 0, 50), 5);
+		// Face du dessous (blue)
+		ofSetColor(150, 150, 150);
+		ofPushMatrix();
+		ofRotate(90, 1, 0, 0);
+		ofTranslate(0, 0, size / 2);
+		ofDrawBox(size, size, 2);
+		ofPopMatrix();
 
-		// Dessinez chaque face du cube avec une couleur différente
-		// (le reste du code reste inchangé)
+		// Face de droite (yellow)
+		ofSetColor(150, 150, 150);
+		ofPushMatrix();
+		ofRotate(90, 0, 1, 0);
+		ofTranslate(0, 0, -size / 2);
+		ofDrawBox(size, size, 2);
+		ofPopMatrix();
 
-		// Ajouter des lignes de repère sur chaque face
-		ofSetColor(255);
-		ofDrawBox(size);
+		// Face de gauche (cyan)
+		ofSetColor(150, 150, 150);
+		ofPushMatrix();
+		ofRotate(90, 0, 1, 0);
+		ofTranslate(0, 0, size / 2);
+		ofDrawBox(size, size, 2);
+		ofPopMatrix();
 
-		// Dessinez les arêtes du cube avec une couleur différente (par exemple, noir)
-		ofSetColor(0);
-		ofNoFill();
-		ofDrawBox(size);
+		// Désactiver le test de profondeur après avoir dessiné le cube
+		ofDisableDepthTest();
+
+		// Dessiner les axes
+		ofSetColor(0, 0, 255); // Bleu pour l'axe Z
+		ofDrawLine(0, 0, 0, 0, 0, 100); // Dessiner l'axe Z
+
+		ofSetColor(255, 0, 0); // Rouge pour l'axe X
+		ofDrawLine(0, 0, 0, 100, 0, 0); // Dessiner l'axe X
+
+		ofSetColor(0, 255, 0); // Vert pour l'axe Y
+		ofDrawLine(0, 0, 0, 0, 100, 0); // Dessiner l'axe Y
+
 
 		// Restaurer la matrice de transformation
 		ofPopMatrix();
@@ -350,6 +383,7 @@ void ofApp::draw() {
 	ofDrawBitmapString(mouseCoords, -500, -370);
 	*/
 	// Dessinez le carré personnalisé
+	ofNoFill();
 	ofSetColor(255, 0, 0);  // Couleur rouge, par exemple
 	ofDrawRectangle(customSquare);
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
