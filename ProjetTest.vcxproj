@@ -121,6 +121,7 @@
     <ClCompile Include="Matrix3.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Particule.cpp" />
+    <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="RegistreForce.cpp" />
     <ClCompile Include="RegistreForceCorps.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Matrix3.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Particule.h" />
+    <ClInclude Include="Primitive.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="RegistreForce.h" />
     <ClInclude Include="RegistreForceCorps.h" />
