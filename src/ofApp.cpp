@@ -307,47 +307,43 @@ void ofApp::draw() {
 		// Activer le test de profondeur (depth test)
 		ofEnableDepthTest();
 
-		// Face avant (gray)
-		ofSetColor(150, 150, 150);
-		ofFill();
+		// Face avant (white)
+		ofSetColor(255);
+		ofNoFill();
+		ofSetLineWidth(2);
 		ofPushMatrix();
 		ofTranslate(0, 0, size / 2);
 		ofDrawBox(size, size, 2);
 		ofPopMatrix();
 
-		// Face arrière (red)
-		ofSetColor(150, 150, 150);
+		// Face arrière (white)
 		ofPushMatrix();
 		ofTranslate(0, 0, -size / 2);
 		ofDrawBox(size, size, 2);
 		ofPopMatrix();
 
-		// Face du dessus (green)
-		ofSetColor(150, 150, 150);
+		// Face du dessus (white)
 		ofPushMatrix();
 		ofRotate(90, 1, 0, 0);
 		ofTranslate(0, 0, -size / 2);
 		ofDrawBox(size, size, 2);
 		ofPopMatrix();
 
-		// Face du dessous (blue)
-		ofSetColor(150, 150, 150);
+		// Face du dessous (white)
 		ofPushMatrix();
 		ofRotate(90, 1, 0, 0);
 		ofTranslate(0, 0, size / 2);
 		ofDrawBox(size, size, 2);
 		ofPopMatrix();
 
-		// Face de droite (yellow)
-		ofSetColor(150, 150, 150);
+		// Face de droite (white)
 		ofPushMatrix();
 		ofRotate(90, 0, 1, 0);
 		ofTranslate(0, 0, -size / 2);
 		ofDrawBox(size, size, 2);
 		ofPopMatrix();
 
-		// Face de gauche (cyan)
-		ofSetColor(150, 150, 150);
+		// Face de gauche (white)
 		ofPushMatrix();
 		ofRotate(90, 0, 1, 0);
 		ofTranslate(0, 0, size / 2);
@@ -358,13 +354,10 @@ void ofApp::draw() {
 		ofDisableDepthTest();
 
 		// Dessiner les axes
-		ofSetColor(0, 0, 255); // Bleu pour l'axe Z
+		ofSetColor(0);
+		ofSetLineWidth(1);
 		ofDrawLine(0, 0, 0, 0, 0, 100); // Dessiner l'axe Z
-
-		ofSetColor(255, 0, 0); // Rouge pour l'axe X
 		ofDrawLine(0, 0, 0, 100, 0, 0); // Dessiner l'axe X
-
-		ofSetColor(0, 255, 0); // Vert pour l'axe Y
 		ofDrawLine(0, 0, 0, 0, 100, 0); // Dessiner l'axe Y
 
 

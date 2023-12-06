@@ -63,7 +63,7 @@
     <ClCompile Include="ForceRessortCorps.cpp" />
     <ClCompile Include="RegistreForceCorps.cpp" />
     <ClCompile Include="ForceImpulsionCorps.cpp" />
-    <ClCompile Include="Primitive.cpp" />
+    <ClCompile Include="OcTree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -145,7 +145,7 @@
     <ClInclude Include="ForceRessortCorps.h" />
     <ClInclude Include="RegistreForceCorps.h" />
     <ClInclude Include="ForceImpulsionCorps.h" />
-    <ClInclude Include="Primitive.h" />
+    <ClInclude Include="OcTree.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
