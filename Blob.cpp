@@ -53,3 +53,5 @@ Particule* Blob::getCenter()
 {
 	return center;
 }
+
+//test
