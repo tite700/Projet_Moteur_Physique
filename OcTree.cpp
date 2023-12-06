@@ -26,7 +26,7 @@ void OcTree::addPrimitive(Primitive* primitive)
 		}
 	}
 	primitives.push_back(primitive);
-	if (primitives.size() > 1)
+	if (primitives.size() >= maxPrimitives)
 	{
 		subdivide();
 		for (int i = 0; i < primitives.size(); i++)
