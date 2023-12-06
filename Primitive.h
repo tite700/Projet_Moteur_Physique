@@ -19,6 +19,7 @@ class Primitive
 		Primitive();
 		~Primitive();
 		virtual bool isInSpace(Vecteur3D point, float width);
+		bool intersect(const Primitive& other) const;
 
 	private:
 		Vecteur3D position;

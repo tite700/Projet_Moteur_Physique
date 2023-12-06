@@ -24,3 +24,8 @@ bool Primitive::isInSpace(Vecteur3D point, float width)
 	}
 	return false;
 }
+
+bool Primitive::intersect(const Primitive& other) const
+{
+	return false;
+}
