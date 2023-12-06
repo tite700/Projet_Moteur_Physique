@@ -123,11 +123,8 @@
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="OcTree.cpp" />
     <ClCompile Include="Particule.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="Plan.cpp" />
     <ClCompile Include="Primitive.cpp" />
-=======
->>>>>>> 7563b0b67b6ef2e4c213ef5670e9e6dbf215ae27
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="RegistreForce.cpp" />
     <ClCompile Include="RegistreForceCorps.cpp" />
@@ -167,11 +164,8 @@
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="OcTree.h" />
     <ClInclude Include="Particule.h" />
-<<<<<<< HEAD
     <ClInclude Include="Plan.h" />
     <ClInclude Include="Primitive.h" />
-=======
->>>>>>> 7563b0b67b6ef2e4c213ef5670e9e6dbf215ae27
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="RegistreForce.h" />
     <ClInclude Include="RegistreForceCorps.h" />

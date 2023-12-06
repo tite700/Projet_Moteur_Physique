@@ -63,14 +63,11 @@
     <ClCompile Include="ForceRessortCorps.cpp" />
     <ClCompile Include="RegistreForceCorps.cpp" />
     <ClCompile Include="ForceImpulsionCorps.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Plan.cpp" />
     <ClCompile Include="Cube.cpp" />
-=======
     <ClCompile Include="OcTree.cpp" />
->>>>>>> 7563b0b67b6ef2e4c213ef5670e9e6dbf215ae27
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -152,14 +149,11 @@
     <ClInclude Include="ForceRessortCorps.h" />
     <ClInclude Include="RegistreForceCorps.h" />
     <ClInclude Include="ForceImpulsionCorps.h" />
-<<<<<<< HEAD
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Plan.h" />
     <ClInclude Include="Cube.h" />
-=======
     <ClInclude Include="OcTree.h" />
->>>>>>> 7563b0b67b6ef2e4c213ef5670e9e6dbf215ae27
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
