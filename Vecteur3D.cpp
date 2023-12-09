@@ -121,6 +121,11 @@ float Vecteur3D::norme() const
     return sqrt(x * x + y * y + z * z);
 }
 
+Vecteur3D Vecteur3D::zeros()
+{
+    return Vecteur3D(0, 0, 0, 1);
+}
+
 std::ostream& operator<<(std::ostream& os, const Vecteur3D& vect)
 {
     os << "(" << vect.getX() << ", " << vect.getY() << ", " << vect.getZ() << ")";

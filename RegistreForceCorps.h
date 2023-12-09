@@ -4,6 +4,7 @@
 #include "CorpsRigide.h"
 #include <vector>
 
+class CorpsRigide;
 class RegistreForceCorps
 {
 public:

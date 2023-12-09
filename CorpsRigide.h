@@ -5,13 +5,20 @@
 #include "Matrix4.h"
 #include <vector>
 #include "Vecteur3D.h"
+#include "Primitive.h"
+
+#include "Cube.h"
+#include "Sphere.h"
+#include "Plan.h"
+
+class Primitive;
 
 class CorpsRigide
 {
 public:
 	// Constructeurs
 	CorpsRigide();
-	CorpsRigide(Vecteur3D Position, Vecteur3D Velocity, Vecteur3D Acceleration, Quaternion Orientation,float InverseMasse, Vecteur3D VelocityAngulaire, Vecteur3D AccelerationAngulaire);
+	CorpsRigide(Vecteur3D Position, Vecteur3D Velocity, Vecteur3D Acceleration, Quaternion Orientation,float InverseMasse, Vecteur3D VelocityAngulaire, Vecteur3D AccelerationAngulaire, Primitive* primitive = nullptr);
 	~CorpsRigide();
 	
 	// Add force on the center of mass (no torque generated)
@@ -57,11 +64,12 @@ public:
 	void setInverseMass(float inverseMass);
 	void setOrientation(const Quaternion &orientation);
 
+	void draw() const;
+
 
 
 private:
 	float m_inverseMass;
-	float linearDamping;
 
 
 	Vecteur3D m_position; // centre de masse
@@ -78,8 +86,13 @@ private:
 	Vecteur3D m_forceAccum;
 	Vecteur3D m_torqueAccum;
 
+	Primitive* m_primitive;
+
+
 	// Call each frame to calculate the transformMatrix and normazlize the orientation
 	void CalculateDerivedData();
+
+	void UpdatePrimitive();
 
 };
 

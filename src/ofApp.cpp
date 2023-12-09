@@ -45,12 +45,12 @@ void ofApp::setup() {
 	//Test unitaires
 	runUnitTests();
 
-	octree = new OcTree(Vecteur3D(0, 0, 0), 1000, 2, 4);
-	octree->subdivide();
-	//Cube* cube3 = new Cube(Vecteur3D(0, 0, 0), 1000);
-	for (Primitive* primitive : primitives) {
-		octree->addPrimitive(primitive);
-	}
+	//octree = new OcTree(Vecteur3D(0, 0, 0), 1000, 2, 4);
+	//octree->subdivide();
+	////Cube* cube3 = new Cube(Vecteur3D(0, 0, 0), 1000);
+	//for (Primitive* primitive : primitives) {
+	//	octree->addPrimitive(primitive);
+	//}
 
 	//octree->print(std::cout);
 
@@ -59,14 +59,22 @@ void ofApp::setup() {
 	//std::cout << sphere4->intersect(*cube2) << std::endl;
 	//std::cout << cube2->intersect(*sphere4) << std::endl;
 
+	cube2 = new Cube(Vecteur3D::zeros(), 200);
 
+	cubeRigide = new CorpsRigide(Vecteur3D::zeros(), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), cube2);
 }
 
 //--------------------------------------------------------------
 //int temps = 0;
 void ofApp::update() {
 
+	//registreForceCorps.add(cubeRigide, new ForceGraviteCorps());
+	registreForceCorps.updateForces(ofGetLastFrameTime());
 
+	cubeRigide->Integrate(ofGetLastFrameTime());
+	cubeRigide->setVelocityAngulaire(Vecteur3D(5, 5, 0));
+
+	registreForceCorps.clear();
 
 }
 
@@ -87,10 +95,12 @@ void ofApp::draw() {
 	ofSetColor(0, 0, 255);
 	ofDrawLine(0, 0, -2000, 0, 0, 2000);
 
-	octree->draw();
-	for (Primitive* primitive : primitives) {
-		primitive->draw();
-	}
+	cubeRigide->draw();
+
+	//octree->draw();
+	//for (Primitive* primitive : primitives) {
+	//	primitive->draw();
+	//}
 
 	//sphere4->draw();
 	//cube2->draw();

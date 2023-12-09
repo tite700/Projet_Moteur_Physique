@@ -17,7 +17,7 @@ CorpsRigide::CorpsRigide() :
     // Initialisez votre orientation ici
     m_orientation = Quaternion(1.0f, 0.0f, 0.0f, 0.0f);
 }
-CorpsRigide::CorpsRigide(Vecteur3D Position,Vecteur3D Velocity,Vecteur3D Acceleration,Quaternion Orientation,float InverseMasse,Vecteur3D VelocityAngulaire,Vecteur3D AccelerationAngulaire)
+CorpsRigide::CorpsRigide(Vecteur3D Position,Vecteur3D Velocity,Vecteur3D Acceleration,Quaternion Orientation,float InverseMasse,Vecteur3D VelocityAngulaire,Vecteur3D AccelerationAngulaire, Primitive* primitive)
 {
     m_position = Position;
     m_velocity = Velocity;
@@ -29,6 +29,8 @@ CorpsRigide::CorpsRigide(Vecteur3D Position,Vecteur3D Velocity,Vecteur3D Acceler
     m_orientation = Orientation;
     m_forceAccum = Vecteur3D(0.0f, 0.0f, 0.0f);
     m_torqueAccum = Vecteur3D(0.0f, 0.0f, 0.0f);
+    m_primitive = primitive;
+    
 }
 CorpsRigide::~CorpsRigide()
 {
@@ -91,9 +93,22 @@ void CorpsRigide::Integrate(float duration)
     // Remettre a zero les accumulateurs
     m_forceAccum = Vecteur3D(0.0f, 0.0f, 0.0f);
     m_torqueAccum = Vecteur3D(0.0f, 0.0f, 0.0f);
+
+    UpdatePrimitive();
 }
 void CorpsRigide::CalculateDerivedData()
 {
+}
+
+void CorpsRigide::UpdatePrimitive()
+{
+    if (m_primitive == nullptr)
+    {
+        std::cout << "Warning : Primitive is null" << std::endl;
+        return;
+    }
+    m_primitive->setPosition(m_position);
+	m_primitive->setRotation(m_orientation);
 }
 
 // Getters
@@ -179,6 +194,11 @@ void CorpsRigide::setInverseMass(float inverseMass)
 void CorpsRigide::setOrientation(const Quaternion& orientation)
 {
     this->m_orientation = orientation;
+}
+
+void CorpsRigide::draw() const
+{
+    m_primitive->draw();
 }
 
 

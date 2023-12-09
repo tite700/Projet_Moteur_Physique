@@ -7,6 +7,7 @@
 class Plan;
 class Cube;
 
+
 class Sphere :
     public Primitive
 {

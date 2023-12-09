@@ -73,7 +73,11 @@ bool Cube::intersect(const Cube& other) const
 
 bool Cube::intersect(const Primitive& other) const
 {
-	if (dynamic_cast<const Sphere*>(&other) != nullptr)
+	if (&other == nullptr)
+	{
+		return false;
+	}
+	else if (dynamic_cast<const Sphere*>(&other) != nullptr)
 	{
 		return intersect(dynamic_cast<const Sphere&>(other));
 	}
@@ -129,6 +133,7 @@ void Cube::draw() const
 	box.setHeight(taille);
 	box.setDepth(taille);
 	box.rotate(glm::quat(rotation.getA(), rotation.getB(), rotation.getC(), rotation.getD()));
+	std::cout << "Rotation : " << rotation << std::endl;
 	for (int i = 0; i < 6; i++)
 	{
 		box.setSideColor(i, transparent);

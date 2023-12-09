@@ -46,6 +46,8 @@ public:
     float prodscal(const Vecteur3D& vect) const;
     Vecteur3D prodvect(const Vecteur3D& vect) const;
     float norme() const;
+
+    static Vecteur3D zeros();
 };
 
 //Opérateurs externes

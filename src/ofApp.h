@@ -89,5 +89,10 @@ private:
 	OcTree* octree;
 
 	std::vector<Primitive*> primitives = std::vector<Primitive*>();
+
+	//RigidBody
+
+	CorpsRigide* cubeRigide;
+
 };
 

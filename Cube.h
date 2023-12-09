@@ -9,7 +9,6 @@
 #include <iostream>
 #include <math.h>
 
-
 class Plan;
 class Sphere;
 
@@ -35,7 +34,6 @@ public:
 
 private:
 	std::vector<Vecteur3D> normals;
-	Quaternion rotation;
 	float taille;
 };
 

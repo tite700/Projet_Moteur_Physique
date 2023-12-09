@@ -34,7 +34,11 @@ bool Sphere::intersect(const Cube& other) const
 
 bool Sphere::intersect(const Primitive& other) const
 {
-	if (dynamic_cast<const Sphere*>(&other) != nullptr)
+	if (&other == nullptr)
+	{
+		return false;
+	}
+	else if (dynamic_cast<const Sphere*>(&other) != nullptr)
 	{
 		return intersect(dynamic_cast<const Sphere&>(other));
 	}

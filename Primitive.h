@@ -1,17 +1,6 @@
 #pragma once
 #include "./Vecteur3D.h"
-#include "./Particule.h"
-#include "./RegistreForce.h"
-#include "./ForceRessort.h"
-#include "./Blob.h"
-#include "./ForceImpultion.h"
-#include "./ForceElastique.h"
-#include "./UnitTest.h"
-#include "./CorpsRigide.h"
-#include "./RegistreForceCorps.h"
-#include "./ForceGraviteCorps.h"
-#include "./ForceImpulsionCorps.h"
-
+#include "./Quaternion.h"
 
 class Primitive
 {
@@ -21,8 +10,15 @@ class Primitive
 		virtual void draw() const;
 		virtual bool intersect(const Primitive& other) const;
 
+		void setPosition(const Vecteur3D position) { this->position = position; }
+		void setRotation(const Quaternion rotation) { this->rotation = rotation; }
+
+		Vecteur3D getPosition() const { return position; }
+		Quaternion getRotation() const { return rotation; }
+
 	protected:
 		Vecteur3D position;
+		Quaternion rotation;
 		ofColor color;
 
 
