@@ -11,6 +11,7 @@ Cube::Cube(const Vecteur3D& centre, float taille, Quaternion rotation, ofColor c
 	this->taille = taille;
 	this->rotation = rotation;
 	this->color = color;
+	boundingSphere = new Sphere(centre, sqrt(3) * taille / 2);
 }
 
 Cube::~Cube()
@@ -95,6 +96,11 @@ bool Cube::intersect(const Primitive& other) const
 	}
 }
 
+Sphere* Cube::getBoundingSphere() const
+{
+	return boundingSphere;
+}
+
 
 std::vector<Vecteur3D> Cube::getAngles() const
 {
@@ -133,7 +139,6 @@ void Cube::draw() const
 	box.setHeight(taille);
 	box.setDepth(taille);
 	box.rotate(glm::quat(rotation.getA(), rotation.getB(), rotation.getC(), rotation.getD()));
-	std::cout << "Rotation : " << rotation << std::endl;
 	for (int i = 0; i < 6; i++)
 	{
 		box.setSideColor(i, transparent);
@@ -143,4 +148,13 @@ void Cube::draw() const
 	ofSetColor(ofColor::red);
 	box.drawWireframe();
 
+}
+
+void Cube::print() const
+{
+	std::cout << "Cube" << std::endl;
+	std::cout << "Position : " << position << std::endl;
+	std::cout << "Taille : " << taille << std::endl;
+	std::cout << "Rotation : " << rotation << std::endl;
+	std::cout << "Color : " << color << std::endl;
 }

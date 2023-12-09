@@ -2,6 +2,8 @@
 #include "./Vecteur3D.h"
 #include "./Quaternion.h"
 
+class Sphere;
+
 class Primitive
 {
 	public:
@@ -15,10 +17,15 @@ class Primitive
 
 		Vecteur3D getPosition() const { return position; }
 		Quaternion getRotation() const { return rotation; }
+		virtual Sphere* getBoundingSphere() const;
+
+		virtual void print() const;
+		
 
 	protected:
 		Vecteur3D position;
 		Quaternion rotation;
+		Sphere* boundingSphere;
 		ofColor color;
 
 

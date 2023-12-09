@@ -51,6 +51,9 @@ public:
 	Matrix3 getOrientation() const;
 	Quaternion getOrientationQuat() const;
 
+	Primitive* getPrimitive() const;
+	Primitive* getVolumeEnglobant() const;
+
 
 	//setters
 	void setPosition(const Vecteur3D &position);
@@ -87,6 +90,7 @@ private:
 	Vecteur3D m_torqueAccum;
 
 	Primitive* m_primitive;
+	Primitive* m_volumeEnglobant;
 
 
 	// Call each frame to calculate the transformMatrix and normazlize the orientation

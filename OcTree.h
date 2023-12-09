@@ -13,6 +13,7 @@ public:
 
 	// Methods
 	void addPrimitive(Primitive* primitive);
+	void addCorpsRigide(CorpsRigide* corpsRigide);
 	void subdivide();
 	void clear();
 	bool contains(Primitive* primitives) const;

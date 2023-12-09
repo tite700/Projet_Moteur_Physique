@@ -21,11 +21,13 @@ public:
 	bool intersect(const Plan& other) const;
 	bool intersect(const Cube& other) const;
 	bool intersect(const Primitive& other) const override;
+	Sphere* getBoundingSphere() const override;
 
 	Vecteur3D getCenter() const { return position; }
 	float getRadius() const { return radius; }
 
 	void draw() const override;
+	void print() const override;
 
 private:
 

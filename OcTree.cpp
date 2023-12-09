@@ -20,11 +20,15 @@ OcTree::OcTree(Vecteur3D position, float width, int maxPrimitives, int maxDepth,
 void OcTree::addPrimitive(Primitive* primitive)
 {
 //std::cout << "addPrimitive" << std::endl;
+	if (!contains(primitive))
+	{
+		std::cout << "Primitive not in OcTree" << std::endl;
+		return;
+	}
 	if (children[0] != nullptr)
 	{
 		for (int i = 0; i < 8; i++)
 		{
-			std::cout << "Child " << i << " : " << children[i]->contains(primitive) <<std::endl;
 			if (children[i]->contains(primitive))
 			{
 				children[i]->addPrimitive(primitive);
@@ -33,7 +37,6 @@ void OcTree::addPrimitive(Primitive* primitive)
 	}
 	primitives.push_back(primitive);
 	int nbPrimitives = primitives.size();
-	std::cout << "nb primitives" << nbPrimitives << std::endl;
 	if (primitives.size() > maxPrimitives && depth < maxDepth)
 	{
 		subdivide();
@@ -43,7 +46,6 @@ void OcTree::addPrimitive(Primitive* primitive)
 			{
 				if (children[j]->contains(primitives[i]))
 				{	
-					std::cout << "addPrimitive : " << i << " to children " << j << std::endl;
 					children[j]->addPrimitive(primitives[i]);
 				}
 			}
@@ -53,6 +55,11 @@ void OcTree::addPrimitive(Primitive* primitive)
 			primitives.pop_back();
 		}
 	}
+}
+
+void OcTree::addCorpsRigide(CorpsRigide* corpsRigide)
+{
+	addPrimitive(corpsRigide->getPrimitive());
 }
 
 void OcTree::subdivide()
@@ -86,8 +93,10 @@ void OcTree::clear()
 
 bool OcTree::contains(Primitive* primitive) const
 {
-	bool res = primitive->intersect(cube);
+	Sphere* boundingSphere = primitive->getBoundingSphere();
+	bool res = cube.intersect(*boundingSphere);
 	return res;
+
 }
 
 Vecteur3D OcTree::getPosition()
@@ -131,7 +140,7 @@ void OcTree::draw()
 	}
 	else
 	{
-		//if (primitives.size() > 0)
+		if (primitives.size() > 0)
 			cube.draw();
 	}
 }

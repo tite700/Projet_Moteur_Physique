@@ -32,7 +32,7 @@ void ofApp::setup() {
 	normals.push_back(Vecteur3D(1, 0, 0));
 	normals.push_back(Vecteur3D(0, 1, 0));
 	normals.push_back(Vecteur3D(0, 0, 1));
-	cube1 = new Cube(Vecteur3D(0, 0, 0), 1000);
+	//cube1 = new Cube(Vecteur3D(0, 0, 0), 1000);
 
 	sphere1 = new Sphere(Vecteur3D(100, 0, 0), 50);
 	sphere2 = new Sphere(Vecteur3D(50, 0, 0), 50);
@@ -40,7 +40,7 @@ void ofApp::setup() {
 	primitives.push_back(sphere1);
 	primitives.push_back(sphere2);
 	primitives.push_back(sphere3);
-	cube2 = new Cube(Vecteur3D(0, 0, 0), 1000);
+	//cube2 = new Cube(Vecteur3D(0, 0, 0), 1000);
 
 	//Test unitaires
 	runUnitTests();
@@ -59,20 +59,36 @@ void ofApp::setup() {
 	//std::cout << sphere4->intersect(*cube2) << std::endl;
 	//std::cout << cube2->intersect(*sphere4) << std::endl;
 
-	cube2 = new Cube(Vecteur3D::zeros(), 200);
+	cube1 = new Cube(Vecteur3D::zeros(), 200);
+	cube2 = new Cube(Vecteur3D(300, 0, 0), 200);
+	sphere4 = new Sphere(Vecteur3D(160, 0, 0), 50);
 
-	cubeRigide = new CorpsRigide(Vecteur3D::zeros(), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), cube2);
+	cubeRigide = new CorpsRigide(Vecteur3D::zeros(), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), cube1);
+	sphereRigide = new CorpsRigide(Vecteur3D(160, 0, 0), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), sphere4);
+	cubeRigide2 = new CorpsRigide(Vecteur3D(300, 0, 0), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), cube2);
+	corpsRigides.push_back(cubeRigide);
+	corpsRigides.push_back(sphereRigide);
+	corpsRigides.push_back(cubeRigide2);
 }
 
 //--------------------------------------------------------------
 //int temps = 0;
 void ofApp::update() {
 
+	if (pause) {
+		return;
+	}
+	octree = new OcTree(Vecteur3D(0, 0, 0), 1000, 2, 3);
 	//registreForceCorps.add(cubeRigide, new ForceGraviteCorps());
 	registreForceCorps.updateForces(ofGetLastFrameTime());
+	cubeRigide->setVelocityAngulaire(Vecteur3D(0, 2, 0));
+	for (CorpsRigide* corpsRigide : corpsRigides) {
+		corpsRigide->Integrate(ofGetLastFrameTime());
+		octree->addCorpsRigide(corpsRigide);
+	}
 
-	cubeRigide->Integrate(ofGetLastFrameTime());
-	cubeRigide->setVelocityAngulaire(Vecteur3D(5, 5, 0));
+	//std::cout << "Collision : " << cubeRigide->getPrimitive()->intersect(*sphereRigide->getPrimitive()) << std::endl;
+
 
 	registreForceCorps.clear();
 
@@ -95,9 +111,11 @@ void ofApp::draw() {
 	ofSetColor(0, 0, 255);
 	ofDrawLine(0, 0, -2000, 0, 0, 2000);
 
-	cubeRigide->draw();
+	for (CorpsRigide* corpsRigide : corpsRigides) {
+		corpsRigide->draw();
+	}
 
-	//octree->draw();
+	octree->draw();
 	//for (Primitive* primitive : primitives) {
 	//	primitive->draw();
 	//}
@@ -112,7 +130,10 @@ void ofApp::draw() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
-
+	if (key == ' ') {
+		std::cout << "Space pressed, pause" << std::endl;
+		pause = !pause;
+	}
 
 }
 

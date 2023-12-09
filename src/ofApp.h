@@ -74,6 +74,10 @@ public:
 	RegistreForceCorps registreForceCorps;
 private:
 
+	//Management
+
+	bool pause = false;
+
 	void runUnitTests();
 
 	Cube* cube1;
@@ -91,8 +95,9 @@ private:
 	std::vector<Primitive*> primitives = std::vector<Primitive*>();
 
 	//RigidBody
-
+	std::vector<CorpsRigide*> corpsRigides = std::vector<CorpsRigide*>();
 	CorpsRigide* cubeRigide;
-
+	CorpsRigide* sphereRigide;
+	CorpsRigide* cubeRigide2;
 };
 

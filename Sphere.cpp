@@ -10,6 +10,7 @@ Sphere::Sphere(const Vecteur3D& center, float radius)
 {
     this->position = center;
 	this->radius = radius;  
+	boundingSphere = this;
 }
 
 Sphere::~Sphere()
@@ -56,6 +57,12 @@ bool Sphere::intersect(const Primitive& other) const
 	}
 }
 
+Sphere* Sphere::getBoundingSphere() const
+{
+	std::cout << "Sphere Bounding Sphere" << std::endl;
+	return boundingSphere;
+}
+
 void Sphere::draw() const
 {
 
@@ -72,4 +79,11 @@ void Sphere::draw() const
 	ofSetLineWidth(4.0);
 	ofSetColor(ofColor::red);
 	sphere.drawWireframe();
+}
+
+void Sphere::print() const
+{
+	std::cout << "Sphere : " << std::endl;
+	std::cout << "Position : " << position << std::endl;
+	std::cout << "Radius : " << radius << std::endl;
 }

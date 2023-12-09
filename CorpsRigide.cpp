@@ -30,6 +30,7 @@ CorpsRigide::CorpsRigide(Vecteur3D Position,Vecteur3D Velocity,Vecteur3D Acceler
     m_forceAccum = Vecteur3D(0.0f, 0.0f, 0.0f);
     m_torqueAccum = Vecteur3D(0.0f, 0.0f, 0.0f);
     m_primitive = primitive;
+
     
 }
 CorpsRigide::~CorpsRigide()
@@ -155,6 +156,16 @@ Matrix3 CorpsRigide::getOrientation() const
 Quaternion CorpsRigide::getOrientationQuat() const
 {
     return m_orientation;
+}
+
+Primitive* CorpsRigide::getPrimitive() const
+{
+    return m_primitive;
+}
+
+Primitive* CorpsRigide::getVolumeEnglobant() const
+{
+    return m_volumeEnglobant;
 }
 
 

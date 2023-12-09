@@ -26,10 +26,12 @@ public:
 	bool intersect(const Plan& other) const;
 	bool intersect(const Cube& other) const;
 	bool intersect(const Primitive& other) const override;
+	Sphere* getBoundingSphere() const override;
 
 	std::vector<Vecteur3D> getAngles() const;
 
 	void draw() const;
+	void print() const override;
 	Quaternion getRotation() const { return rotation; }
 
 private:
