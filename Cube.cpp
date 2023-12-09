@@ -5,11 +5,12 @@ Cube::Cube()
 
 }
 
-Cube::Cube(const Vecteur3D& centre, const std::vector<Vecteur3D> normal, float taille)
+Cube::Cube(const Vecteur3D& centre, float taille, Quaternion rotation, ofColor color)
 {
-	this->centre = centre;
-	this->normals = normal;
+	this->position = centre;
 	this->taille = taille;
+	this->rotation = rotation;
+	this->color = color;
 }
 
 Cube::~Cube()
@@ -18,65 +19,28 @@ Cube::~Cube()
 
 bool Cube::intersect(const Sphere& other) const
 {
-	std::vector<Vecteur3D> angles = getAngles();
-
-	//Vérifie si les angles sont dans la sphère
-
-	for (int i = 0; i < angles.size(); i++)
+	if (other.getRadius() + (taille * sqrt(3)) / 2 < (position - other.getCenter()).norme())
 	{
-		if ((other.getCenter() - (angles[i])).norme() <= other.getRadius())
-		{
-			return true;
-		}
+		return false;
 	}
 
-	//Vérifie si la sphère est dans le cube
+	Vecteur3D newX = rotation.rotateVector(Vecteur3D(1, 0, 0));
+	Vecteur3D newY = rotation.rotateVector(Vecteur3D(0, 1, 0));
+	Vecteur3D newZ = rotation.rotateVector(Vecteur3D(0, 0, 1));
 
-	if (other.getCenter().getX() <= centre.getX() + taille / 2 && other.getCenter().getX() >= centre.getX() - taille / 2)
-	{
-		if (other.getCenter().getY() <= centre.getY() + taille / 2 && other.getCenter().getY() >= centre.getY() - taille / 2)
-		{
-			if (other.getCenter().getZ() <= centre.getZ() + taille / 2 && other.getCenter().getZ() >= centre.getZ() - taille / 2)
-			{
-				return true;
-			}
-		}
-	}
+	float sphereNewXDistance = abs(other.getCenter().prodscal(newX) - this->position.prodscal(newX));
+	float sphereNewYDistance = abs(other.getCenter().prodscal(newY) - this->position.prodscal(newY));
+	float sphereNewZDistance = abs(other.getCenter().prodscal(newZ) - this->position.prodscal(newZ));
 
-	//Vérifie si la sphère intersecte les face du cube
+	if (sphereNewXDistance > (this->taille / 2 + other.getRadius())) { return false; }
+	if (sphereNewYDistance > (this->taille / 2 + other.getRadius())) { return false; }
+	if (sphereNewZDistance > (this->taille / 2 + other.getRadius())) { return false; }
 
-	Plan plan1(centre + normals[0].normalisation() * (taille / 2), normals[0]);
-	Plan plan2(centre + normals[1].normalisation() * (taille / 2), normals[1]);
-	Plan plan3(centre + normals[2].normalisation() * (taille / 2), normals[2]);
-	Plan plan4(centre + normals[0].normalisation() * (taille / -2), normals[0]);
-	Plan plan5(centre + normals[1].normalisation() * (taille / -2), normals[1]);
-	Plan plan6(centre + normals[2].normalisation() * (taille / -2), normals[2]);
-
-
-	std::vector<Plan> plans;
-
-	plans.push_back(plan1);
-	plans.push_back(plan2);
-	plans.push_back(plan3);
-	plans.push_back(plan4);
-	plans.push_back(plan5);
-	plans.push_back(plan6);
-
-	for (int i = 0; i < plans.size(); i++)
-	{
-		Vecteur3D projete = plans[i].projete(other.getCenter());
-		Vecteur3D n1 = plans[(i + 1) % 3].getNormal();
-		Vecteur3D n2 = plans[(i + 2) % 3].getNormal();
-
-		if (plans[i].distance(other.getCenter()) <= other.getRadius())
-		{
-			if (projete.prodscal(n1) <= taille / 2 && projete.prodscal(n1) >= -taille / 2 && projete.prodscal(n2) <= taille / 2 && projete.prodscal(n2) >= -taille / 2)
-			{
-				return true;
-			}
-		}
-		
-	}
+	if (sphereNewXDistance < taille) { return true; }
+	if (sphereNewYDistance < taille) { return true; }
+	if (sphereNewZDistance < taille) { return true; }
+	float cornerDistance_sq = ((sphereNewXDistance - taille) * (sphereNewXDistance - taille)) + ((sphereNewYDistance - taille) * (sphereNewYDistance - taille) + ((sphereNewYDistance - taille) * (sphereNewYDistance - taille)));
+	return (cornerDistance_sq < (other.getRadius() * other.getRadius()));
 }
 
 bool Cube::intersect(const Plan& other) const
@@ -101,16 +65,43 @@ bool Cube::intersect(const Plan& other) const
 
 }
 
+bool Cube::intersect(const Cube& other) const
+{
+	//TODO
+	return false;
+}
+
+bool Cube::intersect(const Primitive& other) const
+{
+	if (dynamic_cast<const Sphere*>(&other) != nullptr)
+	{
+		return intersect(dynamic_cast<const Sphere&>(other));
+	}
+	else if (dynamic_cast<const Plan*>(&other) != nullptr)
+	{
+		return intersect(dynamic_cast<const Plan&>(other));
+	}
+	else if (dynamic_cast<const Cube*>(&other) != nullptr)
+	{
+		return intersect(dynamic_cast<const Cube&>(other));
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
 std::vector<Vecteur3D> Cube::getAngles() const
 {
-	Vecteur3D A = centre + Vecteur3D(taille / 2, taille / 2, taille / 2);
-	Vecteur3D B = centre + Vecteur3D(taille / 2, taille / 2, -taille / 2);
-	Vecteur3D C = centre + Vecteur3D(taille / 2, -taille / 2, taille / 2);
-	Vecteur3D D = centre + Vecteur3D(taille / 2, -taille / 2, -taille / 2);
-	Vecteur3D E = centre + Vecteur3D(-taille / 2, taille / 2, taille / 2);
-	Vecteur3D F = centre + Vecteur3D(-taille / 2, taille / 2, -taille / 2);
-	Vecteur3D G = centre + Vecteur3D(-taille / 2, -taille / 2, taille / 2);
-	Vecteur3D H = centre + Vecteur3D(-taille / 2, -taille / 2, -taille / 2);
+	Vecteur3D A = position + Vecteur3D(taille / 2, taille / 2, taille / 2);
+	Vecteur3D B = position + Vecteur3D(taille / 2, taille / 2, -taille / 2);
+	Vecteur3D C = position + Vecteur3D(taille / 2, -taille / 2, taille / 2);
+	Vecteur3D D = position + Vecteur3D(taille / 2, -taille / 2, -taille / 2);
+	Vecteur3D E = position + Vecteur3D(-taille / 2, taille / 2, taille / 2);
+	Vecteur3D F = position + Vecteur3D(-taille / 2, taille / 2, -taille / 2);
+	Vecteur3D G = position + Vecteur3D(-taille / 2, -taille / 2, taille / 2);
+	Vecteur3D H = position + Vecteur3D(-taille / 2, -taille / 2, -taille / 2);
 
 	std::vector<Vecteur3D> angles;
 
@@ -124,4 +115,27 @@ std::vector<Vecteur3D> Cube::getAngles() const
 	angles.push_back(H);
 
 	return angles;
+}
+
+void Cube::draw() const
+{
+
+	ofColor transparent;
+	transparent.a = 10;
+
+	ofBoxPrimitive box;
+	box.setPosition(position.getX(), position.getY(), position.getZ());
+	box.setWidth(taille);
+	box.setHeight(taille);
+	box.setDepth(taille);
+	box.rotate(glm::quat(rotation.getA(), rotation.getB(), rotation.getC(), rotation.getD()));
+	for (int i = 0; i < 6; i++)
+	{
+		box.setSideColor(i, transparent);
+	}
+	box.draw();
+	ofSetLineWidth(4.0);
+	ofSetColor(ofColor::red);
+	box.drawWireframe();
+
 }

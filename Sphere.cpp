@@ -2,13 +2,13 @@
 
 Sphere::Sphere()
 {
-    center = Vecteur3D(0,0,0);
+    position = Vecteur3D(0,0,0);
     radius = 0;
 }
 
 Sphere::Sphere(const Vecteur3D& center, float radius)
 {
-    this->center = center;
+    this->position = center;
 	this->radius = radius;  
 }
 
@@ -19,12 +19,12 @@ Sphere::~Sphere()
 
 bool Sphere::intersect(const Sphere& other) const
 {
-    return (center - other.center).norme() <= radius + other.radius;
+    return (position - other.position).norme() <= radius + other.radius;
 }
 
 bool Sphere::intersect(const Plan& other) const
 {
-    return other.distance(center) <= radius;
+    return other.distance(position) <= radius;
 }
 
 bool Sphere::intersect(const Cube& other) const
@@ -32,13 +32,40 @@ bool Sphere::intersect(const Cube& other) const
     return other.intersect(*this);
 }
 
-bool Sphere::isInSpace(Vecteur3D point, float width)
+bool Sphere::intersect(const Primitive& other) const
 {
-    std::vector<Vecteur3D> normals = std::vector<Vecteur3D>();
-    normals.push_back(Vecteur3D(1, 0, 0));
-    normals.push_back(Vecteur3D(0, 1, 0));
-    normals.push_back(Vecteur3D(0, 0, 1));
-    Cube cube = Cube(center, normals, width);
+	if (dynamic_cast<const Sphere*>(&other) != nullptr)
+	{
+		return intersect(dynamic_cast<const Sphere&>(other));
+	}
+	else if (dynamic_cast<const Plan*>(&other) != nullptr)
+	{
+		return intersect(dynamic_cast<const Plan&>(other));
+	}
+	else if (dynamic_cast<const Cube*>(&other) != nullptr)
+	{
+		return intersect(dynamic_cast<const Cube&>(other));
+	}
+	else
+	{
+		return false;
+	}
+}
 
-    return this->intersect(cube);
+void Sphere::draw() const
+{
+
+	ofColor transparent;
+	transparent.a = 50;
+
+	ofSpherePrimitive sphere;
+	sphere.setPosition(position.getX(), position.getY(), position.getZ());
+	sphere.setRadius(radius);
+    
+    ofSetColor(transparent);
+
+	sphere.draw();
+	ofSetLineWidth(4.0);
+	ofSetColor(ofColor::red);
+	sphere.drawWireframe();
 }

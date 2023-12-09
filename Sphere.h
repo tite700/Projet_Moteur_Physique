@@ -19,15 +19,15 @@ public:
 	bool intersect(const Sphere& other) const;
 	bool intersect(const Plan& other) const;
 	bool intersect(const Cube& other) const;
+	bool intersect(const Primitive& other) const override;
 
-	bool isInSpace(Vecteur3D point, float width) override;
-
-	Vecteur3D getCenter() const { return center; }
+	Vecteur3D getCenter() const { return position; }
 	float getRadius() const { return radius; }
+
+	void draw() const override;
 
 private:
 
-	Vecteur3D center;
 	float radius;
 };
 

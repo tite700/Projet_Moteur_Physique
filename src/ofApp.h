@@ -13,6 +13,9 @@
 #include "../RegistreForceCorps.h"
 #include "../ForceGraviteCorps.h"
 #include "../ForceImpulsionCorps.h"
+#include "../Cube.h"
+#include "../OcTree.h"
+#include <vector>
 #include "ofxGui.h"
 
 class ofApp : public ofBaseApp {
@@ -73,32 +76,18 @@ private:
 
 	void runUnitTests();
 
-	// Déclarez ici les variables nécessaires pour gérer la simulation
-	std::vector<Particule*> particules; // Un conteneur pour stocker les particules
-	Blob blob = Blob(10, 9, Vecteur3D(400, 400), 10.0, couleur, trainee);
-
-	Particule* balle1 = new Particule(0.01, 1, 10, 0.5, Vecteur3D(700, 400, 0), Vecteur3D(0, 0, 0));
-	Particule* accroche1 = new Particule(0.01, 1, 10, 1, Vecteur3D(700, 200, 0), Vecteur3D(0, 0, 0));
-
-	Particule* balle2 = new Particule(0.01, 1, 10, 0.5, Vecteur3D(800, 400, 0), Vecteur3D(0, 0, 0));
-	Particule* accroche2 = new Particule(0.01, 1, 10, 1, Vecteur3D(800, 200, 0), Vecteur3D(0, 0, 0));
-
-	Particule* balle3 = new Particule(0.01, 1, 10, 0.5, Vecteur3D(910, 100, 0), Vecteur3D(0, 0, 0));
-	Particule* balle4 = new Particule(0.01, 1, 10, 0.5, Vecteur3D(900, 400, 0), Vecteur3D(0, 0, 0));
-
-	Particule* balle5 = new Particule(0.01, 1, 10, 0.5, Vecteur3D(1000, 400, 0), Vecteur3D(0, 0, 0));
-	Particule* accroche5 = new Particule(0.01, 1, 10, 1, Vecteur3D(1000, 200, 0), Vecteur3D(0, 0, 0));
-
-	Particule* balle6 = new Particule(0.01, 1, 50, 1.0, Vecteur3D(271, 520, 0), Vecteur3D(0, 0, 0));
-
-	Particule* bigParticule = new Particule(0.01, 1, 50, 0.0001, Vecteur3D(200, 800, 0), Vecteur3D(0, 0, 0));
+	Cube* cube1;
+	Sphere* sphere1;
+	Sphere* sphere2;
+	Sphere* sphere3;
 
 
-	std::vector<CorpsRigide*> corpsrigides; // Un conteneur pour stocker les boxs
-	CorpsRigide* box1 = new CorpsRigide(Vecteur3D(0, 0, 0), Vecteur3D(0, 0, 0), Vecteur3D(0, 0, 0), Quaternion(0.0, 0.0, 1.0, 0.0), 0.001, Vecteur3D(0, 0, 0), Vecteur3D(0, 0, 0));
-	CorpsRigide* box2 = new CorpsRigide(Vecteur3D(-800, 0, 700), Vecteur3D(0, 0, 0), Vecteur3D(0, 0, 0),Quaternion(0.0,0.0,1.0,0.0), 0.01, Vecteur3D(1.0, 0, 0), Vecteur3D(0, 0, 0));
-	CorpsRigide* box3 = new CorpsRigide(Vecteur3D(-800, 150, 700), Vecteur3D(0, 0, 0), Vecteur3D(0, 0, 0), Quaternion(0.0, 0.0, 1.0, 0.0), 0.01, Vecteur3D(0.0, 1.0, 0.0), Vecteur3D(0, 0, 0));
-	CorpsRigide* box4 = new CorpsRigide(Vecteur3D(-800, 300, 700), Vecteur3D(0, 0, 0), Vecteur3D(0, 0, 0), Quaternion(0.0, 0.0, 1.0, 0.0), 0.01, Vecteur3D(0.0, 0.0, 1.0), Vecteur3D(0, 0, 0));
+	Cube * cube2;
+	Sphere * sphere4;
+	//OcTree
 
+	OcTree* octree;
+
+	std::vector<Primitive*> primitives = std::vector<Primitive*>();
 };
 

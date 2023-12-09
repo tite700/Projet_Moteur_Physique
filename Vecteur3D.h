@@ -36,6 +36,9 @@ public:
     Vecteur3D operator-= (const Vecteur3D& vect);
     Vecteur3D operator*= (float scalaire);
     bool operator==(const Vecteur3D& vect) const;
+    float& operator[](int i);
+
+
     Vecteur3D normalisation() const;
 
 

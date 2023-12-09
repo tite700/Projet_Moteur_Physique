@@ -74,6 +74,22 @@ bool Vecteur3D::operator==(const Vecteur3D& vect) const
     return (x == vect.x && y == vect.y && z == vect.z);
 }
 
+float& Vecteur3D::operator[](int i)
+{
+if (i == 0) {
+		return x;
+	}
+	else if (i == 1) {
+		return y;
+	}
+	else if (i == 2) {
+		return z;
+	}
+	else {
+    throw std::out_of_range("Index out of range");
+	}
+}
+
 
 Vecteur3D Vecteur3D::normalisation() const
 {

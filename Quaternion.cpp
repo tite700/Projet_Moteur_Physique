@@ -90,6 +90,7 @@ Vecteur3D Quaternion::rotateVector(const Vecteur3D& v) const
 	if (!isRotationQuaternion())
 	{
 		std::cout << "Le quaternion n'est pas une rotation" << std::endl;
+		std::cout << "Quaternion : " << *this << std::endl;
 		return Vecteur3D();
 	}
 
@@ -100,6 +101,11 @@ Vecteur3D Quaternion::rotateVector(const Vecteur3D& v) const
 bool Quaternion::isRotationQuaternion() const
 {
 	return std::fabs(1.0f - (a * a + b * b + c * c + d * d)) < 1e-6;
+}
+
+Quaternion Quaternion::identity()
+{
+	return Quaternion(1, 0, 0, 0);
 }
 
 Quaternion Quaternion::operator*(const Quaternion& quat) const

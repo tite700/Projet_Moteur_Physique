@@ -18,11 +18,12 @@ class Primitive
 	public:
 		Primitive();
 		~Primitive();
-		virtual bool isInSpace(Vecteur3D point, float width);
-		bool intersect(const Primitive& other) const;
+		virtual void draw() const;
+		virtual bool intersect(const Primitive& other) const;
 
-	private:
+	protected:
 		Vecteur3D position;
+		ofColor color;
 
 
 };

@@ -44,6 +44,8 @@ public:
     Vecteur3D rotateVector(const Vecteur3D& v) const;
     bool isRotationQuaternion() const;
 
+    static Quaternion identity();
+
 private:
     float a;
     float b;
