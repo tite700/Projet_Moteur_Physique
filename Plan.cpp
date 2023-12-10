@@ -53,6 +53,23 @@ bool Plan::intersect(Cube& other) const
     return other.intersect(*this);
 }
 
+void Plan::draw() const
+{
+    ofColor transparentRed;
+    transparentRed.r = 255;
+    transparentRed.g = 0;
+    transparentRed.b = 0;
+    transparentRed.a = 30;
+    ofPlanePrimitive plane;
+    plane.set(1000, 1000);
+    plane.setPosition(position.getX(), position.getY(), position.getZ());
+    plane.rotate(glm::quat(rotation.getA(), rotation.getB(), rotation.getC(), rotation.getD()));
+    ofSetLineWidth(4.0);
+    ofSetColor(transparentRed);
+    plane.draw();
+
+}
+
 Vecteur3D Plan::getNormal(const Vecteur3D& point) const
 {
 	return Vecteur3D();

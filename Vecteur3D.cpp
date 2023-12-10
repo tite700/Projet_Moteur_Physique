@@ -126,6 +126,14 @@ Vecteur3D Vecteur3D::zeros()
     return Vecteur3D(0, 0, 0, 1);
 }
 
+void Vecteur3D::drawPoint() const
+{
+    ofSpherePrimitive sphere;
+    sphere.setPosition(x, y, z);
+    sphere.setRadius(5);
+    sphere.draw();
+}
+
 std::ostream& operator<<(std::ostream& os, const Vecteur3D& vect)
 {
     os << "(" << vect.getX() << ", " << vect.getY() << ", " << vect.getZ() << ")";

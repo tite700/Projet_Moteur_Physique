@@ -45,6 +45,7 @@ void CorpsRigide::addForce(const Vecteur3D& force)
 }
 void CorpsRigide::addTorque(const Vecteur3D& torque)
 {
+    std::cout << "addTorque : " << torque << std::endl;
     m_torqueAccum.setX(m_torqueAccum.getX() + torque.getX());
     m_torqueAccum.setY(m_torqueAccum.getY() + torque.getY());
     m_torqueAccum.setZ(m_torqueAccum.getZ() + torque.getZ());
@@ -78,7 +79,7 @@ void CorpsRigide::Integrate(float duration)
 
     // Mise � jour de la velocite et de l'acc�l�ration angulaire
     Matrix3 I_inverse_prime = m_orientation.toMatrix3() * I_inverse * m_orientation.toMatrix3().transpose();
-    m_accelerationAngulaire = I_inverse_prime * m_torqueAccum*1000;
+    m_accelerationAngulaire = I_inverse_prime * m_torqueAccum;
     m_velocityAngulaire += m_accelerationAngulaire * duration;
     
 

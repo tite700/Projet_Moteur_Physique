@@ -101,6 +101,25 @@ Sphere* Cube::getBoundingSphere() const
 	return boundingSphere;
 }
 
+std::vector<CollisionData> Cube::collide(const Plan& other) const
+{
+	std::vector<Vecteur3D> angles = getAngles();
+	std::vector<CollisionData> collisions;
+	bool side = other.getNormal().prodscal(position) + other.getD() > 0;
+
+	for (Vecteur3D angle : angles)
+	{
+		float t = other.getNormal().prodscal(angle - position);
+		Vecteur3D projAngle = angle - t * other.getNormal();
+		if (side != (other.getNormal().prodscal(angle) + other.getD() > 0))
+		{
+			collisions.push_back(CollisionData(true, angle, abs(t)));
+		}
+	}
+
+	return collisions;
+}
+
 
 std::vector<Vecteur3D> Cube::getAngles() const
 {

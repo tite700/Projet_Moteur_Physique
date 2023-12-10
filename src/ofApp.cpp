@@ -20,10 +20,10 @@ void ofApp::setup() {
 	//cam.disableMouseInput();  // Disable the default mouse interaction for camera control
 
 
-	cam.enableOrtho();
-	cam.setNearClip(-100000);
-	cam.setFarClip(100000);
-	cam.setVFlip(true);
+	//cam.enableOrtho();
+	//cam.setNearClip(-100000);
+	//cam.setFarClip(100000);
+	//cam.setVFlip(true);
 
 	//Primitives tests
 
@@ -43,7 +43,7 @@ void ofApp::setup() {
 	//cube2 = new Cube(Vecteur3D(0, 0, 0), 1000);
 
 	//Test unitaires
-	runUnitTests();
+	//runUnitTests();
 
 	//octree = new OcTree(Vecteur3D(0, 0, 0), 1000, 2, 4);
 	//octree->subdivide();
@@ -60,35 +60,47 @@ void ofApp::setup() {
 	//std::cout << cube2->intersect(*sphere4) << std::endl;
 
 	cube1 = new Cube(Vecteur3D::zeros(), 200);
-	cube2 = new Cube(Vecteur3D(300, 0, 0), 200);
+	cube2 = new Cube(Vecteur3D(0, 0, 0), 200);
 	sphere4 = new Sphere(Vecteur3D(160, 0, 0), 50);
+	plan1 = new Plan(Vecteur3D(0, 0, 0), Vecteur3D(0, 0, 1));
 
 	cubeRigide = new CorpsRigide(Vecteur3D::zeros(), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), cube1);
 	sphereRigide = new CorpsRigide(Vecteur3D(160, 0, 0), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), sphere4);
-	cubeRigide2 = new CorpsRigide(Vecteur3D(300, 0, 0), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), cube2);
-	corpsRigides.push_back(cubeRigide);
-	corpsRigides.push_back(sphereRigide);
+	cubeRigide2 = new CorpsRigide(Vecteur3D(0, 0, 0), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), cube2);
+	//corpsRigides.push_back(cubeRigide);
+	//corpsRigides.push_back(sphereRigide);
 	corpsRigides.push_back(cubeRigide2);
+	cubeRigide2->setVelocite(Vecteur3D(0, 0, 0));
+	cubeRigide2->setOrientation(Quaternion(0, 0, 0, 1));
+
+	hitPoint = Vecteur3D(0, 0, 100);
+}
+
+void ofApp::FirstFrame() {
+	pause = true;
+	registreForceCorps.add(cubeRigide2, new ForceImpulsionCorps(hitPoint, 200, Vecteur3D(0, 0, -1)));
 }
 
 //--------------------------------------------------------------
-//int temps = 0;
+int temps = 0;
 void ofApp::update() {
 
 	if (pause) {
 		return;
 	}
-	octree = new OcTree(Vecteur3D(0, 0, 0), 1000, 2, 3);
-	//registreForceCorps.add(cubeRigide, new ForceGraviteCorps());
+	if (temps == 1)
+	{
+		FirstFrame();
+	}
 	registreForceCorps.updateForces(ofGetLastFrameTime());
-	cubeRigide->setVelocityAngulaire(Vecteur3D(0, 2, 0));
+	temps++;
+	octree = new OcTree(Vecteur3D(0, 0, 0), 1000, 2, 3);
+
+
 	for (CorpsRigide* corpsRigide : corpsRigides) {
 		corpsRigide->Integrate(ofGetLastFrameTime());
 		octree->addCorpsRigide(corpsRigide);
 	}
-
-	//std::cout << "Collision : " << cubeRigide->getPrimitive()->intersect(*sphereRigide->getPrimitive()) << std::endl;
-
 
 	registreForceCorps.clear();
 
@@ -114,8 +126,9 @@ void ofApp::draw() {
 	for (CorpsRigide* corpsRigide : corpsRigides) {
 		corpsRigide->draw();
 	}
-
-	octree->draw();
+	hitPoint.drawPoint();
+	//plan1->draw();
+	//octree->draw();
 	//for (Primitive* primitive : primitives) {
 	//	primitive->draw();
 	//}

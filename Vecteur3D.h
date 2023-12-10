@@ -48,6 +48,7 @@ public:
     float norme() const;
 
     static Vecteur3D zeros();
+    void drawPoint() const;
 };
 
 //Opérateurs externes

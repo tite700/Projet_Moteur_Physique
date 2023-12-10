@@ -24,6 +24,7 @@ public:
 	bool intersect(Plan& other) const;
 	bool intersect(Cube& other) const;
 
+	void draw() const;
 
 	Vecteur3D getNormal(const Vecteur3D& point) const;
 	Vecteur3D getNormal() const { return normal; }

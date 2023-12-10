@@ -4,6 +4,7 @@
 #include "./Vecteur3D.h"
 #include "./Plan.h"
 #include "./Quaternion.h"
+#include "./CollisionData.h"
 
 #include <vector>
 #include <iostream>
@@ -27,6 +28,8 @@ public:
 	bool intersect(const Cube& other) const;
 	bool intersect(const Primitive& other) const override;
 	Sphere* getBoundingSphere() const override;
+
+	std::vector<CollisionData> collide(const Plan& other) const;
 
 	std::vector<Vecteur3D> getAngles() const;
 

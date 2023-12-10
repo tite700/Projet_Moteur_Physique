@@ -37,6 +37,7 @@ public:
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
+	void FirstFrame();
 
 
 public:
@@ -80,6 +81,7 @@ private:
 
 	void runUnitTests();
 
+	//Primitives
 	Cube* cube1;
 	Sphere* sphere1;
 	Sphere* sphere2;
@@ -88,6 +90,8 @@ private:
 
 	Cube * cube2;
 	Sphere * sphere4;
+
+	Plan* plan1;
 	//OcTree
 
 	OcTree* octree;
@@ -99,5 +103,7 @@ private:
 	CorpsRigide* cubeRigide;
 	CorpsRigide* sphereRigide;
 	CorpsRigide* cubeRigide2;
+
+	Vecteur3D hitPoint;
 };
 
