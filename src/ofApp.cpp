@@ -10,6 +10,9 @@
 #include "../ofMain.h"
 #include "../UnitTest.cpp"
 #include "../Matrix3.h"
+#include "../Matrix4.h"
+#include "../Quaternion.h"
+#include "../ForceFrictionCinetiqueCorps.h"
 
 ofEasyCam cam;  // Declare an ofEasyCam object
 void ofApp::setup() {
@@ -62,23 +65,27 @@ void ofApp::setup() {
 	cube1 = new Cube(Vecteur3D::zeros(), 200);
 	cube2 = new Cube(Vecteur3D(0, 0, 0), 200);
 	sphere4 = new Sphere(Vecteur3D(160, 0, 0), 50);
-	plan1 = new Plan(Vecteur3D(0, 0, 0), Vecteur3D(0, 0, 1));
+	plan1 = new Plan(Vecteur3D(0, 0, 0), Quaternion::fromEulerAngles(Vecteur3D(90, 0, 0) * (PI/180)));
 
 	cubeRigide = new CorpsRigide(Vecteur3D::zeros(), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), cube1);
 	sphereRigide = new CorpsRigide(Vecteur3D(160, 0, 0), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), sphere4);
-	cubeRigide2 = new CorpsRigide(Vecteur3D(0, 0, 0), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), cube2);
+	
+	cubeRigide2 = new CorpsRigide(Vecteur3D(0, 500, 0), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion::fromEulerAngles(Vecteur3D(0,0,0)), 5, Vecteur3D::zeros(), Vecteur3D::zeros(), cube2);
+	
 	//corpsRigides.push_back(cubeRigide);
 	//corpsRigides.push_back(sphereRigide);
 	corpsRigides.push_back(cubeRigide2);
 	cubeRigide2->setVelocite(Vecteur3D(0, 0, 0));
-	cubeRigide2->setOrientation(Quaternion(0, 0, 0, 1));
+	cubeRigide2->setOrientation(Quaternion::fromEulerAngles(Vecteur3D(40, 0, 0) * (PI/180)));
 
-	hitPoint = Vecteur3D(0, 0, 100);
+	hitPoint = Vecteur3D(100, 0, 100);
 }
 
 void ofApp::FirstFrame() {
-	pause = true;
-	registreForceCorps.add(cubeRigide2, new ForceImpulsionCorps(hitPoint, 200, Vecteur3D(0, 0, -1)));
+	//pause = true;
+	//registreForceCorps.add(cubeRigide2, new ForceImpulsionCorps(hitPoint, 200, Vecteur3D(0, 0, -1)));
+	//registreForceCorps.add(cubeRigide2, new ForceImpulsionCorps(Vecteur3D(-100, 0, 100), 200, Vecteur3D(0, 0, -1)));
+	//cubeRigide2->setVelocite(Vecteur3D(0, 0, -50));
 }
 
 //--------------------------------------------------------------
@@ -92,8 +99,7 @@ void ofApp::update() {
 	{
 		FirstFrame();
 	}
-	registreForceCorps.updateForces(ofGetLastFrameTime());
-	temps++;
+
 	octree = new OcTree(Vecteur3D(0, 0, 0), 1000, 2, 3);
 
 
@@ -101,6 +107,24 @@ void ofApp::update() {
 		corpsRigide->Integrate(ofGetLastFrameTime());
 		octree->addCorpsRigide(corpsRigide);
 	}
+
+	std::vector<CollisionData> collisions = dynamic_cast<Cube*>(cubeRigide2->getPrimitive())->collide(*plan1);
+	for (const CollisionData &collision : collisions) {
+		std::cout << "Collision" << std::endl;
+
+		//Calcule intensite
+		float e = 0;
+		float v = cubeRigide2->getVelocite().prodscal(plan1->getNormal());
+		float Kup = (e + 1) * v;
+		float Kdown = cubeRigide2->getInverseMass();
+		float K = Kup / Kdown;
+
+		registreForceCorps.add(cubeRigide2, new ForceImpulsionCorps(collision.getPointImpact(), K* collision.getInterpenetration()/collisions.size(), (plan1->getNormal() * (collision.getInterpenetration() / sqrt(collision.getInterpenetration() * collision.getInterpenetration()))).normalisation()));
+	}
+		registreForceCorps.add(cubeRigide2, new ForceGraviteCorps());
+		registreForceCorps.add(cubeRigide2, new ForceFrictionCinetiqueCorps(0.1,0.0));
+	registreForceCorps.updateForces(ofGetLastFrameTime());
+	temps++;
 
 	registreForceCorps.clear();
 
@@ -127,7 +151,11 @@ void ofApp::draw() {
 		corpsRigide->draw();
 	}
 	hitPoint.drawPoint();
-	//plan1->draw();
+	plan1->draw();
+	for (Vecteur3D angle : dynamic_cast<Cube*>(cubeRigide2->getPrimitive())->getAngles())
+	{
+		angle.drawPoint();
+	}
 	//octree->draw();
 	//for (Primitive* primitive : primitives) {
 	//	primitive->draw();

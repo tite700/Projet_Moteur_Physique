@@ -43,8 +43,12 @@ public:
     Matrix4 toMatrix4() const;
     Vecteur3D rotateVector(const Vecteur3D& v) const;
     bool isRotationQuaternion() const;
+    Vecteur3D getEulerAngles() const;
+    Vecteur3D getNormal() const;
 
     static Quaternion identity();
+    static Quaternion fromEulerAngles(const Vecteur3D& angles);
+    
 
 private:
     float a;

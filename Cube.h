@@ -27,7 +27,7 @@ public:
 	bool intersect(const Plan& other) const;
 	bool intersect(const Cube& other) const;
 	bool intersect(const Primitive& other) const override;
-	Sphere* getBoundingSphere() const override;
+	Sphere* getBoundingSphere() override;
 
 	std::vector<CollisionData> collide(const Plan& other) const;
 

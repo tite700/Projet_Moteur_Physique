@@ -10,7 +10,7 @@ public:
 
 private:
 
-	Vecteur3D gravity = Vecteur3D(0.0f, 98.1f*4.0, 0.0f);
+	Vecteur3D gravity = Vecteur3D(0.0f, -98.1f, 0.0f);
 };
 
 

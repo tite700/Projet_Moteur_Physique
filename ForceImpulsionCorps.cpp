@@ -12,6 +12,6 @@ void ForceImpulsionCorps::UpdateForce(CorpsRigide* corpsRigide)
 	std::cout << "ForceImpulsionCorps::UpdateForce" << std::endl;
 	Vecteur3D brasDeLevier = Vecteur3D(corpsRigide->getPosition().getX() - pointImpact.getX(), corpsRigide->getPosition().getY() - pointImpact.getY(), corpsRigide->getPosition().getZ() - pointImpact.getZ());
 	corpsRigide->addForce(brasDeLevier.normalisation() * intensite);
-	corpsRigide->addTorque(brasDeLevier.normalisation().prodvect(direction * -intensite));
+	corpsRigide->addTorque(brasDeLevier.normalisation().prodvect(direction) * intensite);
 	
 }

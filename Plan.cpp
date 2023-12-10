@@ -4,11 +4,13 @@ Plan::Plan()
 {
 }
 
-Plan::Plan(const Vecteur3D& position, const Vecteur3D& normal)
+Plan::Plan(const Vecteur3D& position, const Quaternion rotation)
 {
 	this->position = position;
-	this->normal = normal;
     d = -position.prodscal(normal);
+    this->rotation = rotation;
+    this->normal = rotation.rotateVector(Vecteur3D(0, 0, 1));
+
 }
 
 Plan::~Plan()

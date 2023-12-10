@@ -110,6 +110,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="ForceCable.cpp" />
     <ClCompile Include="ForceElastique.cpp" />
+    <ClCompile Include="ForceFrictionCinetiqueCorps.cpp" />
     <ClCompile Include="ForceFrictionCinetique.cpp" />
     <ClCompile Include="ForceFrictionStatic.cpp" />
     <ClCompile Include="ForceGraviteCorps.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="ForceCable.h" />
     <ClInclude Include="ForceElastique.h" />
+    <ClInclude Include="ForceFrictionCinetiqueCorps.h" />
     <ClInclude Include="ForceFrictionCinetique.h" />
     <ClInclude Include="ForceFrictionStatic.h" />
     <ClInclude Include="ForceGraviteCorps.h" />

@@ -19,7 +19,7 @@ bool Primitive::intersect(const Primitive& other) const
 	return false;
 }
 
-Sphere* Primitive::getBoundingSphere() const
+Sphere* Primitive::getBoundingSphere()
 {
 	std::cout << "WARNING : Virtual FONCTION CALLED" << std::endl;
 	return nullptr;

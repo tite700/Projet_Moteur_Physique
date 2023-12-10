@@ -96,14 +96,16 @@ bool Cube::intersect(const Primitive& other) const
 	}
 }
 
-Sphere* Cube::getBoundingSphere() const
+Sphere* Cube::getBoundingSphere()
 {
+	boundingSphere->setPosition(position);
 	return boundingSphere;
 }
 
 std::vector<CollisionData> Cube::collide(const Plan& other) const
 {
 	std::vector<Vecteur3D> angles = getAngles();
+	
 	std::vector<CollisionData> collisions;
 	bool side = other.getNormal().prodscal(position) + other.getD() > 0;
 
@@ -123,14 +125,14 @@ std::vector<CollisionData> Cube::collide(const Plan& other) const
 
 std::vector<Vecteur3D> Cube::getAngles() const
 {
-	Vecteur3D A = position + Vecteur3D(taille / 2, taille / 2, taille / 2);
-	Vecteur3D B = position + Vecteur3D(taille / 2, taille / 2, -taille / 2);
-	Vecteur3D C = position + Vecteur3D(taille / 2, -taille / 2, taille / 2);
-	Vecteur3D D = position + Vecteur3D(taille / 2, -taille / 2, -taille / 2);
-	Vecteur3D E = position + Vecteur3D(-taille / 2, taille / 2, taille / 2);
-	Vecteur3D F = position + Vecteur3D(-taille / 2, taille / 2, -taille / 2);
-	Vecteur3D G = position + Vecteur3D(-taille / 2, -taille / 2, taille / 2);
-	Vecteur3D H = position + Vecteur3D(-taille / 2, -taille / 2, -taille / 2);
+	Vecteur3D A = position + rotation.rotateVector(Vecteur3D(taille / 2, taille / 2, taille / 2));
+	Vecteur3D B = position + rotation.rotateVector(Vecteur3D(taille / 2, taille / 2, -taille / 2));
+	Vecteur3D C = position + rotation.rotateVector(Vecteur3D(taille / 2, -taille / 2, taille / 2));
+	Vecteur3D D = position + rotation.rotateVector(Vecteur3D(taille / 2, -taille / 2, -taille / 2));
+	Vecteur3D E = position + rotation.rotateVector(Vecteur3D(-taille / 2, taille / 2, taille / 2));
+	Vecteur3D F = position + rotation.rotateVector(Vecteur3D(-taille / 2, taille / 2, -taille / 2));
+	Vecteur3D G = position + rotation.rotateVector(Vecteur3D(-taille / 2, -taille / 2, taille / 2));
+	Vecteur3D H = position + rotation.rotateVector(Vecteur3D(-taille / 2, -taille / 2, -taille / 2));
 
 	std::vector<Vecteur3D> angles;
 

@@ -12,7 +12,7 @@ class Plan :
 {
 public:
 	Plan();
-	Plan(const Vecteur3D& position, const Vecteur3D & normal);
+	Plan(const Vecteur3D& position, const Quaternion rotation = Quaternion::identity());
 	~Plan();
 
 	float distance(const Vecteur3D& point) const;

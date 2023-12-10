@@ -17,7 +17,7 @@ class Primitive
 
 		Vecteur3D getPosition() const { return position; }
 		Quaternion getRotation() const { return rotation; }
-		virtual Sphere* getBoundingSphere() const;
+		virtual Sphere* getBoundingSphere();
 
 		virtual void print() const;
 		

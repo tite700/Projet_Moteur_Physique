@@ -103,9 +103,39 @@ bool Quaternion::isRotationQuaternion() const
 	return std::fabs(1.0f - (a * a + b * b + c * c + d * d)) < 1e-6;
 }
 
+Vecteur3D Quaternion::getEulerAngles() const
+{
+	float phi = std::atan2(2 * (a * b + c * d), 1 - 2 * (b * b + c * c));
+	float theta = std::asin(2 * (a * c - d * b));
+	float psi = std::atan2(2 * (a * d + b * c), 1 - 2 * (c * c + d * d));
+
+	return Vecteur3D(phi, theta, psi);
+}
+
+Vecteur3D Quaternion::getNormal() const
+{
+	Matrix3 matrice = toMatrix3();
+	return Vecteur3D(matrice.getMatrice()[0][1], matrice.getMatrice()[1][1], matrice.getMatrice()[2][1]);
+
+}
+
 Quaternion Quaternion::identity()
 {
 	return Quaternion(1, 0, 0, 0);
+}
+
+Quaternion Quaternion::fromEulerAngles(const Vecteur3D& angles)
+{
+	float phi = angles.getX();
+	float theta = angles.getY();
+	float psi = angles.getZ();
+
+	float a = std::cos(phi / 2) * std::cos(theta / 2) * std::cos(psi / 2) + std::sin(phi / 2) * std::sin(theta / 2) * std::sin(psi / 2);
+	float b = std::sin(phi / 2) * std::cos(theta / 2) * std::cos(psi / 2) - std::cos(phi / 2) * std::sin(theta / 2) * std::sin(psi / 2);
+	float c = std::cos(phi / 2) * std::sin(theta / 2) * std::cos(psi / 2) + std::sin(phi / 2) * std::cos(theta / 2) * std::sin(psi / 2);
+	float d = std::cos(phi / 2) * std::cos(theta / 2) * std::sin(psi / 2) - std::sin(phi / 2) * std::sin(theta / 2) * std::cos(psi / 2);
+
+	return Quaternion(a, b, c, d);
 }
 
 Quaternion Quaternion::operator*(const Quaternion& quat) const

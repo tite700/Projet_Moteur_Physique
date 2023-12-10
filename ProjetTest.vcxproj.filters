@@ -69,6 +69,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="OcTree.cpp" />
     <ClCompile Include="CollisionData.cpp" />
+    <ClCompile Include="ForceFrictionCinetiqueCorps.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -156,6 +157,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="OcTree.h" />
     <ClInclude Include="CollisionData.h" />
+    <ClInclude Include="ForceFrictionCinetiqueCorps.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
