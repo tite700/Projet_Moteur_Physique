@@ -66,11 +66,61 @@ bool Cube::intersect(const Plan& other) const
 
 }
 
+std::vector<CollisionData> Cube::collideCubePlaneContact(const Cube& other) const
+{
+	std::vector<CollisionData> collisions;
+
+	// Obtenez les plans du cube actuel
+	std::vector<Plan> plans = getPlanes();
+
+	// Pour chaque plan, vérifiez s'il y a une collision avec le cube 'other'
+	for (const Plan& plan : plans)
+	{
+		std::vector<CollisionData> planeCollisions = other.collide(plan);
+
+		// Ajoutez les collisions au vecteur global
+		collisions.insert(collisions.end(), planeCollisions.begin(), planeCollisions.end());
+	}
+
+	return collisions;
+}
+
+std::vector<Plan> Cube::getPlanes() const
+{
+	std::vector<Plan> planes;
+
+	Vecteur3D normalX = rotation.rotateVector(Vecteur3D(1, 0, 0));
+	Vecteur3D normalY = rotation.rotateVector(Vecteur3D(0, 1, 0));
+	Vecteur3D normalZ = rotation.rotateVector(Vecteur3D(0, 0, 1));
+
+	Vecteur3D center = position;
+
+	planes.push_back(Plan(center + normalX * (taille / 2), normalX));
+	planes.push_back(Plan(center - normalX * (taille / 2), -1 * normalX));
+	planes.push_back(Plan(center + normalY * (taille / 2), normalY));
+	planes.push_back(Plan(center - normalY * (taille / 2), -1 * normalY));
+	planes.push_back(Plan(center + normalZ * (taille / 2), normalZ));
+	planes.push_back(Plan(center - normalZ * (taille / 2), -1 * normalZ));
+
+	return planes;
+}
+
+
 bool Cube::intersect(const Cube& other) const
 {
-	//TODO
-	return false;
+	// Utilisez la méthode du contact boîte-plan pour gérer la collision cube/cube
+	std::vector<CollisionData> collisions = Cube::collideCubePlaneContact(other);
+
+	// Traitez les collisions si nécessaire
+	for (const CollisionData& collision : collisions)
+	{
+		//TODO : Traitez les collisions
+	}
+
+	// Retournez true si des collisions sont détectées, sinon false
+	return !collisions.empty();
 }
+
 
 bool Cube::intersect(const Primitive& other) const
 {

@@ -25,6 +25,8 @@ public:
 	using Primitive::intersect;
 	bool intersect(const Sphere& other) const;
 	bool intersect(const Plan& other) const;
+	std::vector<CollisionData> collideCubePlaneContact(const Cube& other) const;
+	std::vector<Plan> getPlanes() const;
 	bool intersect(const Cube& other) const;
 	bool intersect(const Primitive& other) const override;
 	Sphere* getBoundingSphere() override;
