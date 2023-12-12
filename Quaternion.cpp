@@ -98,6 +98,21 @@ Vecteur3D Quaternion::rotateVector(const Vecteur3D& v) const
 	return Vecteur3D(result.getB(), result.getC(), result.getD());
 }
 
+Quaternion Quaternion::fromRotateVector(const Vecteur3D vec)
+{
+	float a = vec.getX();
+	float b = vec.getY();
+	float c = vec.getZ();
+	float d = 1;
+
+	float angle = std::acos(a) * 2;
+	float x = b / std::sin(angle / 2);
+	float y = c / std::sin(angle / 2);
+	float z = d / std::sin(angle / 2);
+
+	return Quaternion(angle, x, y, z);
+}
+
 bool Quaternion::isRotationQuaternion() const
 {
 	return std::fabs(1.0f - (a * a + b * b + c * c + d * d)) < 1e-6;

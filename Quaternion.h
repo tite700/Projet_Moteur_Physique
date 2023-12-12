@@ -48,6 +48,7 @@ public:
 
     static Quaternion identity();
     static Quaternion fromEulerAngles(const Vecteur3D& angles);
+    static Quaternion fromRotateVector(const Vecteur3D vec);
     
 
 private:

@@ -59,7 +59,6 @@ bool Sphere::intersect(const Primitive& other) const
 
 Sphere* Sphere::getBoundingSphere()
 {
-	std::cout << "Sphere Bounding Sphere" << std::endl;
 	return boundingSphere;
 }
 

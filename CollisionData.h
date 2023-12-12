@@ -13,6 +13,12 @@ class CollisionData
 	bool getCollision() const { return collision; }
 	Vecteur3D getPointImpact() const { return pointImpact; }
 	float getInterpenetration() const { return interpenetration; }
+	Vecteur3D getDirection() const { return direction; }
+
+	void setCollision(bool collision) { this->collision = collision; }
+	void setPointImpact(Vecteur3D pointImpact) { this->pointImpact = pointImpact; }
+	void setInterpenetration(float interpenetration) { this->interpenetration = interpenetration; }
+	void setDirection(Vecteur3D direction) { this->direction = direction; }
 
 	private :
 		bool collision;

@@ -7,15 +7,22 @@ Plan::Plan()
 Plan::Plan(const Vecteur3D& position, const Quaternion rotation)
 {
 	this->position = position;
+    this->normal = rotation.rotateVector(Vecteur3D(0, 0, 1));
     d = -position.prodscal(normal);
     this->rotation = rotation;
-    this->normal = rotation.rotateVector(Vecteur3D(0, 0, 1));
 
 }
 
 Plan::Plan(const Vecteur3D& position, const Vecteur3D& normal) : position(position), normal(normal)
 {
     d = -position.prodscal(normal);
+    float angle = acos(normal.prodscal(Vecteur3D(0, 0, 1)));
+	Vecteur3D rotationAxis = normal.prodvect(Vecteur3D(0,0,1));
+
+	rotation.setA(cos(angle / 2));
+	rotation.setB(rotationAxis.getX() * sin(angle / 2));
+	rotation.setC(rotationAxis.getY() * sin(angle / 2));
+	rotation.setD(rotationAxis.getZ() * sin(angle / 2));
 }
 
 Plan::~Plan()

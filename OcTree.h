@@ -5,6 +5,11 @@
 #include "CorpsRigide.h"
 #include "Primitive.h"
 #include "Cube.h"
+#include <set>
+#include <utility>
+#include "RegistreForceCorps.h"
+#include "ForceImpulsionCorps.h"
+#include <map>
 
 class OcTree
 {
@@ -25,10 +30,13 @@ public:
 	OcTree* getChild(int index);
 	std::vector<Primitive*> getPrimitives();
 	int getMaxPrimitives();
+	std::set<std::pair<Primitive*, Primitive*>> getPossibleCollisions();
+	void resolveCollisions(RegistreForceCorps* registre);
 
 	void draw();
 	int getDepth();
 	ostream& print(ostream& os) const;
+
 
 
 private:
@@ -42,6 +50,7 @@ private:
 	int depth;
 
 	std::vector<Primitive*> primitives;
+	std::map<Primitive*, CorpsRigide*> bodyMap;
 	Cube cube;
 };
 

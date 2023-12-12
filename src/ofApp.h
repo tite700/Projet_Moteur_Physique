@@ -92,6 +92,8 @@ private:
 	Sphere * sphere4;
 
 	Plan* plan1;
+
+	Plan* plan2;
 	//OcTree
 
 	OcTree* octree;

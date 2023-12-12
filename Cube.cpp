@@ -85,40 +85,95 @@ std::vector<CollisionData> Cube::collideCubePlaneContact(const Cube& other) cons
 	return collisions;
 }
 
+std::vector<Plan> Cube::getPlanes(const Cube& other) const
+{
+	std::vector<Plan> planes;
+
+	return planes;
+}
 std::vector<Plan> Cube::getPlanes() const
 {
 	std::vector<Plan> planes;
+
+	// Obtenez les angles du cube
+	std::vector<Vecteur3D> angles = getAngles();
 
 	Vecteur3D normalX = rotation.rotateVector(Vecteur3D(1, 0, 0));
 	Vecteur3D normalY = rotation.rotateVector(Vecteur3D(0, 1, 0));
 	Vecteur3D normalZ = rotation.rotateVector(Vecteur3D(0, 0, 1));
 
-	Vecteur3D center = position;
+	// Pour chaque face, créez un plan
+	planes.push_back(Plan(angles[0], normalX));
+	planes.push_back(Plan(angles[0], normalY));
+	planes.push_back(Plan(angles[0], normalZ));
+	planes.push_back(Plan(angles[1], normalX));
+	planes.push_back(Plan(angles[1], normalY));
+	planes.push_back(Plan(angles[2], normalX));
 
-	planes.push_back(Plan(center + normalX * (taille / 2), normalX));
-	planes.push_back(Plan(center - normalX * (taille / 2), -1 * normalX));
-	planes.push_back(Plan(center + normalY * (taille / 2), normalY));
-	planes.push_back(Plan(center - normalY * (taille / 2), -1 * normalY));
-	planes.push_back(Plan(center + normalZ * (taille / 2), normalZ));
-	planes.push_back(Plan(center - normalZ * (taille / 2), -1 * normalZ));
+
 
 	return planes;
 }
-
+bool checkOverlap(float minA, float maxA, float minB, float maxB);
 
 bool Cube::intersect(const Cube& other) const
 {
-	// Utilisez la méthode du contact boîte-plan pour gérer la collision cube/cube
-	std::vector<CollisionData> collisions = Cube::collideCubePlaneContact(other);
+	std::vector<Vecteur3D> axes;
+	axes.push_back(rotation.rotateVector(Vecteur3D(1, 0, 0)));
+	axes.push_back(rotation.rotateVector(Vecteur3D(0, 1, 0)));
+	axes.push_back(rotation.rotateVector(Vecteur3D(0, 0, 1)));
 
-	// Traitez les collisions si nécessaire
-	for (const CollisionData& collision : collisions)
+	axes.push_back(other.getRotation().rotateVector(Vecteur3D(1, 0, 0)));
+	axes.push_back(other.getRotation().rotateVector(Vecteur3D(0, 1, 0)));
+	axes.push_back(other.getRotation().rotateVector(Vecteur3D(0, 0, 1)));
+
+	std::vector<Vecteur3D> otherAxes;
+
+	for (Vecteur3D axis : axes)
 	{
-		//TODO : Traitez les collisions
+		for (Vecteur3D otherAxis : otherAxes)
+		{
+			if (!(axis == otherAxis))
+			{
+				otherAxes.push_back(axis.prodvect(otherAxis));
+			}
+		}
 	}
 
-	// Retournez true si des collisions sont détectées, sinon false
-	return !collisions.empty();
+	axes.insert(axes.end(), otherAxes.begin(), otherAxes.end());
+
+	std::vector<Vecteur3D> angles = getAngles();
+	std::vector<Vecteur3D> otherAngles = other.getAngles();
+
+	for (const auto axis : axes)
+	{
+		double minProjection1 = std::numeric_limits<double>::max();
+		double maxProjection1 = -std::numeric_limits<double>::max();
+		double minProjection2 = std::numeric_limits<double>::max();
+		double maxProjection2 = -std::numeric_limits<double>::max();
+
+		for (const auto angle : angles)
+		{
+			double projection = axis.prodscal(angle);
+			minProjection1 = std::min(minProjection1, projection);
+			maxProjection1 = std::max(maxProjection1, projection);
+		}
+
+		for (const auto angle : otherAngles)
+		{
+			double projection = axis.prodscal(angle);
+			minProjection2 = std::min(minProjection2, projection);
+			maxProjection2 = std::max(maxProjection2, projection);
+		}
+
+		if (maxProjection1 < minProjection2 || maxProjection2 < minProjection1) {
+			// Il y a séparation le long de cet axe, pas de collision
+			return false;
+		}
+	}
+
+	return true;
+
 }
 
 
@@ -168,7 +223,102 @@ std::vector<CollisionData> Cube::collide(const Plan& other) const
 			collisions.push_back(CollisionData(true, angle, abs(t)));
 		}
 	}
+	return collisions;
+}
+bool checkOverlap(float minA, float maxA, float minB, float maxB) {
+	return !(maxA < minB || maxB < minA);
+}
 
+std::vector<CollisionData> Cube::collide(const Cube& other) const
+{
+	std::vector<CollisionData> collisions;
+	CollisionData collision = CollisionData(true, Vecteur3D(0, 0, 0), std::numeric_limits<double>::max());
+
+	std::vector<Vecteur3D> axes;
+	axes.push_back(rotation.rotateVector(Vecteur3D(1, 0, 0)));
+	axes.push_back(rotation.rotateVector(Vecteur3D(0, 1, 0)));
+	axes.push_back(rotation.rotateVector(Vecteur3D(0, 0, 1)));
+
+	axes.push_back(other.getRotation().rotateVector(Vecteur3D(1, 0, 0)));
+	axes.push_back(other.getRotation().rotateVector(Vecteur3D(0, 1, 0)));
+	axes.push_back(other.getRotation().rotateVector(Vecteur3D(0, 0, 1)));
+
+	std::vector<Vecteur3D> otherAxes;
+
+	for (Vecteur3D axis : axes)
+	{
+		for (Vecteur3D otherAxis : otherAxes)
+		{
+			if (!(axis == otherAxis))
+			{
+				otherAxes.push_back(axis.prodvect(otherAxis));
+			}
+		}
+	}
+
+	axes.insert(axes.end(), otherAxes.begin(), otherAxes.end());
+
+	std::vector<Vecteur3D> angles = getAngles();
+	std::vector<Vecteur3D> otherAngles = other.getAngles();
+
+	for (const auto axis : axes)
+	{
+		double minProjection1 = std::numeric_limits<double>::max();
+		double maxProjection1 = -std::numeric_limits<double>::max();
+		double minProjection2 = std::numeric_limits<double>::max();
+		double maxProjection2 = -std::numeric_limits<double>::max();
+
+		for (const auto angle : angles)
+		{
+			double projection = axis.prodscal(angle);
+			minProjection1 = std::min(minProjection1, projection);
+			maxProjection1 = std::max(maxProjection1, projection);
+		}
+
+		for (const auto angle : otherAngles)
+		{
+			double projection = axis.prodscal(angle);
+			minProjection2 = std::min(minProjection2, projection);
+			maxProjection2 = std::max(maxProjection2, projection);
+		}
+
+		if (maxProjection1 < minProjection2 || maxProjection2 < minProjection1) {
+			// Il y a séparation le long de cet axe, pas de collision
+			return std::vector<CollisionData>();
+		}
+		else
+		{
+			//Calcul de la profondeur de la collision
+			double overlap1 = maxProjection1 - minProjection2;
+			double overlap2 = maxProjection2 - minProjection1;
+			double overlap = std::min(overlap1, overlap2);
+			if (overlap < collision.getInterpenetration())
+			{
+				collision.setInterpenetration(overlap);
+				Vecteur3D contributingCorner1 = Vecteur3D::zeros();
+				Vecteur3D contributingCorner2 = Vecteur3D::zeros();
+
+				for (const auto& angle : angles) {
+					double projection = axis.prodscal(angle);
+					if (projection >= minProjection2 && projection <= maxProjection2) {
+						contributingCorner1 = angle;
+						break;
+					}
+				}
+
+				for (const auto& angle : otherAngles) {
+					double projection = axis.prodscal(angle);
+					if (projection >= minProjection1 && projection <= maxProjection1) {
+						contributingCorner2 = angle;
+						break;
+					}
+				}
+
+				collision.setPointImpact(position + (other.getPosition() - position) * (1.0/ 2));
+			}
+		}
+	}
+	collisions.push_back(collision);
 	return collisions;
 }
 
@@ -196,6 +346,74 @@ std::vector<Vecteur3D> Cube::getAngles() const
 	angles.push_back(H);
 
 	return angles;
+}
+
+std::vector<Cube::Arrete> Cube::getArretes() const
+{
+	std::vector<Vecteur3D> angles = getAngles();
+	std::vector<Arrete> arretes;
+
+	Arrete arrete1;
+	arrete1.point1 = angles[0];
+	arrete1.point2 = angles[1];
+	arretes.push_back(arrete1);
+
+	Arrete arrete2;
+	arrete2.point1 = angles[0];
+	arrete2.point2 = angles[2];
+	arretes.push_back(arrete2);
+
+	Arrete arrete3;
+	arrete3.point1 = angles[0];
+	arrete3.point2 = angles[4];
+	arretes.push_back(arrete3);
+
+	Arrete arrete4;
+	arrete4.point1 = angles[1];
+	arrete4.point2 = angles[3];
+	arretes.push_back(arrete4);
+
+	Arrete arrete5;
+	arrete5.point1 = angles[1];
+	arrete5.point2 = angles[5];
+	arretes.push_back(arrete5);
+
+	Arrete arrete6;
+	arrete6.point1 = angles[2];
+	arrete6.point2 = angles[3];
+	arretes.push_back(arrete6);
+
+	Arrete arrete7;
+	arrete7.point1 = angles[2];
+	arrete7.point2 = angles[6];
+	arretes.push_back(arrete7);
+
+	Arrete arrete8;
+	arrete8.point1 = angles[3];
+	arrete8.point2 = angles[7];
+	arretes.push_back(arrete8);
+
+	Arrete arrete9;
+	arrete9.point1 = angles[4];
+	arrete9.point2 = angles[5];
+	arretes.push_back(arrete9);
+
+	Arrete arrete10;
+	arrete10.point1 = angles[4];
+	arrete10.point2 = angles[6];
+	arretes.push_back(arrete10);
+
+	Arrete arrete11;
+	arrete11.point1 = angles[5];
+	arrete11.point2 = angles[7];
+	arretes.push_back(arrete11);
+
+	Arrete arrete12;
+	arrete12.point1 = angles[6];
+	arrete12.point2 = angles[7];
+	arretes.push_back(arrete12);
+
+	return arretes;
 }
 
 void Cube::draw() const
@@ -228,4 +446,76 @@ void Cube::print() const
 	std::cout << "Taille : " << taille << std::endl;
 	std::cout << "Rotation : " << rotation << std::endl;
 	std::cout << "Color : " << color << std::endl;
+}
+
+bool Cube::isInside(const Vecteur3D& point) const
+{
+	Vecteur3D normalX = rotation.rotateVector(Vecteur3D(1, 0, 0)).normalisation();
+	Vecteur3D normalY = rotation.rotateVector(Vecteur3D(0, 1, 0)).normalisation();
+	Vecteur3D normalZ = rotation.rotateVector(Vecteur3D(0, 0, 1)).normalisation();
+
+	Vecteur3D direction = point - position;
+
+	if (direction.prodscal(normalX) > taille / 2 || direction.prodscal(normalX) < -taille / 2)
+	{
+		return false;
+	}
+	if (direction.prodscal(normalY) > taille / 2 || direction.prodscal(normalY) < -taille / 2)
+	{
+		return false;
+	}
+	if (direction.prodscal(normalZ) > taille / 2 || direction.prodscal(normalZ) < -taille / 2)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool Cube::isInside(Arrete arrete) const
+{
+	Vecteur3D normalX = rotation.rotateVector(Vecteur3D(1, 0, 0)).normalisation();
+	Vecteur3D normalY = rotation.rotateVector(Vecteur3D(0, 1, 0)).normalisation();
+	Vecteur3D normalZ = rotation.rotateVector(Vecteur3D(0, 0, 1)).normalisation();
+
+	Vecteur3D direction = arrete.point1 - position;
+
+	if (direction.prodscal(normalX) > taille / 2 || direction.prodscal(normalX) < -taille / 2)
+	{
+		return false;
+	}
+	if (direction.prodscal(normalY) > taille / 2 || direction.prodscal(normalY) < -taille / 2)
+	{
+		return false;
+	}
+	if (direction.prodscal(normalZ) > taille / 2 || direction.prodscal(normalZ) < -taille / 2)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool Cube::intersect(Arrete arrete) const
+{
+	Vecteur3D normalX = rotation.rotateVector(Vecteur3D(1, 0, 0)).normalisation();
+	Vecteur3D normalY = rotation.rotateVector(Vecteur3D(0, 1, 0)).normalisation();
+	Vecteur3D normalZ = rotation.rotateVector(Vecteur3D(0, 0, 1)).normalisation();
+
+	Vecteur3D direction = arrete.point1 - position;
+
+	if (direction.prodscal(normalX) > taille / 2 || direction.prodscal(normalX) < -taille / 2)
+	{
+		return false;
+	}
+	if (direction.prodscal(normalY) > taille / 2 || direction.prodscal(normalY) < -taille / 2)
+	{
+		return false;
+	}
+	if (direction.prodscal(normalZ) > taille / 2 || direction.prodscal(normalZ) < -taille / 2)
+	{
+		return false;
+	}
+
+	return true;
 }
