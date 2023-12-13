@@ -67,13 +67,13 @@ void ofApp::setup() {
 	sphere4 = new Sphere(Vecteur3D(160, 0, 0), 50);
 	plan1 = new Plan(Vecteur3D(0, -100, 0), Quaternion::fromEulerAngles(Vecteur3D(90, 0, 0) * (PI/180)));
 
-	cubeRigide = new CorpsRigide(Vecteur3D(0, 0, 0), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), cube1);
+	cubeRigide = new CorpsRigide(Vecteur3D(0, 400, 0), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), cube1);
 	sphereRigide = new CorpsRigide(Vecteur3D(160, 0, 0), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion(0, 0, 0, 1), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), sphere4);
 	
-	cubeRigide2 = new CorpsRigide(Vecteur3D(100, 500, 0), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion::fromEulerAngles(Vecteur3D(0,0,0)), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), cube2);
+	cubeRigide2 = new CorpsRigide(Vecteur3D(100, 700, 0), Vecteur3D::zeros(), Vecteur3D::zeros(), Quaternion::fromEulerAngles(Vecteur3D(0,0,0)), 1, Vecteur3D::zeros(), Vecteur3D::zeros(), cube2);
 	
 	corpsRigides.push_back(cubeRigide);
-	corpsRigides.push_back(sphereRigide);
+	//corpsRigides.push_back(sphereRigide);
 	corpsRigides.push_back(cubeRigide2);
 	cubeRigide2->setVelocite(Vecteur3D(0, 0, 0));
 	cubeRigide2->setOrientation(Quaternion::fromEulerAngles(Vecteur3D(0, 0, 0) * (PI/180)));
@@ -155,11 +155,31 @@ void ofApp::update() {
 		float K = Kup / Kdown;
 		std::cout << "K:" << K << std::endl;
 		std::cout << "Interpenetration:" << collision.getInterpenetration() << std::endl;
-		registreForceCorps.add(cubeRigide2, new ForceImpulsionCorps(collision.getPointImpact(), K * collision.getInterpenetration()* 15 , (plan1->getNormal() * (collision.getInterpenetration() / sqrt(collision.getInterpenetration() * collision.getInterpenetration()))).normalisation()));
+		registreForceCorps.add(cubeRigide2, new ForceImpulsionCorps(collision.getPointImpact(), K * collision.getInterpenetration()* 15, (plan1->getNormal() * (collision.getInterpenetration() / sqrt(collision.getInterpenetration() * collision.getInterpenetration()))).normalisation()));
+		registreForceCorps.add(cubeRigide, new ForceImpulsionCorps(collision.getPointImpact(), -K * collision.getInterpenetration()* 15, (-1 * plan1->getNormal() * (collision.getInterpenetration() / sqrt(collision.getInterpenetration() * collision.getInterpenetration()))).normalisation()));
+	}
+
+	std::vector<CollisionData> collisions3 = dynamic_cast<Cube*>(cubeRigide->getPrimitive())->collide(*plan1);
+	for (const CollisionData& collision : collisions3) {
+		std::cout << "Collision" << std::endl;
+
+		//Calcule intensite
+		float e = 0;
+		//std::cout << "Velocite:" << cubeRigide2->getVelocite() << std::endl;
+		float v = cubeRigide->getVelocite().prodscal(plan1->getNormal());
+		std::cout << "V:" << v << std::endl;
+		float Kup = (e + 1) * v;
+		float Kdown = cubeRigide->getInverseMass();
+		float K = Kup / Kdown;
+		std::cout << "K:" << K << std::endl;
+
+		registreForceCorps.add(cubeRigide, new ForceImpulsionCorps(collision.getPointImpact(), K * collision.getInterpenetration() / collisions3.size(), (plan1->getNormal() * (collision.getInterpenetration() / sqrt(collision.getInterpenetration() * collision.getInterpenetration()))).normalisation()));
 	}
 
 		registreForceCorps.add(cubeRigide2, new ForceGraviteCorps());
-		registreForceCorps.add(cubeRigide2, new ForceFrictionCinetiqueCorps(0.1,0.0));
+		registreForceCorps.add(cubeRigide, new ForceGraviteCorps());
+		registreForceCorps.add(cubeRigide2, new ForceFrictionCinetiqueCorps(0.1,0.0002));
+		registreForceCorps.add(cubeRigide, new ForceFrictionCinetiqueCorps(0.1, 0.0002));
 		std::cout << dynamic_cast<Cube*>(cubeRigide2->getPrimitive())->intersect(*dynamic_cast<Cube*>(cubeRigide->getPrimitive())) << std::endl;
 	registreForceCorps.updateForces(ofGetLastFrameTime());
 	temps++;
