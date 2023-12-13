@@ -45,7 +45,6 @@ void CorpsRigide::addForce(const Vecteur3D& force)
 }
 void CorpsRigide::addTorque(const Vecteur3D& torque)
 {
-    std::cout << "addTorque : " << torque << std::endl;
     m_torqueAccum.setX(m_torqueAccum.getX() + torque.getX());
     m_torqueAccum.setY(m_torqueAccum.getY() + torque.getY());
     m_torqueAccum.setZ(m_torqueAccum.getZ() + torque.getZ());

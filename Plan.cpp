@@ -75,7 +75,7 @@ void Plan::draw() const
     transparentRed.b = 0;
     transparentRed.a = 30;
     ofPlanePrimitive plane;
-    plane.set(1000, 1000);
+    plane.set(10000, 10000);
     plane.setPosition(position.getX(), position.getY(), position.getZ());
     plane.rotate(glm::quat(rotation.getA(), rotation.getB(), rotation.getC(), rotation.getD()));
     ofSetLineWidth(4.0);

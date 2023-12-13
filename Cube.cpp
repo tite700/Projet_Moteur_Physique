@@ -419,8 +419,10 @@ std::vector<Cube::Arrete> Cube::getArretes() const
 void Cube::draw() const
 {
 
-	ofColor transparent;
+	ofColor transparent = color;
 	transparent.a = 10;
+
+
 
 	ofBoxPrimitive box;
 	box.setPosition(position.getX(), position.getY(), position.getZ());

@@ -70,6 +70,7 @@
     <ClCompile Include="OcTree.cpp" />
     <ClCompile Include="CollisionData.cpp" />
     <ClCompile Include="ForceFrictionCinetiqueCorps.cpp" />
+    <ClCompile Include="CollisionHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -158,6 +159,7 @@
     <ClInclude Include="OcTree.h" />
     <ClInclude Include="CollisionData.h" />
     <ClInclude Include="ForceFrictionCinetiqueCorps.h" />
+    <ClInclude Include="CollisionHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

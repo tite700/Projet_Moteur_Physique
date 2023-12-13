@@ -17,6 +17,7 @@
 #include "../OcTree.h"
 #include <vector>
 #include "ofxGui.h"
+#include "../CollisionHandler.h"
 
 class ofApp : public ofBaseApp {
 
@@ -89,7 +90,8 @@ private:
 
 
 	Cube * cube2;
-	Sphere * sphere4;
+	Cube * cube3;
+	Cube * cube4;
 
 	Plan* plan1;
 
@@ -105,7 +107,14 @@ private:
 	CorpsRigide* cubeRigide;
 	CorpsRigide* sphereRigide;
 	CorpsRigide* cubeRigide2;
+	CorpsRigide* cubeRigide3;
+	CorpsRigide* cubeRigide4;
 
 	Vecteur3D hitPoint;
+
+	//Jeu
+
+	bool send = false;
+	bool displayOctree = false;
 };
 

@@ -14,7 +14,7 @@
 class OcTree
 {
 public:
-	OcTree(Vecteur3D position, float width, int maxPrimitives, int maxDepth, int depth = 0, OcTree* parent = nullptr);
+	OcTree(Vecteur3D position, float width, int maxPrimitives, int maxDepth, int depth = 0, OcTree* parent = nullptr, std::map<Primitive*, CorpsRigide*> map = std::map<Primitive*, CorpsRigide*>());
 
 	// Methods
 	void addPrimitive(Primitive* primitive);
@@ -30,8 +30,8 @@ public:
 	OcTree* getChild(int index);
 	std::vector<Primitive*> getPrimitives();
 	int getMaxPrimitives();
-	std::set<std::pair<Primitive*, Primitive*>> getPossibleCollisions();
-	void resolveCollisions(RegistreForceCorps* registre);
+	std::set<std::pair<CorpsRigide*, CorpsRigide*>> getPossibleCollisions();
+	std::map<Primitive*, CorpsRigide*> getBodyMap();
 
 	void draw();
 	int getDepth();
